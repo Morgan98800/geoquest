@@ -15,6 +15,28 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      #netlify-drawer, iframe#netlify-drawer, netlify-drawer, [data-netlify-site-id], .netlify-badge, [class*="netlify-"] {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+      }
+    </style>
+    <script>
+      (function() {
+        const removeNetlify = function() {
+          const els = document.querySelectorAll('#netlify-drawer, iframe#netlify-drawer, netlify-drawer, [data-netlify-site-id], .netlify-badge, [class*="netlify-"]');
+          els.forEach(el => el.remove());
+        };
+        if (typeof window !== 'undefined') {
+          window.addEventListener('DOMContentLoaded', removeNetlify);
+          window.addEventListener('load', removeNetlify);
+          const obs = new MutationObserver(removeNetlify);
+          obs.observe(document.documentElement, { childList: true, subtree: true });
+        }
+      })();
+    </script>
   </head>
   <body class="bg-[#0b1626] text-slate-100 min-h-screen font-['Plus_Jakarta_Sans',sans-serif] selection:bg-amber-400 selection:text-slate-900 overscroll-none touch-manipulation">
     <div id="root"></div>
