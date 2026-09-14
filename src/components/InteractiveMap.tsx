@@ -46,7 +46,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   }>({});
   const isTouchDevice = useRef<boolean>(false);
   const dragStartCoords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const hasDragged = useRef<boolean>(false);
+  const touchStartTime = useRef<number>(0);
+  const isPanning = useRef<boolean>(false);
+  const lastClickTime = useRef<number>(0);
+  const lastClickId = useRef<string>('');
 
   const visitedSet = new Set(visitedCountryIds);
 
@@ -104,19 +107,19 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setIsDragging(true);
     setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
     dragStartCoords.current = { x: e.clientX, y: e.clientY };
-    hasDragged.current = false;
+    isPanning.current = false;
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging) {
       const dist = Math.hypot(e.clientX - dragStartCoords.current.x, e.clientY - dragStartCoords.current.y);
-      if (dist > 5) {
-        hasDragged.current = true;
+      if (dist > 8) {
+        isPanning.current = true;
+        setPosition({
+          x: e.clientX - dragStart.x,
+          y: e.clientY - dragStart.y,
+        });
       }
-      setPosition({
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y,
-      });
     }
 
     if (containerRef.current) {
@@ -130,9 +133,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    setTimeout(() => {
-      hasDragged.current = false;
-    }, 120);
+    if (isPanning.current) {
+      setTimeout(() => {
+        isPanning.current = false;
+      }, 120);
+    }
   };
 
   // Mobile Touch Gestures (Pan & Pinch-to-Zoom)
@@ -142,12 +147,13 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     if (e.touches.length === 1) {
       setIsDragging(true);
       dragStartCoords.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      hasDragged.current = false;
+      touchStartTime.current = Date.now();
+      isPanning.current = false;
       touchState.current.lastX = e.touches[0].clientX - position.x;
       touchState.current.lastY = e.touches[0].clientY - position.y;
     } else if (e.touches.length === 2) {
       setIsDragging(false);
-      hasDragged.current = true;
+      isPanning.current = true;
       const t1 = e.touches[0];
       const t2 = e.touches[1];
       touchState.current.initialDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
@@ -162,17 +168,18 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       const x = e.touches[0].clientX;
       const y = e.touches[0].clientY;
       const dist = Math.hypot(x - dragStartCoords.current.x, y - dragStartCoords.current.y);
-      if (dist > 6) {
-        hasDragged.current = true;
-      }
-      if (touchState.current.lastX !== undefined && touchState.current.lastY !== undefined) {
-        setPosition({
-          x: x - touchState.current.lastX,
-          y: y - touchState.current.lastY,
-        });
+      // Natural finger jitter threshold (16px) before initiating map pan
+      if (dist > 16) {
+        isPanning.current = true;
+        if (touchState.current.lastX !== undefined && touchState.current.lastY !== undefined) {
+          setPosition({
+            x: x - touchState.current.lastX,
+            y: y - touchState.current.lastY,
+          });
+        }
       }
     } else if (e.touches.length === 2 && touchState.current.initialDist && touchState.current.initialScale) {
-      hasDragged.current = true;
+      isPanning.current = true;
       const t1 = e.touches[0];
       const t2 = e.touches[1];
       const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
@@ -187,9 +194,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setHoveredCountry(null);
     touchState.current.initialDist = undefined;
     touchState.current.initialScale = undefined;
-    setTimeout(() => {
-      hasDragged.current = false;
-    }, 120);
+    if (isPanning.current) {
+      setTimeout(() => {
+        isPanning.current = false;
+      }, 120);
+    }
   };
 
   // Wheel zoom
@@ -199,12 +208,19 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     handleZoom(factor);
   };
 
-  // Country click
+  // Country click (0ms response on mobile touch & protected against drags)
   const handleCountryClick = (id: string, e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
-    if (hasDragged.current) {
+    if (isPanning.current) {
       return;
     }
+    const now = Date.now();
+    if (lastClickId.current === id && now - lastClickTime.current < 450) {
+      return;
+    }
+    lastClickId.current = id;
+    lastClickTime.current = now;
+
     const country = COUNTRIES_BY_ID[id];
     if (country && onCountryClick) {
       sound.playClick();
@@ -341,7 +357,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 fill={fillColor}
                 stroke={strokeColor}
                 strokeWidth={strokeWidth}
-                className="transition-colors duration-150 outline-none cursor-pointer"
+                style={{ pointerEvents: 'all' }}
+                className="transition-colors duration-150 outline-none cursor-pointer select-none"
                 onMouseEnter={() => {
                   if (!isTouchDevice.current && country) {
                     setHoveredCountry(country);
@@ -349,6 +366,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 }}
                 onMouseLeave={() => setHoveredCountry(null)}
                 onClick={(e) => handleCountryClick(id, e)}
+                onTouchEnd={(e) => {
+                  if (!isPanning.current) {
+                    handleCountryClick(id, e);
+                  }
+                }}
               />
             );
           })}
@@ -385,8 +407,14 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 <g
                   key={`hint-${id}`}
                   transform={`translate(${ptX}, ${ptY})`}
+                  style={{ pointerEvents: 'all' }}
                   onClick={(e) => handleCountryClick(id, e)}
-                  className="cursor-pointer"
+                  onTouchEnd={(e) => {
+                    if (!isPanning.current) {
+                      handleCountryClick(id, e);
+                    }
+                  }}
+                  className="cursor-pointer select-none"
                 >
                   <circle
                     r={20 / Math.sqrt(scale)}
@@ -424,10 +452,16 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                   key={`touch-${id}`}
                   cx={ptX}
                   cy={ptY}
-                  r={Math.max(12 / Math.sqrt(scale), 8)}
-                  fill="transparent"
-                  className="cursor-pointer"
+                  r={Math.max(18 / Math.sqrt(scale), 10)}
+                  fill="rgba(0,0,0,0.001)"
+                  style={{ pointerEvents: 'all' }}
+                  className="cursor-pointer select-none"
                   onClick={(e) => handleCountryClick(id, e)}
+                  onTouchEnd={(e) => {
+                    if (!isPanning.current) {
+                      handleCountryClick(id, e);
+                    }
+                  }}
                 />
               );
             }

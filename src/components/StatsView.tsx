@@ -222,7 +222,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
         <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-4 sm:p-5 shadow-md">
           <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-3">
             <Target className="w-4 h-4 text-emerald-400" />
-            <span>Précision par Continent</span>
+            <span>Précision par continent</span>
           </div>
 
           <div className="space-y-3">
@@ -251,7 +251,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
             <TrendingUp className="w-4 h-4 text-amber-400" />
-            <span>Activité XP des 14 Derniers Jours</span>
+            <span>Activité XP (14 jours)</span>
           </div>
           <span className="text-xs text-slate-400">Max quotidien : {maxXp} XP</span>
         </div>
