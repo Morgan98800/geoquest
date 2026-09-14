@@ -47,7 +47,7 @@ export const LevelSelector: React.FC<LevelSelectorProps> = ({
   const progressPercent = totalCount > 0 ? Math.round((visitedCount / totalCount) * 100) : 0;
 
   return (
-    <div className={`bg-[#1c2938] border border-[#2e4056] rounded-2xl p-2.5 sm:p-3 shadow-md flex flex-col gap-2 select-none ${className}`}>
+    <div className={`bg-[#121927] border border-[#1f2c42] rounded-2xl p-2.5 sm:p-3 shadow-xl flex flex-col gap-2 select-none ${className}`}>
       {/* Top Row: Difficulty Levels */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
@@ -67,8 +67,8 @@ export const LevelSelector: React.FC<LevelSelectorProps> = ({
                 }}
                 className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-black transition-all cursor-pointer shrink-0 active:scale-95 ${
                   isSelected
-                    ? 'bg-sky-600/30 border-sky-400 text-sky-200 ring-2 ring-sky-500/30 shadow-sm'
-                    : 'bg-[#16202c] hover:bg-[#223142] border-[#2c3d52] text-slate-300'
+                    ? 'bg-sky-500/25 border-sky-400 text-sky-200 ring-2 ring-sky-500/30 shadow-md'
+                    : 'bg-[#1a2436] hover:bg-[#223147] border-[#2c3f58] text-slate-300'
                 }`}
                 title={tier.description}
               >
@@ -113,8 +113,8 @@ export const LevelSelector: React.FC<LevelSelectorProps> = ({
                 }}
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all cursor-pointer shrink-0 active:scale-95 ${
                   isSelected
-                    ? 'bg-emerald-600/30 border-emerald-400 text-emerald-200 shadow-sm'
-                    : 'bg-[#16202c]/80 hover:bg-[#202e3e] border-[#293a4e] text-slate-300'
+                    ? 'bg-emerald-500/25 border-emerald-400 text-emerald-200 shadow-md'
+                    : 'bg-[#1a2436]/90 hover:bg-[#223147] border-[#2c3f58] text-slate-300'
                 }`}
               >
                 <span>{cont.emoji}</span>

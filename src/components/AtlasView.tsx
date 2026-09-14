@@ -32,7 +32,7 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-4 sm:gap-6">
       {/* Search & Shortcuts Bar */}
-      <div className="bg-[#0e1f34] border border-slate-750 rounded-2xl p-3.5 sm:p-4 shadow-md flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-3.5 sm:p-4 shadow-xl flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Search input with autocomplete */}
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -41,16 +41,16 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
             placeholder="Explorer un pays ou une capitale..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-2 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-sky-500 transition-colors"
+            className="w-full bg-[#1a2436] border border-[#2c3f58] rounded-xl pl-10 pr-4 py-2 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-sky-400 transition-colors"
           />
 
           {filteredCountries.length > 0 && (
-            <div className="absolute left-0 right-0 top-full mt-1.5 bg-slate-900 border border-slate-750 rounded-xl shadow-2xl overflow-hidden z-40">
+            <div className="absolute left-0 right-0 top-full mt-1.5 bg-[#121927] border border-[#1f2c42] rounded-xl shadow-2xl overflow-hidden z-40">
               {filteredCountries.map((c) => (
                 <button
                   key={c.id}
                   onClick={() => handleSelect(c)}
-                  className="w-full px-4 py-2 text-left text-xs sm:text-sm hover:bg-slate-800 text-white flex items-center justify-between border-b border-slate-800 last:border-0 cursor-pointer"
+                  className="w-full px-4 py-2 text-left text-xs sm:text-sm hover:bg-[#1a2436] text-white flex items-center justify-between border-b border-slate-800 last:border-0 cursor-pointer"
                 >
                   <span className="flex items-center gap-2">
                     <span className="text-xl">{c.flag}</span>
@@ -79,7 +79,7 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
                 const c = COUNTRIES_BY_ID[item.id];
                 if (c) handleSelect(c);
               }}
-              className="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[11px] sm:text-xs font-bold text-slate-200 whitespace-nowrap transition-all cursor-pointer active:scale-95 shrink-0"
+              className="px-2.5 py-1 rounded-xl bg-[#1a2436] hover:bg-[#23324a] border border-[#2c3f58] text-[11px] sm:text-xs font-bold text-slate-200 whitespace-nowrap transition-all cursor-pointer active:scale-95 shrink-0"
             >
               {item.label}
             </button>
@@ -102,7 +102,7 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
         </div>
 
         {/* Selected Country Dossier Card */}
-        <div className="bg-[#0e1f34] border border-slate-750 rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col justify-between">
+        <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 sm:py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20">
@@ -131,7 +131,7 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
 
             {/* Fun Facts (if available) */}
             {selectedCountry.funFacts && selectedCountry.funFacts.length > 0 && (
-              <div className="mt-4 sm:mt-6 pt-3 sm:pt-5 border-t border-sky-900/50">
+              <div className="mt-4 sm:mt-6 pt-3 sm:pt-5 border-t border-slate-800">
                 <div className="flex items-center gap-1.5 text-amber-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2">
                   <Sparkles className="w-3.5 h-3.5" /> Repères & Anecdotes
                 </div>
@@ -139,7 +139,7 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
                   {selectedCountry.funFacts.map((fact, idx) => (
                     <div
                       key={idx}
-                      className="text-xs leading-relaxed text-slate-200 bg-slate-800/60 p-2.5 sm:p-3 rounded-xl border border-white/5"
+                      className="text-xs leading-relaxed text-slate-200 bg-[#1a2436]/70 p-2.5 sm:p-3 rounded-xl border border-[#26374f]"
                     >
                       "{fact}"
                     </div>

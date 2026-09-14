@@ -108,7 +108,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-lg bg-slate-900 border border-sky-500/30 rounded-3xl p-6 sm:p-7 shadow-2xl animate-pop text-left">
+      <div className="relative w-full max-w-lg bg-[#121927] border border-[#1f2c42] rounded-3xl p-6 sm:p-7 shadow-2xl animate-pop text-left">
         
         {/* Close Button */}
         <button
@@ -151,7 +151,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
 
         <div className="space-y-4">
           {/* Option 1: Magic Link & Code Export */}
-          <div className="bg-slate-950/70 p-4 rounded-2xl border border-white/5 space-y-2.5">
+          <div className="bg-[#1a2436] p-4 rounded-2xl border border-[#2c3f58] space-y-2.5">
             <div className="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
               <Share2 className="w-3.5 h-3.5" /> Transférer vers mon Téléphone ou un autre ordi
             </div>
@@ -167,7 +167,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
 
               <button
                 onClick={handleCopyCode}
-                className="py-2.5 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                className="py-2.5 px-2 rounded-xl bg-[#121927] hover:bg-[#1a2538] text-slate-200 border border-[#2c3f58] font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
               >
                 {copiedCode ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-amber-400" />}
                 <span>{copiedCode ? 'Code copié !' : 'Copier code'}</span>
@@ -175,7 +175,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
 
               <button
                 onClick={handleDownload}
-                className="py-2.5 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                className="py-2.5 px-2 rounded-xl bg-[#121927] hover:bg-[#1a2538] text-slate-200 border border-[#2c3f58] font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
               >
                 <Download className="w-4 h-4 text-emerald-400" />
                 <span>Télécharger</span>
@@ -187,7 +187,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
           </div>
 
           {/* Option 2: Restore / Import */}
-          <div className="bg-slate-950/70 p-4 rounded-2xl border border-white/5 space-y-2.5">
+          <div className="bg-[#1a2436] p-4 rounded-2xl border border-[#2c3f58] space-y-2.5">
             <div className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
               <Upload className="w-3.5 h-3.5" /> Restaurer une partie
             </div>
@@ -198,7 +198,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
                 placeholder="Colle ton code de sauvegarde ici..."
                 value={importCode}
                 onChange={(e) => setImportCode(e.target.value)}
-                className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                className="flex-1 bg-[#121927] border border-[#2c3f58] rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
               />
               <button
                 onClick={handleImport}
@@ -222,7 +222,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
         <div className="mt-5 text-center">
           <button
             onClick={onClose}
-            className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition-all cursor-pointer"
+            className="w-full py-2.5 rounded-xl bg-[#1a2436] hover:bg-[#223147] border border-[#2c3f58] text-slate-300 font-bold text-xs transition-all cursor-pointer"
           >
             Fermer
           </button>

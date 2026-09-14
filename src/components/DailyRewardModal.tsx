@@ -46,7 +46,7 @@ export const DailyRewardModal: React.FC<DailyRewardModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-md bg-[#16202c] border border-slate-700/80 rounded-3xl p-5 sm:p-6 shadow-2xl text-white">
+      <div className="relative w-full max-w-md bg-[#121927] border border-[#1f2c42] rounded-3xl p-5 sm:p-6 shadow-2xl text-white">
         {/* Close Button */}
         <button
           onClick={() => {
@@ -74,14 +74,14 @@ export const DailyRewardModal: React.FC<DailyRewardModalProps> = ({
           </div>
         </div>
 
-        {/* 7-Day Track Grid */}
-        <div className="grid grid-cols-4 gap-2 sm:gap-2.5 mb-5">
+        {/* 7 Days Grid */}
+        <div className="grid grid-cols-4 gap-2 mb-4">
           {DAILY_REWARDS.map((r) => {
             const isPast = r.day < currentDay || (!status.canClaim && r.day <= currentDay);
             const isToday = r.day === currentDay;
             const isSpecial = r.day === 7;
 
-            let cardStyle = 'bg-[#1c2938] border-slate-800 text-slate-400 opacity-60';
+            let cardStyle = 'bg-[#1a2436] border-[#2c3f58] text-slate-400 opacity-60';
 
             if (isPast) {
               cardStyle = 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300 opacity-100';
@@ -114,7 +114,7 @@ export const DailyRewardModal: React.FC<DailyRewardModalProps> = ({
         </div>
 
         {/* Streak summary */}
-        <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 mb-5 text-xs">
+        <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#1a2436] border border-[#2c3f58] mb-5 text-xs">
           <div className="flex items-center gap-2 text-amber-400 font-bold">
             <Flame className="w-4 h-4 fill-amber-400 animate-pulse" />
             <span>Série actuelle : <strong>Jour {currentDay} / 7</strong></span>

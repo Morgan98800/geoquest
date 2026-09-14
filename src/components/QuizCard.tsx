@@ -41,7 +41,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto bg-slate-900/85 backdrop-blur-md border border-slate-800 rounded-3xl p-4 sm:p-8 shadow-2xl">
+    <div className="w-full max-w-xl mx-auto bg-[#121927] border border-[#1f2c42] rounded-3xl p-4 sm:p-8 shadow-2xl">
       {/* Header Question */}
       <div className="text-center mb-5 sm:mb-8">
         <div className="flex items-center justify-between mb-2.5 sm:mb-3">
@@ -84,7 +84,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
           const isSelected = selectedId === option.id;
           const isCorrectTarget = option.id === targetCountry.id;
 
-          let btnStyle = 'bg-slate-800/70 border-slate-700/80 hover:bg-slate-800 text-slate-100 hover:border-sky-500/50';
+          let btnStyle = 'bg-[#1a2436] border-[#2c3f58] hover:bg-[#23324a] text-slate-100 hover:border-sky-400/50';
 
           if (hasAnswered) {
             if (isCorrectTarget) {
@@ -92,7 +92,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
             } else if (isSelected) {
               btnStyle = 'bg-rose-600/30 border-rose-500 text-rose-200 ring-2 ring-rose-500/40 animate-shake';
             } else {
-              btnStyle = 'opacity-40 bg-slate-800/40 border-slate-800 text-slate-500';
+              btnStyle = 'opacity-40 bg-[#16202c]/40 border-slate-800 text-slate-500';
             }
           }
 

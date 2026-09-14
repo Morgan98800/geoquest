@@ -51,12 +51,12 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
         onCountryGuessed(clickedCountry);
         setFeedback(null);
         setHintLevel(0);
-      }, 500);
+      }, 1100);
     } else {
       sound.playWrong();
       setTimeout(() => {
         setFeedback(null);
-      }, 1200);
+      }, 2200);
     }
   };
 
@@ -72,9 +72,9 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
   // FULL LANDSCAPE MODE (StudyGe Edge-to-Edge Experience)
   if (isLandscape) {
     return (
-      <div className="fixed inset-0 z-30 w-screen h-screen overflow-hidden bg-[#16202c]">
+      <div className="fixed inset-0 z-30 w-screen h-screen overflow-hidden bg-[#080d16]">
         {/* Sleek Floating Question Pill - Minimal & Centered */}
-        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-40 pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1c2938]/95 border border-[#2e4056] shadow-xl text-white">
+        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-40 pointer-events-auto flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#121927]/95 border border-[#1f2c42] shadow-2xl text-white backdrop-blur-md">
           <span className="text-xl select-none">{targetCountry.flag}</span>
           <span className="text-xs font-bold text-slate-300">Trouve :</span>
           <span className="text-sm font-black text-white">{targetCountry.name}</span>
@@ -113,15 +113,15 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
           )}
         </div>
 
-        {/* Floating Feedback Toast */}
+        {/* Floating Feedback Toast with Extended Duration */}
         {feedback && !feedback.isCorrect && (
-          <div className="absolute top-12 left-1/2 -translate-x-1/2 z-50 animate-wiggle bg-rose-600/90 text-white px-3.5 py-1 rounded-full text-xs font-bold shadow-2xl flex items-center gap-1.5">
-            <AlertCircle className="w-3.5 h-3.5 text-white shrink-0" />
+          <div className="absolute top-12 left-1/2 -translate-x-1/2 z-50 animate-wiggle bg-rose-600/95 border border-rose-400/30 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-2xl flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-white shrink-0" />
             <span>C'est {feedback.clickedCountryName}. Réessaie !</span>
           </div>
         )}
 
-        {/* 100% Screen Edge-to-Edge Map */}
+        {/* 100% Screen Bounded Map */}
         <InteractiveMap
           mode="quiz"
           targetCountry={targetCountry}
@@ -141,9 +141,9 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-2.5 sm:gap-3">
       {/* Target Question Card */}
-      <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-3 sm:p-4 shadow-md flex items-center justify-between gap-3">
+      <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-3 sm:p-4 shadow-xl flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 text-left min-w-0">
-          <div className="text-3xl sm:text-4xl select-none shrink-0">
+          <div className="text-3xl sm:text-4xl select-none shrink-0 drop-shadow-md">
             {targetCountry.flag}
           </div>
           <div className="flex-1 min-w-0">
@@ -157,7 +157,7 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
             <div className="text-xs text-slate-300 truncate">
               Capitale : <strong className="text-amber-300 font-semibold">{targetCountry.capital}</strong>
               {hintLevel >= 1 && (
-                <span className="ml-1.5 inline-block px-2 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">
+                <span className="ml-1.5 inline-block px-2 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
                   {targetCountry.continent}
                 </span>
               )}
@@ -169,7 +169,7 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
         {hintLevel < 2 && (
           <button
             onClick={handleUseHint}
-            className="px-3 py-1.5 rounded-xl bg-[#243547] hover:bg-[#2c4056] border border-[#354c66] text-amber-300 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm shrink-0 touch-manipulation"
+            className="px-3 py-1.5 rounded-xl bg-[#1a2436] hover:bg-[#23324a] border border-[#2c3f58] text-amber-300 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm shrink-0 touch-manipulation"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span>{hintLevel === 0 ? "Indice" : "Cadrer"}</span>
@@ -186,9 +186,9 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
         visitedCountryIds={visitedCountryIds}
       />
 
-      {/* Wrong answer alert toast */}
+      {/* Wrong answer alert toast with extended duration */}
       {feedback && !feedback.isCorrect && (
-        <div className="animate-wiggle bg-rose-600/90 text-white px-3 py-1.5 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 shadow-lg">
+        <div className="animate-wiggle bg-rose-600/95 border border-rose-400/30 text-white px-4 py-2 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 shadow-xl">
           <AlertCircle className="w-4 h-4 text-white shrink-0" />
           <span>C'est {feedback.clickedCountryName}. Réessaie !</span>
         </div>

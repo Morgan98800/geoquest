@@ -54,7 +54,7 @@ export const FunFactModal: React.FC<FunFactModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-gradient-to-b from-slate-800 to-slate-900 border border-emerald-500/40 rounded-3xl p-5 sm:p-8 shadow-2xl text-center transform animate-pop">
+      <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-[#121927] border border-emerald-500/40 rounded-3xl p-5 sm:p-8 shadow-2xl text-center transform animate-pop">
         
         {/* Leveled Up Banner */}
         {leveledUp && (
@@ -85,14 +85,14 @@ export const FunFactModal: React.FC<FunFactModalProps> = ({
             Capitale : <strong className="text-white">{country.capital}</strong>
           </span>
           <span>•</span>
-          <span className="bg-sky-950/60 px-2 py-0.5 rounded-lg border border-sky-800/40">
+          <span className="bg-[#1a2436] px-2 py-0.5 rounded-lg border border-[#2c3f58]">
             {country.continent}
           </span>
         </div>
 
         {/* Facts or Geo Info */}
         {country.funFacts && country.funFacts.length > 0 ? (
-          <div className="mt-4 sm:mt-5 text-left bg-[#1c2938] border border-[#2e4056] rounded-2xl p-4 shadow-inner">
+          <div className="mt-4 sm:mt-5 text-left bg-[#1a2436] border border-[#2c3f58] rounded-2xl p-4 shadow-inner">
             <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider mb-1.5">
               <Sparkles className="w-4 h-4" />
               Le savais-tu ?
@@ -107,7 +107,7 @@ export const FunFactModal: React.FC<FunFactModalProps> = ({
             )}
           </div>
         ) : (
-          <div className="mt-4 sm:mt-5 grid grid-cols-2 gap-2 text-left text-xs bg-[#1c2938] border border-[#2e4056] rounded-2xl p-3.5">
+          <div className="mt-4 sm:mt-5 grid grid-cols-2 gap-2 text-left text-xs bg-[#1a2436] border border-[#2c3f58] rounded-2xl p-3.5">
             <div>
               <span className="text-slate-400 block text-[10px] font-bold uppercase">Code ISO</span>
               <span className="text-white font-mono font-bold">{country.code3} ({country.code})</span>
@@ -120,7 +120,7 @@ export const FunFactModal: React.FC<FunFactModalProps> = ({
         )}
 
         {/* Rewards Bar */}
-        <div className="mt-4 sm:mt-5 flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-[#1c2938] border border-[#2e4056] text-xs sm:text-sm">
+        <div className="mt-4 sm:mt-5 flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-[#1a2436] border border-[#2c3f58] text-xs sm:text-sm">
           <div className="flex items-center gap-1.5 text-emerald-400 font-black">
             <span className="text-base sm:text-lg">+{earnedXp} XP</span>
           </div>

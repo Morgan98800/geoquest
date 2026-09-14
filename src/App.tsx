@@ -215,7 +215,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#16202c] text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="min-h-screen flex flex-col bg-[#0a0e17] text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Navigation Bar - Hidden in landscape map mode so map is 100% full screen */}
       <Navbar
         currentMode={mode}

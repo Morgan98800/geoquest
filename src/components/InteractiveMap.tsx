@@ -3,6 +3,7 @@ import { Country } from '../types';
 import { COUNTRIES_BY_ID } from '../data/countries';
 import { worldFeatures, countryPaths, projection, MAP_WIDTH, MAP_HEIGHT } from '../data/worldGeo';
 import { sound } from '../utils/audio';
+import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 
 interface InteractiveMapProps {
   onCountryClick?: (country: Country) => void;
@@ -18,6 +19,19 @@ interface InteractiveMapProps {
   focusTrigger?: number;
   className?: string;
 }
+
+// Clamping boundary to stop infinite void panning
+const clampPosition = (x: number, y: number, currentScale: number) => {
+  if (currentScale <= 1.01) {
+    return { x: 0, y: 0 };
+  }
+  const maxOffsetX = ((currentScale - 1) * MAP_WIDTH) / 2;
+  const maxOffsetY = ((currentScale - 1) * MAP_HEIGHT) / 2;
+  return {
+    x: Math.max(-maxOffsetX, Math.min(maxOffsetX, x)),
+    y: Math.max(-maxOffsetY, Math.min(maxOffsetY, y)),
+  };
+};
 
 export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   onCountryClick,
@@ -53,10 +67,18 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
   const visitedSet = new Set(visitedCountryIds);
 
-  // Zoom handlers
+  // Zoom handlers with bounded scale & repositioning
   const handleZoom = (factor: number) => {
     setScale((prevScale) => {
-      const nextScale = Math.min(Math.max(prevScale * factor, 0.9), 10);
+      const nextScale = Math.min(Math.max(prevScale * factor, 1), 8);
+      if (nextScale <= 1.01) {
+        setPosition({ x: 0, y: 0 });
+      } else {
+        setPosition((prevPos) => {
+          const ratio = nextScale / prevScale;
+          return clampPosition(prevPos.x * ratio, prevPos.y * ratio, nextScale);
+        });
+      }
       return nextScale;
     });
   };
@@ -67,17 +89,19 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setPosition({ x: 0, y: 0 });
   };
 
-  // Center on a specific coordinate
-  const centerOnCoordinates = useCallback((coords: [number, number], targetZoom = 3.5) => {
+  // Center on a specific coordinate bounded to map canvas
+  const centerOnCoordinates = useCallback((coords: [number, number], targetZoom = 3.2) => {
     const pt = projection(coords);
     if (!pt) return;
     const [targetX, targetY] = pt;
 
-    const newX = (MAP_WIDTH / 2 - targetX) * targetZoom;
-    const newY = (MAP_HEIGHT / 2 - targetY) * targetZoom;
+    const zoom = Math.min(Math.max(targetZoom, 1), 8);
+    const rawX = (MAP_WIDTH / 2 - targetX) * zoom;
+    const rawY = (MAP_HEIGHT / 2 - targetY) * zoom;
+    const clamped = clampPosition(rawX, rawY, zoom);
 
-    setScale(targetZoom);
-    setPosition({ x: newX, y: newY });
+    setScale(zoom);
+    setPosition(clamped);
   }, []);
 
   const centerOnTarget = useCallback(() => {
@@ -101,7 +125,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     }
   }, [targetCountry?.id, mode, centerOnCoordinates]);
 
-  // Mouse Dragging
+  // Mouse Dragging bounded by map limits
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return;
     setIsDragging(true);
@@ -115,10 +139,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       const dist = Math.hypot(e.clientX - dragStartCoords.current.x, e.clientY - dragStartCoords.current.y);
       if (dist > 8) {
         isPanning.current = true;
-        setPosition({
-          x: e.clientX - dragStart.x,
-          y: e.clientY - dragStart.y,
-        });
+        const newX = e.clientX - dragStart.x;
+        const newY = e.clientY - dragStart.y;
+        setPosition(clampPosition(newX, newY, scale));
       }
     }
 
@@ -172,10 +195,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       if (dist > 16) {
         isPanning.current = true;
         if (touchState.current.lastX !== undefined && touchState.current.lastY !== undefined) {
-          setPosition({
-            x: x - touchState.current.lastX,
-            y: y - touchState.current.lastY,
-          });
+          const rawX = x - touchState.current.lastX;
+          const rawY = y - touchState.current.lastY;
+          setPosition(clampPosition(rawX, rawY, scale));
         }
       }
     } else if (e.touches.length === 2 && touchState.current.initialDist && touchState.current.initialScale) {
@@ -184,8 +206,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       const t2 = e.touches[1];
       const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
       const factor = dist / touchState.current.initialDist;
-      const newScale = Math.min(Math.max(touchState.current.initialScale * factor, 0.9), 10);
+      const newScale = Math.min(Math.max(touchState.current.initialScale * factor, 1), 8);
       setScale(newScale);
+      setPosition((prev) => clampPosition(prev.x, prev.y, newScale));
     }
   };
 
@@ -231,7 +254,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full overflow-hidden select-none bg-[#16202c] rounded-2xl sm:rounded-3xl border border-slate-800/80 shadow-md touch-none ${className}`}
+      className={`relative w-full overflow-hidden select-none bg-[#080d16] rounded-2xl sm:rounded-3xl border border-[#1f2c42] shadow-2xl touch-none ${className}`}
       style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -249,7 +272,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       {/* Floating Hover Tooltip (desktop only, atlas mode only) */}
       {hoveredCountry && mode === 'atlas' && !isTouchDevice.current && (
         <div
-          className="pointer-events-none hidden sm:flex absolute z-30 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-semibold shadow-xl text-white transform -translate-x-1/2 -translate-y-full mb-2 whitespace-nowrap transition-transform duration-75 items-center gap-2"
+          className="pointer-events-none hidden sm:flex absolute z-30 px-3 py-1.5 rounded-xl bg-[#0f172a] border border-[#2e4056] text-xs font-bold shadow-2xl text-white transform -translate-x-1/2 -translate-y-full mb-2 whitespace-nowrap transition-transform duration-75 items-center gap-2"
           style={{
             left: `${mousePos.x}px`,
             top: `${mousePos.y - 12}px`,
@@ -265,6 +288,49 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         </div>
       )}
 
+      {/* Sleek Floating Map Controls (Zoom & Recenter) */}
+      <div className="absolute bottom-3 right-3 z-30 flex items-center gap-1.5 p-1 rounded-2xl bg-[#0c1322]/90 border border-[#1f2c42] shadow-xl backdrop-blur-md">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            sound.playClick();
+            handleZoom(1.3);
+          }}
+          className="w-8 h-8 rounded-xl bg-[#162236] hover:bg-[#1f2f49] text-sky-300 hover:text-white flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+          title="Zoom avant"
+          aria-label="Zoom avant"
+        >
+          <ZoomIn className="w-4 h-4" />
+        </button>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            sound.playClick();
+            handleZoom(0.77);
+          }}
+          className="w-8 h-8 rounded-xl bg-[#162236] hover:bg-[#1f2f49] text-sky-300 hover:text-white flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+          title="Zoom arrière"
+          aria-label="Zoom arrière"
+        >
+          <ZoomOut className="w-4 h-4" />
+        </button>
+
+        {(scale > 1.05 || Math.abs(position.x) > 5 || Math.abs(position.y) > 5) && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleReset();
+            }}
+            className="h-8 px-2.5 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-sky-200 flex items-center gap-1.5 text-xs font-bold transition-all active:scale-90 cursor-pointer animate-pop"
+            title="Recentrer la carte"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Recentrer</span>
+          </button>
+        )}
+      </div>
+
       {/* SVG Canvas */}
       <svg
         viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
@@ -272,12 +338,12 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         preserveAspectRatio="xMidYMid meet"
       >
         <defs>
-          <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255, 255, 255, 0.025)" strokeWidth="1" />
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(56, 189, 248, 0.025)" strokeWidth="1" />
           </pattern>
         </defs>
 
-        <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="#16202c" />
+        <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="#080d16" />
         <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#grid)" />
 
         <g
@@ -295,10 +361,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             const isHighlighted = highlightedCountryId === id;
             const isHovered = hoveredCountry?.id === id;
 
-            // Base style: uniform slate in quiz mode, or mastery coloring in atlas mode
-            let fillColor = '#273749';
-            let strokeColor = '#3d5269';
-            let strokeWidth = 0.7 / Math.sqrt(scale);
+            // Crisp frontier styling & obsidian landmass
+            let fillColor = '#1a2638';
+            let strokeColor = '#4f6685';
+            let strokeWidth = 1.1 / Math.sqrt(scale);
+            let feedbackClass = '';
 
             if (mode === 'atlas') {
               const timesDiscovered = countryMastery[id] || (visitedSet.has(id) ? 1 : 0);
@@ -306,17 +373,17 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 // Mastered (⭐⭐⭐) - Vibrant emerald with gold border
                 fillColor = '#10b981';
                 strokeColor = '#fbbf24';
-                strokeWidth = 1.1 / Math.sqrt(scale);
+                strokeWidth = 1.3 / Math.sqrt(scale);
               } else if (timesDiscovered >= 3) {
                 // Advanced (⭐⭐) - Solid emerald
                 fillColor = '#059669';
                 strokeColor = '#34d399';
-                strokeWidth = 0.9 / Math.sqrt(scale);
+                strokeWidth = 1.1 / Math.sqrt(scale);
               } else if (timesDiscovered >= 1) {
                 // Discovered (⭐) - Lagoon teal
                 fillColor = '#0d9488';
                 strokeColor = '#5eead4';
-                strokeWidth = 0.8 / Math.sqrt(scale);
+                strokeWidth = 1.0 / Math.sqrt(scale);
               }
             }
 
@@ -324,29 +391,32 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
               if (mode === 'atlas') {
                 fillColor = '#0284c7';
                 strokeColor = '#ffffff';
-                strokeWidth = 1.3 / Math.sqrt(scale);
+                strokeWidth = 1.6 / Math.sqrt(scale);
               } else {
-                // In quiz mode: subtle border highlight only, do not color country!
-                strokeColor = '#94a3b8';
-                strokeWidth = 1.2 / Math.sqrt(scale);
+                // In quiz mode: crisp border highlight only, do not color country!
+                fillColor = '#223249';
+                strokeColor = '#93c5fd';
+                strokeWidth = 1.6 / Math.sqrt(scale);
               }
             }
 
             if (isHighlighted) {
               fillColor = '#eab308';
-              strokeColor = '#ffffff';
-              strokeWidth = 1.8 / Math.sqrt(scale);
+              strokeColor = '#fef08a';
+              strokeWidth = 2.2 / Math.sqrt(scale);
             }
 
             if (feedbackState && feedbackState.countryId === id) {
               if (feedbackState.isCorrect) {
-                fillColor = '#16a34a';
-                strokeColor = '#86efac';
-                strokeWidth = 2.2 / Math.sqrt(scale);
+                fillColor = '#10b981';
+                strokeColor = '#6ee7b7';
+                strokeWidth = 2.6 / Math.sqrt(scale);
+                feedbackClass = 'animate-success-glow';
               } else {
-                fillColor = '#dc2626';
+                fillColor = '#f43f5e';
                 strokeColor = '#fca5a5';
-                strokeWidth = 2.2 / Math.sqrt(scale);
+                strokeWidth = 2.6 / Math.sqrt(scale);
+                feedbackClass = 'animate-error-glow';
               }
             }
 
@@ -357,8 +427,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 fill={fillColor}
                 stroke={strokeColor}
                 strokeWidth={strokeWidth}
+                strokeLinejoin="round"
+                strokeLinecap="round"
                 style={{ pointerEvents: 'all' }}
-                className="transition-colors duration-150 outline-none cursor-pointer select-none"
+                className={`transition-colors duration-150 outline-none cursor-pointer select-none ${feedbackClass}`}
                 onMouseEnter={() => {
                   if (!isTouchDevice.current && country) {
                     setHoveredCountry(country);

@@ -96,7 +96,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-4 sm:gap-6 text-white pb-6">
       {/* Top Header */}
-      <div className="bg-[#16202c] border border-slate-750 rounded-2xl p-4 sm:p-5 shadow-md flex items-center justify-between">
+      <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-4 sm:p-5 shadow-xl flex items-center justify-between">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-white">
             Statistiques
@@ -113,7 +113,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
       {/* 4 Quick KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5">
         {/* Response Time */}
-        <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-3.5 shadow-sm">
+        <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-3.5 shadow-md">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-bold">
             <span>Vitesse Moyenne</span>
             <Clock className="w-4 h-4 text-sky-400" />
@@ -127,7 +127,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
         </div>
 
         {/* Global Accuracy */}
-        <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-3.5 shadow-sm">
+        <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-3.5 shadow-md">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-bold">
             <span>Précision</span>
             <Target className="w-4 h-4 text-emerald-400" />
@@ -141,7 +141,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
         </div>
 
         {/* Best Streak */}
-        <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-3.5 shadow-sm">
+        <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-3.5 shadow-md">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-bold">
             <span>Record Série</span>
             <Flame className="w-4 h-4 text-amber-400" />
@@ -155,7 +155,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
         </div>
 
         {/* Countries Discovered */}
-        <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-3.5 shadow-sm">
+        <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-3.5 shadow-md">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-bold">
             <span>Mappe Découverte</span>
             <Globe2 className="w-4 h-4 text-indigo-400" />
@@ -172,7 +172,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
       {/* Grid: Most Failed Countries & Accuracy by Continent */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {/* Top 5 Most Failed Countries */}
-        <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-4 sm:p-5 shadow-md">
+        <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-4 sm:p-5 shadow-xl">
           <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider mb-3">
             <AlertTriangle className="w-4 h-4 text-rose-400" />
             <span>Pays à réviser</span>
@@ -183,7 +183,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
               {failedList.map(({ country, perf, failRate }) => (
                 <div
                   key={country.id}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/70 border border-slate-800 text-xs"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-[#1a2436]/80 border border-[#26374f] text-xs"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span className="text-2xl select-none">{country.flag}</span>
@@ -202,7 +202,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
                         const c = COUNTRIES_BY_ID[country.id];
                         if (c) onPracticeCountry(c);
                       }}
-                      className="px-2.5 py-1 rounded-lg bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 font-bold text-[11px] transition-all active:scale-95 cursor-pointer shrink-0"
+                      className="px-2.5 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-400/30 font-bold text-[11px] transition-all active:scale-95 cursor-pointer shrink-0"
                     >
                       Réviser
                     </button>
@@ -219,7 +219,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
         </div>
 
         {/* Accuracy by Continent */}
-        <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-4 sm:p-5 shadow-md">
+        <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-4 sm:p-5 shadow-xl">
           <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-3">
             <Target className="w-4 h-4 text-emerald-400" />
             <span>Précision par continent</span>
@@ -247,7 +247,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
       </div>
 
       {/* XP Progression Curve (14-30 Days SVG Chart) */}
-      <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-4 sm:p-5 shadow-md">
+      <div className="bg-[#121927] border border-[#1f2c42] rounded-2xl p-4 sm:p-5 shadow-xl">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
             <TrendingUp className="w-4 h-4 text-amber-400" />

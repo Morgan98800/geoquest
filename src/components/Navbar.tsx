@@ -111,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const userEmoji = isMathilde ? '👑' : '🧭';
 
   return (
-    <header className={`sticky top-0 z-40 w-full bg-[#16202c] border-b border-slate-800 shadow-sm select-none ${className}`}>
+    <header className={`sticky top-0 z-40 w-full bg-[#0a0e17]/95 border-b border-[#1f2c42] shadow-lg backdrop-blur-md select-none ${className}`}>
       <div className="max-w-6xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex flex-col gap-1.5 sm:gap-2">
         
         {/* ROW 1: Logo + User Profile + Streak */}
@@ -140,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 sound.playClick();
                 onOpenAccount();
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#243547] hover:bg-[#2c4056] border border-[#354c66] text-white font-bold text-xs transition-all cursor-pointer active:scale-95"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#162236] hover:bg-[#1f2f49] border border-[#26374f] text-white font-bold text-xs transition-all cursor-pointer active:scale-95 shadow-sm"
               title="Changer de profil (MathildeLPB / Morgan)"
             >
               <span className="text-sm select-none">{userEmoji}</span>
@@ -156,10 +156,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   sound.playClick();
                   onOpenDailyReward();
                 }}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-extrabold cursor-pointer transition-all active:scale-95 ${
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-extrabold cursor-pointer transition-all active:scale-95 shadow-sm ${
                   hasDailyReward
                     ? 'bg-amber-500/20 border-amber-500 text-amber-300 ring-2 ring-amber-500/30'
-                    : 'bg-[#243547] hover:bg-[#2c4056] border-[#354c66] text-slate-300'
+                    : 'bg-[#162236] hover:bg-[#1f2f49] border-[#26374f] text-slate-300'
                 }`}
                 title="Calendrier des récompenses quotidiennes"
               >
@@ -173,7 +173,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Streak Flame */}
             <div
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-extrabold text-xs"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/35 text-amber-400 font-extrabold text-xs shadow-sm"
               title={`Série : ${stats.currentStreak}`}
             >
               <Flame className="w-3.5 h-3.5 fill-amber-400" />
@@ -192,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 sound.playClick();
                 setDropdownOpen(!dropdownOpen);
               }}
-              className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-[#202e3e] hover:bg-[#283b4e] border border-[#2f4359] text-white font-extrabold text-xs sm:text-sm transition-all duration-150 cursor-pointer active:scale-98"
+              className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-[#121927] hover:bg-[#1a2538] border border-[#1f2c42] text-white font-extrabold text-xs sm:text-sm transition-all duration-150 cursor-pointer active:scale-98 shadow-sm"
               aria-label="Sélectionner un mode de jeu"
             >
               <div className="flex items-center gap-2">
@@ -212,7 +212,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* DROPDOWN MENU */}
             {dropdownOpen && (
-              <div className="absolute left-0 right-0 sm:right-auto sm:w-[300px] mt-1.5 rounded-2xl bg-[#1c2938] border border-[#2e4056] shadow-2xl p-1.5 z-50 animate-pop overflow-hidden">
+              <div className="absolute left-0 right-0 sm:right-auto sm:w-[300px] mt-1.5 rounded-2xl bg-[#121927] border border-[#1f2c42] shadow-2xl p-1.5 z-50 animate-pop overflow-hidden backdrop-blur-lg">
                 <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
                   Modes de Jeu
                 </div>
@@ -226,8 +226,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                         onClick={() => handleSelect(item.mode)}
                         className={`w-full text-left p-2 rounded-xl transition-all duration-150 flex items-center justify-between gap-2.5 cursor-pointer ${
                           isSelected
-                            ? 'bg-sky-600/20 text-sky-200 border border-sky-500/40 font-bold'
-                            : 'hover:bg-slate-800 text-slate-200 border border-transparent'
+                            ? 'bg-sky-500/20 text-sky-200 border border-sky-400/40 font-bold'
+                            : 'hover:bg-[#1a2436] text-slate-200 border border-transparent'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
@@ -251,13 +251,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Level Progress */}
-          <div className="flex items-center gap-2 bg-[#202e3e] px-2.5 py-1.5 rounded-xl border border-[#2f4359] shrink-0">
+          <div className="flex items-center gap-2 bg-[#121927] px-2.5 py-1.5 rounded-xl border border-[#1f2c42] shrink-0 shadow-sm">
             <span className="text-sm select-none">{levelInfo.badge}</span>
             <div className="text-left">
               <div className="text-[10px] font-black text-slate-200 leading-tight">
                 Niv. {levelInfo.level}
               </div>
-              <div className="w-14 sm:w-20 bg-slate-800 h-1.5 rounded-full mt-0.5 overflow-hidden">
+              <div className="w-14 sm:w-20 bg-slate-800/80 h-1.5 rounded-full mt-0.5 overflow-hidden">
                 <div
                   className="bg-emerald-400 h-full rounded-full transition-all duration-300"
                   style={{ width: `${levelInfo.progressPercent}%` }}
