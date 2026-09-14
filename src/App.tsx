@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { GameMode, Country, UserStats } from './types';
 import { COUNTRIES, COUNTRIES_BY_ID, getRandomCountries } from './data/countries';
-import { loadUserStats, recordAnswer, saveUserStats, getLevelInfo } from './utils/storage';
+import {
+  loadUserStats,
+  recordAnswer,
+  saveUserStats,
+  getLevelInfo,
+  getActiveUsername,
+  setActiveUsername,
+} from './utils/storage';
 import { sound } from './utils/audio';
 import { Navbar } from './components/Navbar';
 import { MapQuiz } from './components/MapQuiz';
@@ -10,11 +17,14 @@ import { AtlasView } from './components/AtlasView';
 import { PassportView } from './components/PassportView';
 import { FunFactModal } from './components/FunFactModal';
 import { BackupModal } from './components/BackupModal';
+import { AccountModal } from './components/AccountModal';
 
 export const App: React.FC = () => {
-  const [stats, setStats] = useState<UserStats>(loadUserStats);
+  const [currentUsername, setCurrentUsername] = useState<string>(() => getActiveUsername());
+  const [stats, setStats] = useState<UserStats>(() => loadUserStats());
   const [mode, setMode] = useState<GameMode>('map');
   const [backupOpen, setBackupOpen] = useState<boolean>(false);
+  const [accountOpen, setAccountOpen] = useState<boolean>(false);
 
   // Active quiz state
   const [targetCountry, setTargetCountry] = useState<Country>(() => {
@@ -29,6 +39,13 @@ export const App: React.FC = () => {
   const [modalLeveledUp, setModalLeveledUp] = useState<boolean>(false);
   const [modalNewLevelTitle, setModalNewLevelTitle] = useState<string>('');
   const [modalIsFirstDiscovery, setModalIsFirstDiscovery] = useState<boolean>(false);
+
+  // Switch profile handler
+  const handleSwitchUser = (newUsername: string, newStats: UserStats) => {
+    setCurrentUsername(newUsername);
+    setActiveUsername(newUsername);
+    setStats(newStats);
+  };
 
   // Generate question for flags and capitals
   const generateQuestion = useCallback((excludeCountryId?: string) => {
@@ -100,24 +117,26 @@ export const App: React.FC = () => {
     sound.setEnabled(newSound);
     if (newSound) sound.playClick();
     setStats(updated);
-    saveUserStats(updated);
+    saveUserStats(updated, currentUsername);
   };
 
   const visitedCountryIds = Object.keys(stats.stamps);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Sticky Navigation with Liquid Glass Game Mode Dropdown */}
+      {/* Sticky Navigation with Account Switcher & Liquid Glass Dropdown */}
       <Navbar
         currentMode={mode}
         onSelectMode={setMode}
         stats={stats}
+        currentUsername={currentUsername}
         onToggleSound={handleToggleSound}
         onOpenBackup={() => setBackupOpen(true)}
+        onOpenAccount={() => setAccountOpen(true)}
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-6 flex flex-col">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-6 py-3 sm:py-6 flex flex-col">
         {mode === 'map' && (
           <MapQuiz
             targetCountry={targetCountry}
@@ -174,6 +193,14 @@ export const App: React.FC = () => {
         isFirstDiscovery={modalIsFirstDiscovery}
       />
 
+      {/* Account Login / Switcher Modal */}
+      <AccountModal
+        isOpen={accountOpen}
+        onClose={() => setAccountOpen(false)}
+        currentUsername={currentUsername}
+        onSwitchUser={handleSwitchUser}
+      />
+
       {/* Backup & Transfer Modal */}
       <BackupModal
         isOpen={backupOpen}
@@ -181,7 +208,7 @@ export const App: React.FC = () => {
         stats={stats}
         onStatsUpdated={(newStats) => {
           setStats(newStats);
-          saveUserStats(newStats);
+          saveUserStats(newStats, currentUsername);
         }}
       />
     </div>

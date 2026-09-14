@@ -25,6 +25,7 @@ export interface Stamp {
 }
 
 export interface UserStats {
+  username?: string;
   xp: number;
   currentStreak: number;
   bestStreak: number;

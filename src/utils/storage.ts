@@ -1,7 +1,10 @@
 import { UserStats } from '../types';
 import { sound } from './audio';
 
-const STORAGE_KEY = 'geoquest_user_stats_v1';
+const ACTIVE_USER_STORAGE_KEY = 'geoquest_active_username_v1';
+const LEGACY_STORAGE_KEY = 'geoquest_user_stats_v1';
+
+export const DEFAULT_ACCOUNTS = ['MathildeLPB', 'Morgan'];
 
 export const LEVELS = [
   { level: 1, title: '🌱 Touriste Curieuse', minXp: 0, maxXp: 80, badge: '🌱' },
@@ -12,7 +15,8 @@ export const LEVELS = [
   { level: 6, title: '🌌 Maîtresse Suprême du Globe', minXp: 1400, maxXp: 999999, badge: '🌌' },
 ];
 
-export const DEFAULT_STATS: UserStats = {
+export const createDefaultStats = (username: string = 'MathildeLPB'): UserStats => ({
+  username,
   xp: 0,
   currentStreak: 0,
   bestStreak: 0,
@@ -21,35 +25,84 @@ export const DEFAULT_STATS: UserStats = {
   stamps: {},
   unlockedFacts: {},
   soundEnabled: true,
-};
+});
 
-export function loadUserStats(): UserStats {
+export const DEFAULT_STATS = createDefaultStats('MathildeLPB');
+
+export function getActiveUsername(): string {
   try {
-    // Check if a backup is provided in the URL hash (e.g. #backup=...)
+    const saved = localStorage.getItem(ACTIVE_USER_STORAGE_KEY);
+    if (saved && saved.trim()) return saved.trim();
+  } catch {}
+  return 'MathildeLPB';
+}
+
+export function setActiveUsername(username: string): void {
+  try {
+    const clean = username.trim() || 'MathildeLPB';
+    localStorage.setItem(ACTIVE_USER_STORAGE_KEY, clean);
+  } catch (e) {
+    console.error('Failed to set active username', e);
+  }
+}
+
+function getUserStorageKey(username: string): string {
+  const normalized = username.trim().toLowerCase() || 'mathildelpb';
+  return `geoquest_account_${normalized}_v1`;
+}
+
+export function loadUserStats(customUsername?: string): UserStats {
+  const username = customUsername || getActiveUsername();
+  const key = getUserStorageKey(username);
+
+  try {
+    // 1. Check if backup code in URL hash with user specified
     if (typeof window !== 'undefined' && window.location.hash.startsWith('#backup=')) {
-      const encoded = window.location.hash.replace('#backup=', '');
+      const hashContent = window.location.hash.replace('#backup=', '');
+      const [encoded, urlUser] = hashContent.split('&user=');
+      const targetUser = urlUser ? decodeURIComponent(urlUser) : username;
       const imported = importStatsFromCode(encoded);
       if (imported) {
-        saveUserStats(imported);
+        imported.username = targetUser;
+        setActiveUsername(targetUser);
+        saveUserStats(imported, targetUser);
         window.history.replaceState(null, '', window.location.pathname);
         return imported;
       }
     }
 
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_STATS;
-    const parsed = JSON.parse(raw);
-    const stats = { ...DEFAULT_STATS, ...parsed };
-    sound.setEnabled(stats.soundEnabled);
-    return stats;
+    // 2. Load from user-specific key
+    const raw = localStorage.getItem(key);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const stats = { ...createDefaultStats(username), ...parsed, username };
+      sound.setEnabled(stats.soundEnabled);
+      return stats;
+    }
+
+    // 3. Seamless Migration: if no stats under this user yet, but legacy exists, migrate to MathildeLPB
+    const legacyRaw = localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (legacyRaw && (username === 'MathildeLPB' || !localStorage.getItem(getUserStorageKey('MathildeLPB')))) {
+      const parsed = JSON.parse(legacyRaw);
+      const migrated = { ...createDefaultStats(username), ...parsed, username };
+      saveUserStats(migrated, username);
+      sound.setEnabled(migrated.soundEnabled);
+      return migrated;
+    }
+
+    return createDefaultStats(username);
   } catch {
-    return DEFAULT_STATS;
+    return createDefaultStats(username);
   }
 }
 
-export function saveUserStats(stats: UserStats): void {
+export function saveUserStats(stats: UserStats, customUsername?: string): void {
+  const username = customUsername || stats.username || getActiveUsername();
+  const key = getUserStorageKey(username);
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
+    const toSave = { ...stats, username };
+    localStorage.setItem(key, JSON.stringify(toSave));
+    localStorage.setItem(LEGACY_STORAGE_KEY, JSON.stringify(toSave)); // sync legacy for safety
   } catch (e) {
     console.error('Failed to save stats to localStorage', e);
   }
@@ -60,7 +113,10 @@ export function getLevelInfo(xp: number) {
     if (xp >= LEVELS[i].minXp) {
       const current = LEVELS[i];
       const next = LEVELS[i + 1] || current;
-      const progress = next === current ? 100 : Math.min(100, Math.round(((xp - current.minXp) / (current.maxXp - current.minXp)) * 100));
+      const progress =
+        next === current
+          ? 100
+          : Math.min(100, Math.round(((xp - current.minXp) / (current.maxXp - current.minXp)) * 100));
       return {
         ...current,
         nextLevelXp: current.maxXp,
@@ -147,7 +203,7 @@ export function importStatsFromCode(code: string): UserStats | null {
     const json = decodeURIComponent(atob(code.trim()));
     const parsed = JSON.parse(json);
     if (typeof parsed.xp === 'number' && parsed.stamps) {
-      return { ...DEFAULT_STATS, ...parsed };
+      return { ...createDefaultStats(parsed.username || 'MathildeLPB'), ...parsed };
     }
     return null;
   } catch {
@@ -156,10 +212,11 @@ export function importStatsFromCode(code: string): UserStats | null {
 }
 
 export function downloadBackupFile(stats: UserStats): void {
+  const username = stats.username || 'MathildeLPB';
   const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(stats, null, 2));
   const downloadAnchor = document.createElement('a');
   downloadAnchor.setAttribute('href', dataStr);
-  downloadAnchor.setAttribute('download', `geoquest_sauvegarde_${new Date().toISOString().slice(0, 10)}.json`);
+  downloadAnchor.setAttribute('download', `geoquest_${username}_${new Date().toISOString().slice(0, 10)}.json`);
   document.body.appendChild(downloadAnchor);
   downloadAnchor.click();
   downloadAnchor.remove();

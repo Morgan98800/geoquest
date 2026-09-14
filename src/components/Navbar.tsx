@@ -22,16 +22,20 @@ interface NavbarProps {
   currentMode: GameMode;
   onSelectMode: (mode: GameMode) => void;
   stats: UserStats;
+  currentUsername: string;
   onToggleSound: () => void;
   onOpenBackup: () => void;
+  onOpenAccount: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentMode,
   onSelectMode,
   stats,
+  currentUsername,
   onToggleSound,
   onOpenBackup,
+  onOpenAccount,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -118,48 +122,69 @@ export const Navbar: React.FC<NavbarProps> = ({
     setDropdownOpen(false);
   };
 
-  return (
-    <header className="sticky top-0 z-40 w-full bg-slate-900/80 backdrop-blur-2xl border-b border-white/10 shadow-lg">
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2">
-        
-        {/* Logo */}
-        <button
-          onClick={() => {
-            sound.playClick();
-            onSelectMode('map');
-          }}
-          className="flex items-center gap-2 text-left group cursor-pointer shrink-0"
-        >
-          <span className="text-2xl sm:text-3xl transform group-hover:rotate-12 transition-transform select-none">
-            🌍
-          </span>
-          <div>
-            <div className="text-base sm:text-xl font-black tracking-tight text-white flex items-center gap-1 font-['Outfit',sans-serif]">
-              GeoQuest <span className="text-[10px] sm:text-xs bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent uppercase tracking-wider font-extrabold">Plus</span>
-            </div>
-          </div>
-        </button>
+  const isMathilde = currentUsername.toLowerCase() === 'mathildelpb';
+  const userEmoji = isMathilde ? '👑' : '🧭';
 
-        {/* LIQUID GLASS "MODE DE JEU" DROPDOWN TRIGGER */}
+  return (
+    <header className="sticky top-0 z-40 w-full bg-slate-900/85 backdrop-blur-2xl border-b border-white/10 shadow-lg">
+      <div className="max-w-6xl mx-auto px-2.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2">
+        
+        {/* Left: Logo & Account Profile Pill */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <button
+            onClick={() => {
+              sound.playClick();
+              onSelectMode('map');
+            }}
+            className="flex items-center gap-1.5 text-left group cursor-pointer"
+          >
+            <span className="text-2xl sm:text-3xl transform group-hover:rotate-12 transition-transform select-none">
+              🌍
+            </span>
+            <div className="hidden sm:block">
+              <div className="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-1 font-['Outfit',sans-serif]">
+                GeoQuest <span className="text-[10px] bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent uppercase tracking-wider font-extrabold">Plus</span>
+              </div>
+            </div>
+          </button>
+
+          {/* Account Login / Switcher Pill */}
+          <button
+            onClick={() => {
+              sound.playClick();
+              onOpenAccount();
+            }}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.14] active:bg-white/[0.2] backdrop-blur-xl border border-white/20 text-white font-extrabold text-xs transition-all duration-150 cursor-pointer active:scale-95 shadow-sm"
+            title="Changer de compte (MathildeLPB / Morgan)"
+          >
+            <span className="text-sm select-none">{userEmoji}</span>
+            <span className="max-w-[85px] sm:max-w-none truncate font-bold text-amber-300">
+              {currentUsername}
+            </span>
+          </button>
+        </div>
+
+        {/* Center: LIQUID GLASS "MODE DE JEU" DROPDOWN */}
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => {
               sound.playClick();
               setDropdownOpen(!dropdownOpen);
             }}
-            className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl bg-white/[0.08] hover:bg-white/[0.14] active:bg-white/[0.2] backdrop-blur-xl border border-white/20 shadow-[0_4px_24px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.25)] text-white font-extrabold text-xs sm:text-sm transition-all duration-200 cursor-pointer active:scale-95 group"
+            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.14] active:bg-white/[0.2] backdrop-blur-xl border border-white/20 shadow-[0_4px_24px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.25)] text-white font-extrabold text-xs sm:text-sm transition-all duration-200 cursor-pointer active:scale-95 group"
             aria-label="Sélectionner un mode de jeu"
           >
-            {/* Animated Gamepad glass icon */}
-            <div className="p-1 rounded-xl bg-gradient-to-tr from-sky-500/30 to-indigo-500/30 border border-white/10 text-sky-300">
-              <Gamepad2 className="w-4 h-4 text-sky-300 group-hover:rotate-12 transition-transform" />
+            <div className="p-1 rounded-xl bg-gradient-to-tr from-sky-500/30 to-indigo-500/30 border border-white/10 text-sky-300 shrink-0">
+              <Gamepad2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sky-300 group-hover:rotate-12 transition-transform" />
             </div>
 
-            <span className="text-slate-300 text-xs hidden xs:inline">Mode :</span>
-            <span className="text-amber-300 font-bold">{currentModeInfo.label}</span>
+            <span className="text-slate-300 text-xs hidden md:inline">Mode :</span>
+            <span className="text-sky-300 font-bold truncate max-w-[100px] sm:max-w-none">
+              {currentModeInfo.label}
+            </span>
 
             <ChevronDown
-              className={`w-3.5 h-3.5 text-slate-300 transition-transform duration-200 ${
+              className={`w-3.5 h-3.5 text-slate-300 transition-transform duration-200 shrink-0 ${
                 dropdownOpen ? 'rotate-180 text-sky-400' : ''
               }`}
             />
@@ -167,12 +192,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* LIQUID GLASS DROPDOWN MENU */}
           {dropdownOpen && (
-            <div className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mt-2 w-[310px] sm:w-[350px] rounded-3xl bg-slate-900/85 backdrop-blur-3xl border border-white/20 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.3)] p-2 z-50 animate-pop overflow-hidden">
-              
-              {/* Glossy liquid specular reflection */}
+            <div className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mt-2 w-[295px] sm:w-[350px] rounded-3xl bg-slate-900/85 backdrop-blur-3xl border border-white/20 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.3)] p-2 z-50 animate-pop overflow-hidden">
               <div className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 w-56 h-28 bg-gradient-to-b from-sky-400/20 to-transparent rounded-full blur-2xl" />
 
-              {/* Header inside dropdown */}
               <div className="px-3 py-2 text-[11px] font-black uppercase tracking-wider text-slate-400 border-b border-white/10 flex items-center justify-between">
                 <span>Modes de Jeu</span>
                 <span className="flex items-center gap-1 text-amber-400 text-[10px]">
@@ -180,7 +202,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               </div>
 
-              {/* Mode list */}
               <div className="space-y-1.5 mt-2">
                 {gameModes.map((item) => {
                   const isSelected = currentMode === item.mode;
@@ -228,16 +249,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Stats Bar */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
-          {/* Level & XP Gauge */}
-          <div className="flex items-center gap-1.5 sm:gap-2 bg-white/[0.05] backdrop-blur-md px-2 sm:px-3 py-1 rounded-xl sm:rounded-2xl border border-white/10 shadow-inner">
-            <span className="text-base sm:text-xl select-none">{levelInfo.badge}</span>
+        {/* Right: Stats, Streak, Backup & Sound */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Level Gauge */}
+          <div className="flex items-center gap-1.5 bg-white/[0.05] backdrop-blur-md px-2 py-1 rounded-xl sm:rounded-2xl border border-white/10 shadow-inner">
+            <span className="text-sm sm:text-base select-none">{levelInfo.badge}</span>
             <div className="text-left">
               <div className="text-[10px] sm:text-xs font-black text-white leading-tight">
                 Niv. {levelInfo.level}
               </div>
-              <div className="w-12 sm:w-16 bg-slate-700/60 h-1 sm:h-1.5 rounded-full mt-0.5 overflow-hidden">
+              <div className="w-10 sm:w-14 bg-slate-700/60 h-1 sm:h-1.5 rounded-full mt-0.5 overflow-hidden">
                 <div
                   className="bg-emerald-400 h-full rounded-full transition-all duration-300"
                   style={{ width: `${levelInfo.progressPercent}%` }}
@@ -248,10 +269,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Streak Flame */}
           <div
-            className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-xl sm:rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-300 font-black text-xs sm:text-sm shadow-sm"
+            className="flex items-center gap-1 px-2 py-1 rounded-xl sm:rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-300 font-black text-xs sm:text-sm shadow-sm"
             title={`Série : ${stats.currentStreak}`}
           >
-            <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400 animate-pulse" />
+            <Flame className="w-3.5 h-3.5 fill-amber-400 animate-pulse" />
             <span>{stats.currentStreak}</span>
           </div>
 
@@ -261,17 +282,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               sound.playClick();
               onOpenBackup();
             }}
-            className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl sm:rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold text-xs flex items-center gap-1 transition-all active:scale-90 cursor-pointer shadow-sm"
+            className="p-1 sm:p-1.5 rounded-xl sm:rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold text-xs flex items-center gap-1 transition-all active:scale-90 cursor-pointer shadow-sm"
             title="Sauvegarder ma progression"
           >
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span className="hidden sm:inline">Sauvegarde</span>
           </button>
 
           {/* Sound Toggle */}
           <button
             onClick={onToggleSound}
-            className="p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-300 hover:text-white transition-all active:scale-90 cursor-pointer"
+            className="p-1 sm:p-1.5 rounded-xl sm:rounded-2xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-300 hover:text-white transition-all active:scale-90 cursor-pointer"
             title={stats.soundEnabled ? 'Désactiver le son' : 'Activer le son'}
           >
             {stats.soundEnabled ? (
