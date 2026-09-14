@@ -12,14 +12,6 @@ export interface CountryFeature {
 }
 
 // Extract GeoJSON features from TopoJSON
-const topo = worldData as any;
-const featureCollection = topojson.feature(topo, topo.objects.countries) as any;
-
-export const worldFeatures: CountryFeature[] = featureCollection.features.map((f: any) => ({
-  ...f,
-  id: f.id ? String(f.id).padStart(3, '0') : ''
-}));
-
 export const MAP_WIDTH = 960;
 export const MAP_HEIGHT = 500;
 
@@ -29,13 +21,33 @@ export const projection = geoNaturalEarth1()
 
 export const pathGenerator = geoPath().projection(projection);
 
-// Map of country id to SVG path string d
+// Extract GeoJSON features from TopoJSON
+const topo = worldData as any;
+const featureCollection = topojson.feature(topo, topo.objects.countries) as any;
+
 export const countryPaths: Record<string, string> = {};
-worldFeatures.forEach((f) => {
-  if (f.id) {
-    const d = pathGenerator(f as any);
-    if (d) {
-      countryPaths[f.id] = d;
+const seenIds = new Set<string>();
+const deduplicatedFeatures: CountryFeature[] = [];
+
+featureCollection.features.forEach((f: any, index: number) => {
+  const id = f.id ? String(f.id).padStart(3, '0') : `territory-${index}`;
+  const d = pathGenerator(f as any);
+  if (d) {
+    if (countryPaths[id]) {
+      // Concatenate paths for countries with multiple territories (e.g. Australia + islands)
+      countryPaths[id] += ' ' + d;
+    } else {
+      countryPaths[id] = d;
     }
   }
+
+  if (!seenIds.has(id)) {
+    seenIds.add(id);
+    deduplicatedFeatures.push({
+      ...f,
+      id,
+    });
+  }
 });
+
+export const worldFeatures: CountryFeature[] = deduplicatedFeatures;
