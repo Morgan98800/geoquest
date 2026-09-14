@@ -66,10 +66,10 @@ export const FunFactModal: React.FC<FunFactModalProps> = ({
           </div>
         )}
 
-        {/* First Discovery Stamp Alert */}
+        {/* First Discovery Alert */}
         {isFirstDiscovery && !leveledUp && (
           <div className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] sm:text-xs font-bold uppercase tracking-wide">
-            ⭐ Nouveau tampon ajouté à ton Passeport !
+            ⭐ Nouveau pays découvert !
           </div>
         )}
 

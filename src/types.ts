@@ -16,7 +16,7 @@ export interface Country {
   language?: string;
 }
 
-export type GameMode = 'map' | 'flags' | 'capitals' | 'atlas' | 'passport' | 'stats' | 'srs';
+export type GameMode = 'map' | 'flags' | 'capitals' | 'atlas' | 'stats';
 
 export interface Stamp {
   countryId: string;

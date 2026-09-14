@@ -56,7 +56,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
 
         {type === 'flags' ? (
           <div>
-            <div className="text-7xl sm:text-9xl mb-2 sm:mb-3 drop-shadow-lg select-none transform hover:scale-105 transition-transform">
+            <div className="text-7xl sm:text-8xl mb-2 sm:mb-3 drop-shadow-lg select-none transform hover:scale-105 transition-transform">
               {targetCountry.flag}
             </div>
             <h2 className="text-lg sm:text-2xl font-black text-white leading-tight">
@@ -65,14 +65,15 @@ export const QuizCard: React.FC<QuizCardProps> = ({
           </div>
         ) : (
           <div>
-            <div className="inline-block p-3 sm:p-4 rounded-2xl bg-slate-800/90 border border-slate-700/60 mb-2.5 sm:mb-3 shadow-inner">
-              <span className="text-2xl sm:text-3xl font-extrabold text-amber-300">
-                {targetCountry.capital}
-              </span>
+            <div className="text-6xl sm:text-7xl mb-2 drop-shadow-md select-none">
+              {targetCountry.flag}
             </div>
-            <h2 className="text-lg sm:text-2xl font-black text-white leading-tight">
-              De quel pays cette ville est-elle la capitale ?
+            <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+              {targetCountry.name}
             </h2>
+            <p className="text-xs sm:text-sm text-amber-300 font-bold mt-1">
+              Quelle est la capitale ?
+            </p>
           </div>
         )}
       </div>
@@ -103,8 +104,17 @@ export const QuizCard: React.FC<QuizCardProps> = ({
               className={`p-3.5 sm:p-4 rounded-2xl border text-left font-bold text-sm sm:text-base min-h-[56px] transition-all duration-150 flex items-center justify-between shadow-lg active:scale-95 cursor-pointer touch-manipulation ${btnStyle}`}
             >
               <div className="flex items-center gap-3">
-                <span className="text-2xl leading-none shrink-0">{option.flag}</span>
-                <span className="leading-snug">{option.name}</span>
+                {type === 'flags' ? (
+                  <>
+                    <span className="text-2xl leading-none shrink-0">{option.flag}</span>
+                    <span className="leading-snug">{option.name}</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-lg select-none shrink-0">🏛️</span>
+                    <span className="leading-snug text-base font-bold text-white">{option.capital}</span>
+                  </>
+                )}
               </div>
 
               {hasAnswered && isCorrectTarget && (

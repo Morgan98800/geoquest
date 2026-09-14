@@ -8,10 +8,8 @@ import {
   Compass,
   Flag,
   Landmark,
-  BookOpen,
   ChevronDown,
   Check,
-  GraduationCap,
   BarChart3,
   Gift,
 } from 'lucide-react';
@@ -70,13 +68,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       emoji: '🏛️',
     },
     {
-      mode: 'srs',
-      label: 'Révision Intelligente',
-      description: 'Répétition espacée des pays fragiles',
-      icon: <GraduationCap className="w-4 h-4 text-purple-400" />,
-      emoji: '🎓',
-    },
-    {
       mode: 'stats',
       label: 'Statistiques & Progrès',
       description: 'Précision, vitesse et historique XP',
@@ -89,13 +80,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       description: 'Exploration libre et recherche de pays',
       icon: <Globe className="w-4 h-4 text-indigo-400" />,
       emoji: '📖',
-    },
-    {
-      mode: 'passport',
-      label: 'Mon Passeport',
-      description: 'Tes tampons et secrets découverts',
-      icon: <BookOpen className="w-4 h-4 text-rose-400" />,
-      emoji: '🛂',
     },
   ];
 

@@ -11,15 +11,12 @@ import {
   setActiveUsername,
   checkDailyStatus,
 } from './utils/storage';
-import { sound } from './utils/audio';
 import { hapticSuccess, hapticError, hapticLevelUp } from './utils/haptics';
 import { Navbar } from './components/Navbar';
 import { MapQuiz } from './components/MapQuiz';
 import { QuizCard } from './components/QuizCard';
 import { AtlasView } from './components/AtlasView';
-import { PassportView } from './components/PassportView';
 import { StatsView } from './components/StatsView';
-import { SrsReviewView } from './components/SrsReviewView';
 import { DailyRewardModal } from './components/DailyRewardModal';
 import { FunFactModal } from './components/FunFactModal';
 import { BackupModal } from './components/BackupModal';
@@ -62,6 +59,7 @@ export const App: React.FC = () => {
 
   // Modal celebration state
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalCountry, setModalCountry] = useState<Country | null>(null);
   const [modalEarnedXp, setModalEarnedXp] = useState<number>(15);
   const [modalLeveledUp, setModalLeveledUp] = useState<boolean>(false);
   const [modalNewLevelTitle, setModalNewLevelTitle] = useState<string>('');
@@ -144,6 +142,7 @@ export const App: React.FC = () => {
 
     const newLevelInfo = getLevelInfo(newStats.xp);
 
+    setModalCountry(country);
     setModalEarnedXp(15 + bonusXp);
     setModalLeveledUp(leveledUp);
     setModalNewLevelTitle(newLevelInfo.title);
@@ -151,24 +150,51 @@ export const App: React.FC = () => {
     setModalOpen(true);
   };
 
-  // Handle multiple choice answer
+  // Handle multiple choice answer (StudyGe fast quiz flow without modal desynchronization)
   const handleMultipleChoiceAnswer = (selected: Country) => {
-    if (selected.id === targetCountry.id) {
-      handleSuccess(selected);
-    } else {
-      sound.playWrong();
-      hapticError();
-      const elapsedMs = Date.now() - questionStartTime;
-      const { newStats } = recordAnswer(
+    const currentTarget = targetCountry;
+    const elapsedMs = Date.now() - questionStartTime;
+    const isCorrect = selected.id === currentTarget.id;
+
+    if (isCorrect) {
+      const isFirstTime = !stats.stamps[currentTarget.id];
+      const { newStats, leveledUp } = recordAnswer(
         stats,
-        false,
-        targetCountry.id,
+        true,
+        currentTarget.id,
         0,
         elapsedMs,
-        targetCountry.continent
+        currentTarget.continent
       );
       setStats(newStats);
       saveUserStats(newStats, currentUsername);
+
+      if (leveledUp) {
+        hapticLevelUp();
+        const newLevelInfo = getLevelInfo(newStats.xp);
+        setModalCountry(currentTarget);
+        setModalEarnedXp(15);
+        setModalLeveledUp(true);
+        setModalNewLevelTitle(newLevelInfo.title);
+        setModalIsFirstDiscovery(isFirstTime);
+        setModalOpen(true);
+      } else {
+        hapticSuccess();
+        generateQuestion(currentTarget.id);
+      }
+    } else {
+      hapticError();
+      const { newStats } = recordAnswer(
+        stats,
+        false,
+        currentTarget.id,
+        0,
+        elapsedMs,
+        currentTarget.continent
+      );
+      setStats(newStats);
+      saveUserStats(newStats, currentUsername);
+      generateQuestion(currentTarget.id);
     }
   };
 
@@ -177,29 +203,10 @@ export const App: React.FC = () => {
     handleSuccess(guessedCountry, 10);
   };
 
-  // SRS answer handler
-  const handleSrsAnswer = (
-    country: Country,
-    isCorrect: boolean,
-    responseTimeMs: number
-  ) => {
-    const { newStats, leveledUp } = recordAnswer(
-      stats,
-      isCorrect,
-      country.id,
-      0,
-      responseTimeMs,
-      country.continent
-    );
-    setStats(newStats);
-    saveUserStats(newStats, currentUsername);
-    return { leveledUp };
-  };
-
   // Modal next action
   const handleModalNext = () => {
     setModalOpen(false);
-    generateQuestion(targetCountry.id);
+    generateQuestion(modalCountry?.id || targetCountry.id);
   };
 
   const visitedCountryIds = Object.keys(stats.stamps);
@@ -262,14 +269,6 @@ export const App: React.FC = () => {
           />
         )}
 
-        {mode === 'srs' && (
-          <SrsReviewView
-            stats={stats}
-            onRecordAnswer={handleSrsAnswer}
-            onSwitchToMap={() => setMode('map')}
-          />
-        )}
-
         {mode === 'stats' && (
           <StatsView
             stats={stats}
@@ -283,23 +282,12 @@ export const App: React.FC = () => {
         {mode === 'atlas' && (
           <AtlasView visitedCountryIds={visitedCountryIds} />
         )}
-
-        {mode === 'passport' && (
-          <PassportView
-            stats={stats}
-            onSelectCountryForAtlas={(c) => {
-              setTargetCountry(c);
-              setMode('atlas');
-            }}
-            onOpenBackup={() => setBackupOpen(true)}
-          />
-        )}
       </main>
 
       {/* Fun Fact Modal Popup */}
       <FunFactModal
         isOpen={modalOpen}
-        country={targetCountry}
+        country={modalCountry || targetCountry}
         onNext={handleModalNext}
         earnedXp={modalEarnedXp}
         currentStreak={stats.currentStreak}

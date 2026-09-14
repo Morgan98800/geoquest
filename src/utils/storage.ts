@@ -1,6 +1,5 @@
 import { UserStats, DailyRewardDay, Continent } from '../types';
 import { sound } from './audio';
-import { updateSrsCard } from './srs';
 
 const ACTIVE_USER_STORAGE_KEY = 'geoquest_active_username_v1';
 const LEGACY_STORAGE_KEY = 'geoquest_user_stats_v1';
@@ -298,14 +297,6 @@ export function recordAnswer(
     };
   }
 
-  // 4. Update Spaced Repetition (SRS) data
-  const currentSrsCard = prevStats.srsData[countryId];
-  const newSrsCard = updateSrsCard(currentSrsCard, countryId, isCorrect);
-  const updatedSrsData = {
-    ...prevStats.srsData,
-    [countryId]: newSrsCard,
-  };
-
   if (!isCorrect) {
     const updated: UserStats = {
       ...prevStats,
@@ -314,7 +305,6 @@ export function recordAnswer(
       responseTimes: updatedResponseTimes,
       countryStats: updatedCountryStats,
       continentStats: updatedContinentStats,
-      srsData: updatedSrsData,
       lastLoginDate: today,
     };
     saveUserStats(updated);
@@ -366,7 +356,6 @@ export function recordAnswer(
     countryStats: updatedCountryStats,
     continentStats: updatedContinentStats,
     xpHistory: updatedXpHistory,
-    srsData: updatedSrsData,
     lastLoginDate: today,
   };
 

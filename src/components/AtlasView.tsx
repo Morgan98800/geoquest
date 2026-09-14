@@ -146,10 +146,6 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
               </div>
             </div>
           </div>
-
-          <div className="mt-4 text-center text-[10px] sm:text-xs text-slate-500">
-            Touche un pays sur le globe pour découvrir ses secrets !
-          </div>
         </div>
       </div>
     </div>

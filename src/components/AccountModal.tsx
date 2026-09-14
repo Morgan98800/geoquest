@@ -96,7 +96,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   )}
                 </div>
                 <div className="text-xs text-slate-300 mt-0.5">
-                  Niv. {mathildeLevel.level} • {mathildeStats.xp} XP • {Object.keys(mathildeStats.stamps).length} pays tamponnés
+                  Niv. {mathildeLevel.level} • {mathildeStats.xp} XP • {Object.keys(mathildeStats.stamps).length} pays découverts
                 </div>
               </div>
             </div>
@@ -131,7 +131,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   )}
                 </div>
                 <div className="text-xs text-slate-300 mt-0.5">
-                  Niv. {morganLevel.level} • {morganStats.xp} XP • {Object.keys(morganStats.stamps).length} pays tamponnés
+                  Niv. {morganLevel.level} • {morganStats.xp} XP • {Object.keys(morganStats.stamps).length} pays découverts
                 </div>
               </div>
             </div>
