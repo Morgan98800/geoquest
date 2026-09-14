@@ -9,6 +9,7 @@ interface InteractiveMapProps {
   targetCountry?: Country | null;
   highlightedCountryId?: string | null;
   visitedCountryIds?: string[];
+  countryMastery?: Record<string, number>;
   mode?: 'quiz' | 'atlas';
   feedbackState?: {
     countryId: string;
@@ -23,6 +24,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   targetCountry,
   highlightedCountryId,
   visitedCountryIds = [],
+  countryMastery = {},
   mode = 'atlas',
   feedbackState,
   focusTrigger = 0,
@@ -245,21 +247,33 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
             const country = COUNTRIES_BY_ID[id];
             const isHighlighted = highlightedCountryId === id;
-            const isVisited = visitedSet.has(id);
             const isHovered = hoveredCountry?.id === id;
 
-            // StudyGe flat tactical palette
+            // StudyGe flat tactical palette with 3-tier country mastery
+            const timesDiscovered = countryMastery[id] || (visitedSet.has(id) ? 1 : 0);
             let fillColor = '#273749';
             let strokeColor = '#3d5269';
             let strokeWidth = 0.7 / Math.sqrt(scale);
 
-            if (isVisited) {
+            if (timesDiscovered >= 5) {
+              // Mastered (⭐⭐⭐) - Vibrant emerald with gold border
+              fillColor = '#10b981';
+              strokeColor = '#fbbf24';
+              strokeWidth = 1.1 / Math.sqrt(scale);
+            } else if (timesDiscovered >= 3) {
+              // Advanced (⭐⭐) - Solid emerald
               fillColor = '#059669';
               strokeColor = '#34d399';
+              strokeWidth = 0.9 / Math.sqrt(scale);
+            } else if (timesDiscovered >= 1) {
+              // Discovered (⭐) - Lagoon teal
+              fillColor = '#0d9488';
+              strokeColor = '#5eead4';
+              strokeWidth = 0.8 / Math.sqrt(scale);
             }
 
             if (isHovered) {
-              fillColor = isVisited ? '#047857' : '#0284c7';
+              fillColor = timesDiscovered > 0 ? '#047857' : '#0284c7';
               strokeColor = '#ffffff';
               strokeWidth = 1.3 / Math.sqrt(scale);
             }
@@ -297,7 +311,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             );
           })}
 
-          {/* Interactive touch targets / markers for small countries & territories like Palestine and Taiwan */}
+          {/* Touch targets for small countries & hint markers (No random spoiler pins during quiz) */}
           {worldFeatures.map((feature) => {
             const id = feature.id;
             const country = COUNTRIES_BY_ID[id];
@@ -306,56 +320,76 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             const [ptX, ptY] = projection(country.coordinates) || [0, 0];
             if (!ptX || !ptY) return null;
 
-            const isTarget = targetCountry && targetCountry.id === id;
             const isHighlighted = highlightedCountryId === id;
-            const isVisited = visitedSet.has(id);
+            // Small territories and islands that benefit from enlarged touch hitboxes
+            const isSmallCountry = [
+              '275', // Palestine
+              '158', // Taiwan
+              '422', // Lebanon
+              '196', // Cyprus
+              '626', // Timor-Leste
+              '242', // Fiji
+              '470', // Malta
+              '702', // Singapore
+              '096', // Brunei
+              '44',  // Bahamas
+              '064', // Bhutan
+              '417', // Kyrgyzstan
+            ].includes(id);
 
-            // Small countries / islands that need visual pins
-            const isSmallCountry = ['275', '158', '422', '196', '626', '242', '470', '702', '44'].includes(id);
-
-            if (isTarget || isHighlighted || (scale > 2.0 && isSmallCountry)) {
+            // 1. Explicit Hint: Only when user tapped Hint button does the country beacon illuminate!
+            if (isHighlighted) {
               return (
                 <g
-                  key={`marker-${id}`}
+                  key={`hint-${id}`}
                   transform={`translate(${ptX}, ${ptY})`}
                   onClick={(e) => handleCountryClick(id, e)}
                   className="cursor-pointer"
                 >
-                  {/* Generous touch hit box for phone fingers (56px effective touch diameter) */}
                   <circle
-                    r={28 / Math.sqrt(scale)}
-                    fill="transparent"
-                  />
-                  {/* Glowing pulsing beacon */}
-                  <circle
-                    r={12 / Math.sqrt(scale)}
+                    r={20 / Math.sqrt(scale)}
                     fill="none"
-                    stroke={isTarget ? '#fbbf24' : isVisited ? '#34d399' : '#38bdf8'}
-                    strokeWidth={1.5 / Math.sqrt(scale)}
+                    stroke="#fbbf24"
+                    strokeWidth={2 / Math.sqrt(scale)}
                     className="animate-ping"
-                    opacity={0.7}
+                    opacity={0.8}
                   />
                   <circle
-                    r={Math.max(5.5 / Math.sqrt(scale), 3.5)}
-                    fill={isTarget ? '#f59e0b' : isVisited ? '#10b981' : '#38bdf8'}
+                    r={Math.max(6 / Math.sqrt(scale), 4)}
+                    fill="#f59e0b"
                     stroke="#ffffff"
                     strokeWidth={1.5 / Math.sqrt(scale)}
                   />
-                  {scale > 2.5 && (
-                    <text
-                      y={-10 / Math.sqrt(scale)}
-                      textAnchor="middle"
-                      fill="#ffffff"
-                      fontSize={Math.max(8.5 / Math.sqrt(scale), 5.5)}
-                      fontWeight="bold"
-                      className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] pointer-events-none select-none"
-                    >
-                      {country.flag} {country.name}
-                    </text>
-                  )}
+                  <text
+                    y={-12 / Math.sqrt(scale)}
+                    textAnchor="middle"
+                    fill="#ffffff"
+                    fontSize={Math.max(10 / Math.sqrt(scale), 6)}
+                    fontWeight="bold"
+                    className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] pointer-events-none select-none"
+                  >
+                    {country.flag} {country.name}
+                  </text>
                 </g>
               );
             }
+
+            // 2. Invisible touch hit targets for small countries on mobile:
+            // Allows effortless finger tapping without cluttering the screen or showing random spoiler pins!
+            if (isSmallCountry) {
+              return (
+                <circle
+                  key={`touch-${id}`}
+                  cx={ptX}
+                  cy={ptY}
+                  r={Math.max(24 / Math.sqrt(scale), 14)}
+                  fill="transparent"
+                  className="cursor-pointer"
+                  onClick={(e) => handleCountryClick(id, e)}
+                />
+              );
+            }
+
             return null;
           })}
         </g>

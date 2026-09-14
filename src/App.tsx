@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { GameMode, Country, UserStats } from './types';
+import { GameMode, Country, UserStats, Continent } from './types';
 import { COUNTRIES, COUNTRIES_BY_ID, getRandomCountries } from './data/countries';
+import { DifficultyLevel, getFilteredCountries } from './data/difficulty';
 import {
   loadUserStats,
   recordAnswer,
@@ -28,6 +29,8 @@ export const App: React.FC = () => {
   const [currentUsername, setCurrentUsername] = useState<string>(() => getActiveUsername());
   const [stats, setStats] = useState<UserStats>(() => loadUserStats());
   const [mode, setMode] = useState<GameMode>('map');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>(1);
+  const [selectedContinent, setSelectedContinent] = useState<Continent | 'all'>('all');
   const [backupOpen, setBackupOpen] = useState<boolean>(false);
   const [accountOpen, setAccountOpen] = useState<boolean>(false);
   const [dailyRewardOpen, setDailyRewardOpen] = useState<boolean>(false);
@@ -86,18 +89,21 @@ export const App: React.FC = () => {
     }
   };
 
-  // Generate question for flags and capitals
+  // Generate question for flags and capitals respecting StudyGe levels & region
   const generateQuestion = useCallback((excludeCountryId?: string) => {
-    const unvisited = COUNTRIES.filter((c) => !stats.stamps[c.id]);
+    const pool = getFilteredCountries(COUNTRIES, selectedDifficulty, selectedContinent);
+    const validPool = pool.length > 0 ? pool : COUNTRIES;
+
+    const unvisited = validPool.filter((c) => !stats.stamps[c.id]);
     let target: Country;
-    if (unvisited.length > 0 && Math.random() < 0.6) {
+    if (unvisited.length > 0 && Math.random() < 0.65) {
       target = unvisited[Math.floor(Math.random() * unvisited.length)];
     } else {
-      target = COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)];
+      target = validPool[Math.floor(Math.random() * validPool.length)];
     }
 
-    if (excludeCountryId && target.id === excludeCountryId) {
-      const remaining = COUNTRIES.filter((c) => c.id !== excludeCountryId);
+    if (excludeCountryId && target.id === excludeCountryId && validPool.length > 1) {
+      const remaining = validPool.filter((c) => c.id !== excludeCountryId);
       target = remaining[Math.floor(Math.random() * remaining.length)];
     }
 
@@ -108,12 +114,12 @@ export const App: React.FC = () => {
     setTargetCountry(target);
     setOptions(allFour);
     setQuestionStartTime(Date.now());
-  }, [stats.stamps]);
+  }, [stats.stamps, selectedDifficulty, selectedContinent]);
 
-  // Initial question setup
+  // Initial and level/region change question setup
   useEffect(() => {
     generateQuestion();
-  }, [generateQuestion]);
+  }, [selectedDifficulty, selectedContinent]);
 
   // Handle correct answer
   const handleSuccess = (country: Country, bonusXp = 0) => {
@@ -199,6 +205,11 @@ export const App: React.FC = () => {
   const visitedCountryIds = Object.keys(stats.stamps);
   const dailyStatus = checkDailyStatus(stats);
 
+  const countryMastery: Record<string, number> = {};
+  for (const [id, stamp] of Object.entries(stats.stamps || {})) {
+    countryMastery[id] = stamp.timesDiscovered || 1;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#16202c] text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Navigation Bar - Hidden in landscape map mode so map is 100% full screen */}
@@ -222,6 +233,11 @@ export const App: React.FC = () => {
             targetCountry={targetCountry}
             onCountryGuessed={handleMapGuessed}
             visitedCountryIds={visitedCountryIds}
+            countryMastery={countryMastery}
+            selectedDifficulty={selectedDifficulty}
+            onSelectDifficulty={setSelectedDifficulty}
+            selectedContinent={selectedContinent}
+            onSelectContinent={setSelectedContinent}
             isLandscape={isLandscape}
           />
         )}

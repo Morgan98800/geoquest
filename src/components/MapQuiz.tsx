@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Country } from '../types';
+import { Country, Continent } from '../types';
+import { DifficultyLevel } from '../data/difficulty';
 import { InteractiveMap } from './InteractiveMap';
+import { LevelSelector } from './LevelSelector';
 import { MapPin, Sparkles, AlertCircle } from 'lucide-react';
 import { sound } from '../utils/audio';
 
@@ -8,6 +10,11 @@ interface MapQuizProps {
   targetCountry: Country;
   onCountryGuessed: (guessedCountry: Country) => void;
   visitedCountryIds: string[];
+  countryMastery?: Record<string, number>;
+  selectedDifficulty: DifficultyLevel;
+  onSelectDifficulty: (level: DifficultyLevel) => void;
+  selectedContinent: Continent | 'all';
+  onSelectContinent: (continent: Continent | 'all') => void;
   isLandscape?: boolean;
 }
 
@@ -15,6 +22,11 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
   targetCountry,
   onCountryGuessed,
   visitedCountryIds,
+  countryMastery = {},
+  selectedDifficulty,
+  onSelectDifficulty,
+  selectedContinent,
+  onSelectContinent,
   isLandscape = false,
 }) => {
   const [hintLevel, setHintLevel] = useState<number>(0);
@@ -70,10 +82,24 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
             • <strong className="text-amber-300 font-semibold">{targetCountry.capital}</strong>
           </span>
 
+          {/* Quick Level Switcher for Landscape */}
+          <button
+            onClick={() => {
+              sound.playClick();
+              const nextLevel = ((selectedDifficulty % 3) + 1) as DifficultyLevel;
+              onSelectDifficulty(nextLevel);
+            }}
+            className="ml-1 px-2 py-0.5 rounded-full bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-sky-200 text-[10px] font-black cursor-pointer active:scale-90 transition-all flex items-center gap-1"
+            title="Changer de niveau (1: Débutant, 2: Intermédiaire, 3: Expert)"
+          >
+            <span>{selectedDifficulty === 1 ? '🌱' : selectedDifficulty === 2 ? '🧭' : '👑'}</span>
+            <span>Niv.{selectedDifficulty}</span>
+          </button>
+
           {hintLevel < 2 && (
             <button
               onClick={handleUseHint}
-              className="ml-1 p-1 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 transition-all active:scale-90 cursor-pointer"
+              className="ml-0.5 p-1 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 transition-all active:scale-90 cursor-pointer"
               title={hintLevel === 0 ? "Indice continent" : "Cadrer sur le pays"}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -99,8 +125,10 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
         <InteractiveMap
           mode="quiz"
           targetCountry={targetCountry}
+          highlightedCountryId={hintLevel >= 2 ? targetCountry.id : null}
           onCountryClick={handleCountryClick}
           visitedCountryIds={visitedCountryIds}
+          countryMastery={countryMastery}
           feedbackState={feedback}
           focusTrigger={focusTrigger}
           className="w-full h-full rounded-none border-0"
@@ -149,6 +177,15 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
         )}
       </div>
 
+      {/* StudyGe Level & Continent Selector */}
+      <LevelSelector
+        selectedDifficulty={selectedDifficulty}
+        onSelectDifficulty={onSelectDifficulty}
+        selectedContinent={selectedContinent}
+        onSelectContinent={onSelectContinent}
+        visitedCountryIds={visitedCountryIds}
+      />
+
       {/* Wrong answer alert toast */}
       {feedback && !feedback.isCorrect && (
         <div className="animate-wiggle bg-rose-600/90 text-white px-3 py-1.5 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 shadow-lg">
@@ -161,8 +198,10 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
       <InteractiveMap
         mode="quiz"
         targetCountry={targetCountry}
+        highlightedCountryId={hintLevel >= 2 ? targetCountry.id : null}
         onCountryClick={handleCountryClick}
         visitedCountryIds={visitedCountryIds}
+        countryMastery={countryMastery}
         feedbackState={feedback}
         focusTrigger={focusTrigger}
         className="w-full aspect-[16/10] sm:aspect-[16/9] min-h-[260px] max-h-[580px]"
