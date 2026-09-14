@@ -52,9 +52,6 @@ export const FunFactModal: React.FC<FunFactModalProps> = ({
 
   if (!isOpen) return null;
 
-  const fact = country.funFacts[0] || "Un pays extraordinaire avec une richesse culturelle et historique unique au monde !";
-  const secondFact = country.funFacts[1];
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
       <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-gradient-to-b from-slate-800 to-slate-900 border border-emerald-500/40 rounded-3xl p-5 sm:p-8 shadow-2xl text-center transform animate-pop">
@@ -93,30 +90,39 @@ export const FunFactModal: React.FC<FunFactModalProps> = ({
           </span>
         </div>
 
-        {/* Fun Fact Card */}
-        <div className="mt-4 sm:mt-6 text-left bg-gradient-to-br from-slate-900/90 to-sky-950/70 border border-sky-500/30 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
-          <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider mb-1.5">
-            <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '4s' }} />
-            Le savais-tu ? (Fun Fact 💡)
-          </div>
-          <p className="text-slate-100 text-xs sm:text-base leading-relaxed font-medium">
-            "{fact}"
-          </p>
-
-          {secondFact && (
-            <div className="mt-2.5 pt-2.5 border-t border-sky-800/30">
-              <p className="text-slate-300 text-[11px] sm:text-sm leading-relaxed">
-                ✨ {secondFact}
-              </p>
+        {/* Facts or Geo Info */}
+        {country.funFacts && country.funFacts.length > 0 ? (
+          <div className="mt-4 sm:mt-5 text-left bg-[#1c2938] border border-[#2e4056] rounded-2xl p-4 shadow-inner">
+            <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider mb-1.5">
+              <Sparkles className="w-4 h-4" />
+              Le savais-tu ?
             </div>
-          )}
-        </div>
+            <p className="text-slate-100 text-xs sm:text-sm leading-relaxed font-medium">
+              "{country.funFacts[0]}"
+            </p>
+            {country.funFacts[1] && (
+              <p className="mt-2 text-slate-300 text-xs leading-relaxed border-t border-slate-700/60 pt-2">
+                {country.funFacts[1]}
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="mt-4 sm:mt-5 grid grid-cols-2 gap-2 text-left text-xs bg-[#1c2938] border border-[#2e4056] rounded-2xl p-3.5">
+            <div>
+              <span className="text-slate-400 block text-[10px] font-bold uppercase">Code ISO</span>
+              <span className="text-white font-mono font-bold">{country.code3} ({country.code})</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[10px] font-bold uppercase">Coordonnées</span>
+              <span className="text-white font-mono font-bold">{country.coordinates[0]}°, {country.coordinates[1]}°</span>
+            </div>
+          </div>
+        )}
 
         {/* Rewards Bar */}
-        <div className="mt-4 sm:mt-6 flex items-center justify-between px-3.5 py-2 sm:py-2.5 rounded-2xl bg-slate-900/60 border border-white/5 text-xs sm:text-sm">
-          <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
-            <span className="text-base sm:text-lg">+{earnedXp}</span>
-            <span className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-400">Points XP</span>
+        <div className="mt-4 sm:mt-5 flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-[#1c2938] border border-[#2e4056] text-xs sm:text-sm">
+          <div className="flex items-center gap-1.5 text-emerald-400 font-black">
+            <span className="text-base sm:text-lg">+{earnedXp} XP</span>
           </div>
 
           <div className="flex items-center gap-1 text-amber-400 font-black">
@@ -131,10 +137,10 @@ export const FunFactModal: React.FC<FunFactModalProps> = ({
             sound.playClick();
             onNext();
           }}
-          className="mt-4 sm:mt-6 w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-emerald-900/40 flex items-center justify-center gap-2 transition-all transform active:scale-95 group cursor-pointer"
+          className="mt-4 sm:mt-5 w-full py-3.5 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black text-sm sm:text-base shadow-lg shadow-emerald-950/40 flex items-center justify-center gap-2 transition-all transform active:scale-95 cursor-pointer"
         >
-          <span>Continuer l'aventure</span>
-          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          <span>Continuer</span>
+          <ArrowRight className="w-5 h-5" />
         </button>
       </div>
     </div>

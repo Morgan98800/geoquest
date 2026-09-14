@@ -15,11 +15,7 @@ export const COUNTRIES: Country[] = [
       178.57,
       -17.32
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Océanie a pour capitale Suva.",
-      "Il arbore fièrement le drapeau 🇫🇯 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "834",
@@ -33,29 +29,21 @@ export const COUNTRIES: Country[] = [
       34.74,
       -6.25
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Dodoma.",
-      "Il arbore fièrement le drapeau 🇹🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "732",
     "code": "EH",
     "code3": "ESH",
     "name": "Sahara occidental",
-    "capital": "Capitale",
-    "continent": "Europe",
+    "capital": "Laâyoune",
+    "continent": "Afrique",
     "flag": "🇪🇭",
     "coordinates": [
       -12.19,
       24.28
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Capitale.",
-      "Il arbore fièrement le drapeau 🇪🇭 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "124",
@@ -105,11 +93,7 @@ export const COUNTRIES: Country[] = [
       67.24,
       48.41
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Astana.",
-      "Il arbore fièrement le drapeau 🇰🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "860",
@@ -123,11 +107,7 @@ export const COUNTRIES: Country[] = [
       63.37,
       41.77
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Tachkent.",
-      "Il arbore fièrement le drapeau 🇺🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "598",
@@ -141,11 +121,7 @@ export const COUNTRIES: Country[] = [
       145.31,
       -6.46
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Océanie a pour capitale Port Moresby.",
-      "Il arbore fièrement le drapeau 🇵🇬 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "360",
@@ -159,11 +135,7 @@ export const COUNTRIES: Country[] = [
       117.36,
       -2.27
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Jakarta / Nusantara.",
-      "Il arbore fièrement le drapeau 🇮🇩 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "032",
@@ -195,11 +167,7 @@ export const COUNTRIES: Country[] = [
       -71.18,
       -37.31
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Santiago.",
-      "Il arbore fièrement le drapeau 🇨🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "180",
@@ -213,11 +181,7 @@ export const COUNTRIES: Country[] = [
       23.58,
       -2.84
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Kinshasa.",
-      "Il arbore fièrement le drapeau 🇨🇩 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "706",
@@ -231,11 +195,7 @@ export const COUNTRIES: Country[] = [
       45.7,
       4.74
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Mogadiscio.",
-      "Il arbore fièrement le drapeau 🇸🇴 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "404",
@@ -249,11 +209,7 @@ export const COUNTRIES: Country[] = [
       37.79,
       0.6
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Nairobi.",
-      "Il arbore fièrement le drapeau 🇰🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "729",
@@ -267,11 +223,7 @@ export const COUNTRIES: Country[] = [
       29.83,
       15.97
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Khartoum.",
-      "Il arbore fièrement le drapeau 🇸🇩 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "148",
@@ -285,11 +237,7 @@ export const COUNTRIES: Country[] = [
       18.57,
       15.28
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale N'Djaména.",
-      "Il arbore fièrement le drapeau 🇹🇩 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "332",
@@ -303,11 +251,7 @@ export const COUNTRIES: Country[] = [
       -72.66,
       18.9
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Port-au-Prince.",
-      "Il arbore fièrement le drapeau 🇭🇹 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "214",
@@ -321,11 +265,7 @@ export const COUNTRIES: Country[] = [
       -70.46,
       18.89
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Saint-Domingue.",
-      "Il arbore fièrement le drapeau 🇩🇴 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "643",
@@ -339,11 +279,7 @@ export const COUNTRIES: Country[] = [
       95.79,
       66.07
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Moscou.",
-      "Il arbore fièrement le drapeau 🇷🇺 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "044",
@@ -357,29 +293,21 @@ export const COUNTRIES: Country[] = [
       -77.93,
       25.51
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Nassau.",
-      "Il arbore fièrement le drapeau 🇧🇸 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "238",
     "code": "FK",
     "code3": "FLK",
     "name": "Îles Malouines",
-    "capital": "Capitale",
-    "continent": "Europe",
+    "capital": "Stanley",
+    "continent": "Amérique du Sud",
     "flag": "🇫🇰",
     "coordinates": [
       -59.42,
       -51.72
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Capitale.",
-      "Il arbore fièrement le drapeau 🇫🇰 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "578",
@@ -393,11 +321,7 @@ export const COUNTRIES: Country[] = [
       12.83,
       66.65
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Oslo.",
-      "Il arbore fièrement le drapeau 🇳🇴 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "304",
@@ -411,11 +335,7 @@ export const COUNTRIES: Country[] = [
       -41.96,
       73.15
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Nuuk.",
-      "Il arbore fièrement le drapeau 🇬🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "260",
@@ -429,11 +349,7 @@ export const COUNTRIES: Country[] = [
       69.53,
       -49.31
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Territoires français du Sud.",
-      "Il arbore fièrement le drapeau 🇹🇫 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "626",
@@ -447,11 +363,7 @@ export const COUNTRIES: Country[] = [
       125.97,
       -8.77
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Dili.",
-      "Il arbore fièrement le drapeau 🇹🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "710",
@@ -465,11 +377,7 @@ export const COUNTRIES: Country[] = [
       25.16,
       -28.92
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Pretoria / Le Cap.",
-      "Il arbore fièrement le drapeau 🇿🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "426",
@@ -483,11 +391,7 @@ export const COUNTRIES: Country[] = [
       28.17,
       -29.62
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Maseru.",
-      "Il arbore fièrement le drapeau 🇱🇸 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "484",
@@ -519,11 +423,7 @@ export const COUNTRIES: Country[] = [
       -56.01,
       -32.77
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Montevideo.",
-      "Il arbore fièrement le drapeau 🇺🇾 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "076",
@@ -555,11 +455,7 @@ export const COUNTRIES: Country[] = [
       -64.65,
       -16.7
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Sucre / La Paz.",
-      "Il arbore fièrement le drapeau 🇧🇴 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "604",
@@ -573,11 +469,7 @@ export const COUNTRIES: Country[] = [
       -74.43,
       -9.15
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Lima.",
-      "Il arbore fièrement le drapeau 🇵🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "170",
@@ -591,11 +483,7 @@ export const COUNTRIES: Country[] = [
       -73.07,
       3.92
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Bogota.",
-      "Il arbore fièrement le drapeau 🇨🇴 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "591",
@@ -609,11 +497,7 @@ export const COUNTRIES: Country[] = [
       -80.11,
       8.53
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Panama.",
-      "Il arbore fièrement le drapeau 🇵🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "188",
@@ -627,11 +511,7 @@ export const COUNTRIES: Country[] = [
       -84.17,
       9.97
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale San José.",
-      "Il arbore fièrement le drapeau 🇨🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "558",
@@ -645,11 +525,7 @@ export const COUNTRIES: Country[] = [
       -85.02,
       12.85
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Managua.",
-      "Il arbore fièrement le drapeau 🇳🇮 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "340",
@@ -663,11 +539,7 @@ export const COUNTRIES: Country[] = [
       -86.59,
       14.83
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Tegucigalpa.",
-      "Il arbore fièrement le drapeau 🇭🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "222",
@@ -681,11 +553,7 @@ export const COUNTRIES: Country[] = [
       -88.87,
       13.73
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale San Salvador.",
-      "Il arbore fièrement le drapeau 🇸🇻 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "320",
@@ -699,11 +567,7 @@ export const COUNTRIES: Country[] = [
       -90.37,
       15.7
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Guatemala.",
-      "Il arbore fièrement le drapeau 🇬🇹 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "084",
@@ -717,11 +581,7 @@ export const COUNTRIES: Country[] = [
       -88.7,
       17.19
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Belmopan.",
-      "Il arbore fièrement le drapeau 🇧🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "862",
@@ -735,11 +595,7 @@ export const COUNTRIES: Country[] = [
       -66.15,
       7.16
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Caracas.",
-      "Il arbore fièrement le drapeau 🇻🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "328",
@@ -753,11 +609,7 @@ export const COUNTRIES: Country[] = [
       -58.97,
       4.79
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Georgetown.",
-      "Il arbore fièrement le drapeau 🇬🇾 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "740",
@@ -771,11 +623,7 @@ export const COUNTRIES: Country[] = [
       -55.91,
       4.12
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Paramaribo.",
-      "Il arbore fièrement le drapeau 🇸🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "250",
@@ -807,11 +655,7 @@ export const COUNTRIES: Country[] = [
       -78.38,
       -1.45
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Quito.",
-      "Il arbore fièrement le drapeau 🇪🇨 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "630",
@@ -825,11 +669,7 @@ export const COUNTRIES: Country[] = [
       -66.48,
       18.24
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale San Juan.",
-      "Il arbore fièrement le drapeau 🇵🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "388",
@@ -843,11 +683,7 @@ export const COUNTRIES: Country[] = [
       -77.32,
       18.14
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Kingston.",
-      "Il arbore fièrement le drapeau 🇯🇲 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "192",
@@ -861,11 +697,7 @@ export const COUNTRIES: Country[] = [
       -78.93,
       21.65
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale La Havane.",
-      "Il arbore fièrement le drapeau 🇨🇺 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "716",
@@ -879,11 +711,7 @@ export const COUNTRIES: Country[] = [
       29.79,
       -18.9
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Harare.",
-      "Il arbore fièrement le drapeau 🇿🇼 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "072",
@@ -897,11 +725,7 @@ export const COUNTRIES: Country[] = [
       23.78,
       -22.08
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Gaborone.",
-      "Il arbore fièrement le drapeau 🇧🇼 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "516",
@@ -915,11 +739,7 @@ export const COUNTRIES: Country[] = [
       17.14,
       -22.04
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Windhoek.",
-      "Il arbore fièrement le drapeau 🇳🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "686",
@@ -933,11 +753,7 @@ export const COUNTRIES: Country[] = [
       -14.51,
       14.35
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Dakar.",
-      "Il arbore fièrement le drapeau 🇸🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "466",
@@ -951,11 +767,7 @@ export const COUNTRIES: Country[] = [
       -3.59,
       17.24
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Bamako.",
-      "Il arbore fièrement le drapeau 🇲🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "478",
@@ -969,11 +781,7 @@ export const COUNTRIES: Country[] = [
       -10.35,
       20.18
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Nouakchott.",
-      "Il arbore fièrement le drapeau 🇲🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "204",
@@ -987,11 +795,7 @@ export const COUNTRIES: Country[] = [
       2.34,
       9.64
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Porto-Novo.",
-      "Il arbore fièrement le drapeau 🇧🇯 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "562",
@@ -1005,11 +809,7 @@ export const COUNTRIES: Country[] = [
       9.27,
       17.34
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Niamey.",
-      "Il arbore fièrement le drapeau 🇳🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "566",
@@ -1023,11 +823,7 @@ export const COUNTRIES: Country[] = [
       7.99,
       9.54
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Abuja.",
-      "Il arbore fièrement le drapeau 🇳🇬 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "120",
@@ -1041,11 +837,7 @@ export const COUNTRIES: Country[] = [
       12.61,
       5.65
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Yaoundé.",
-      "Il arbore fièrement le drapeau 🇨🇲 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "768",
@@ -1059,11 +851,7 @@ export const COUNTRIES: Country[] = [
       1,
       8.43
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Lomé.",
-      "Il arbore fièrement le drapeau 🇹🇬 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "288",
@@ -1077,11 +865,7 @@ export const COUNTRIES: Country[] = [
       -1.24,
       7.92
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Accra.",
-      "Il arbore fièrement le drapeau 🇬🇭 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "384",
@@ -1095,11 +879,7 @@ export const COUNTRIES: Country[] = [
       -5.61,
       7.55
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Yamoussoukro.",
-      "Il arbore fièrement le drapeau 🇨🇮 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "324",
@@ -1113,11 +893,7 @@ export const COUNTRIES: Country[] = [
       -11.06,
       10.45
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Conakry.",
-      "Il arbore fièrement le drapeau 🇬🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "624",
@@ -1131,11 +907,7 @@ export const COUNTRIES: Country[] = [
       -15.11,
       12.02
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Bissau.",
-      "Il arbore fièrement le drapeau 🇬🇼 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "430",
@@ -1149,11 +921,7 @@ export const COUNTRIES: Country[] = [
       -9.41,
       6.43
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Monrovia.",
-      "Il arbore fièrement le drapeau 🇱🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "694",
@@ -1167,11 +935,7 @@ export const COUNTRIES: Country[] = [
       -11.8,
       8.53
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Freetown.",
-      "Il arbore fièrement le drapeau 🇸🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "854",
@@ -1185,11 +949,7 @@ export const COUNTRIES: Country[] = [
       -1.78,
       12.31
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Ouagadougou.",
-      "Il arbore fièrement le drapeau 🇧🇫 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "140",
@@ -1203,11 +963,7 @@ export const COUNTRIES: Country[] = [
       20.37,
       6.55
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Bangui.",
-      "Il arbore fièrement le drapeau 🇨🇫 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "178",
@@ -1221,11 +977,7 @@ export const COUNTRIES: Country[] = [
       15.14,
       -0.84
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Brazzaville.",
-      "Il arbore fièrement le drapeau 🇨🇬 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "266",
@@ -1239,11 +991,7 @@ export const COUNTRIES: Country[] = [
       11.69,
       -0.65
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Libreville.",
-      "Il arbore fièrement le drapeau 🇬🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "226",
@@ -1257,11 +1005,7 @@ export const COUNTRIES: Country[] = [
       10.37,
       1.65
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Malabo.",
-      "Il arbore fièrement le drapeau 🇬🇶 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "894",
@@ -1275,11 +1019,7 @@ export const COUNTRIES: Country[] = [
       27.76,
       -13.39
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Lusaka.",
-      "Il arbore fièrement le drapeau 🇿🇲 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "454",
@@ -1293,11 +1033,7 @@ export const COUNTRIES: Country[] = [
       34.19,
       -13.16
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Lilongwe.",
-      "Il arbore fièrement le drapeau 🇲🇼 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "508",
@@ -1311,11 +1047,7 @@ export const COUNTRIES: Country[] = [
       35.54,
       -17.15
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Maputo.",
-      "Il arbore fièrement le drapeau 🇲🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "748",
@@ -1329,11 +1061,7 @@ export const COUNTRIES: Country[] = [
       31.4,
       -26.49
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Mbabane / Lobamba.",
-      "Il arbore fièrement le drapeau 🇸🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "024",
@@ -1347,11 +1075,7 @@ export const COUNTRIES: Country[] = [
       17.47,
       -12.23
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Luanda.",
-      "Il arbore fièrement le drapeau 🇦🇴 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "108",
@@ -1365,11 +1089,7 @@ export const COUNTRIES: Country[] = [
       29.91,
       -3.38
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Gitega.",
-      "Il arbore fièrement le drapeau 🇧🇮 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "376",
@@ -1383,11 +1103,7 @@ export const COUNTRIES: Country[] = [
       35,
       31.48
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Tel Aviv / Jérusalem.",
-      "Il arbore fièrement le drapeau 🇮🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "422",
@@ -1401,11 +1117,7 @@ export const COUNTRIES: Country[] = [
       35.87,
       33.91
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Beyrouth.",
-      "Il arbore fièrement le drapeau 🇱🇧 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "450",
@@ -1419,11 +1131,7 @@ export const COUNTRIES: Country[] = [
       46.73,
       -19.3
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Antananarivo.",
-      "Il arbore fièrement le drapeau 🇲🇬 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "275",
@@ -1455,11 +1163,7 @@ export const COUNTRIES: Country[] = [
       -15.43,
       13.48
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Banjul.",
-      "Il arbore fièrement le drapeau 🇬🇲 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "788",
@@ -1473,11 +1177,7 @@ export const COUNTRIES: Country[] = [
       9.54,
       34.14
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Tunis.",
-      "Il arbore fièrement le drapeau 🇹🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "012",
@@ -1491,11 +1191,7 @@ export const COUNTRIES: Country[] = [
       2.61,
       28.09
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Alger.",
-      "Il arbore fièrement le drapeau 🇩🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "400",
@@ -1509,11 +1205,7 @@ export const COUNTRIES: Country[] = [
       36.77,
       31.24
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Amman.",
-      "Il arbore fièrement le drapeau 🇯🇴 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "784",
@@ -1527,11 +1219,7 @@ export const COUNTRIES: Country[] = [
       54.2,
       23.87
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Abou Dabi.",
-      "Il arbore fièrement le drapeau 🇦🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "634",
@@ -1545,11 +1233,7 @@ export const COUNTRIES: Country[] = [
       51.18,
       25.32
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Doha.",
-      "Il arbore fièrement le drapeau 🇶🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "414",
@@ -1563,11 +1247,7 @@ export const COUNTRIES: Country[] = [
       47.6,
       29.31
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Koweït.",
-      "Il arbore fièrement le drapeau 🇰🇼 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "368",
@@ -1581,11 +1261,7 @@ export const COUNTRIES: Country[] = [
       43.79,
       33.01
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Bagdad.",
-      "Il arbore fièrement le drapeau 🇮🇶 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "512",
@@ -1599,11 +1275,7 @@ export const COUNTRIES: Country[] = [
       56.07,
       20.59
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Mascate.",
-      "Il arbore fièrement le drapeau 🇴🇲 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "548",
@@ -1617,11 +1289,7 @@ export const COUNTRIES: Country[] = [
       167.07,
       -15.54
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Océanie a pour capitale Port-Vila.",
-      "Il arbore fièrement le drapeau 🇻🇺 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "116",
@@ -1635,11 +1303,7 @@ export const COUNTRIES: Country[] = [
       104.87,
       12.68
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Phnom Penh.",
-      "Il arbore fièrement le drapeau 🇰🇭 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "764",
@@ -1653,11 +1317,7 @@ export const COUNTRIES: Country[] = [
       101,
       14.98
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Bangkok.",
-      "Il arbore fièrement le drapeau 🇹🇭 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "418",
@@ -1671,11 +1331,7 @@ export const COUNTRIES: Country[] = [
       103.79,
       18.43
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Vientiane.",
-      "Il arbore fièrement le drapeau 🇱🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "104",
@@ -1689,11 +1345,7 @@ export const COUNTRIES: Country[] = [
       96.51,
       20.94
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Rangoun / Naypyidaw.",
-      "Il arbore fièrement le drapeau 🇲🇲 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "704",
@@ -1707,11 +1359,7 @@ export const COUNTRIES: Country[] = [
       106.33,
       16.56
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Hanoï.",
-      "Il arbore fièrement le drapeau 🇻🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "408",
@@ -1725,11 +1373,7 @@ export const COUNTRIES: Country[] = [
       127.13,
       40.13
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Pyongyang.",
-      "Il arbore fièrement le drapeau 🇰🇵 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "410",
@@ -1743,11 +1387,7 @@ export const COUNTRIES: Country[] = [
       127.82,
       36.42
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Séoul.",
-      "Il arbore fièrement le drapeau 🇰🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "496",
@@ -1761,11 +1401,7 @@ export const COUNTRIES: Country[] = [
       103.02,
       46.95
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Oulan-Bator.",
-      "Il arbore fièrement le drapeau 🇲🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "356",
@@ -1779,11 +1415,7 @@ export const COUNTRIES: Country[] = [
       79.54,
       22.82
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale New Delhi.",
-      "Il arbore fièrement le drapeau 🇮🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "050",
@@ -1797,11 +1429,7 @@ export const COUNTRIES: Country[] = [
       90.28,
       23.83
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Dacca.",
-      "Il arbore fièrement le drapeau 🇧🇩 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "064",
@@ -1815,11 +1443,7 @@ export const COUNTRIES: Country[] = [
       90.47,
       27.43
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Thimphou.",
-      "Il arbore fièrement le drapeau 🇧🇹 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "524",
@@ -1833,11 +1457,7 @@ export const COUNTRIES: Country[] = [
       84.04,
       28.25
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Katmandou.",
-      "Il arbore fièrement le drapeau 🇳🇵 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "586",
@@ -1851,11 +1471,7 @@ export const COUNTRIES: Country[] = [
       69.23,
       29.91
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Islamabad.",
-      "Il arbore fièrement le drapeau 🇵🇰 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "004",
@@ -1869,11 +1485,7 @@ export const COUNTRIES: Country[] = [
       66,
       33.84
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Kaboul.",
-      "Il arbore fièrement le drapeau 🇦🇫 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "762",
@@ -1887,11 +1499,7 @@ export const COUNTRIES: Country[] = [
       71.05,
       38.59
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Tachkent.",
-      "Il arbore fièrement le drapeau 🇹🇯 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "417",
@@ -1905,11 +1513,7 @@ export const COUNTRIES: Country[] = [
       74.59,
       41.52
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Bichkek.",
-      "Il arbore fièrement le drapeau 🇰🇬 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "795",
@@ -1923,11 +1527,7 @@ export const COUNTRIES: Country[] = [
       59.35,
       39.1
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Achgabat.",
-      "Il arbore fièrement le drapeau 🇹🇲 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "364",
@@ -1941,11 +1541,7 @@ export const COUNTRIES: Country[] = [
       54.45,
       32.47
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Téhéran.",
-      "Il arbore fièrement le drapeau 🇮🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "760",
@@ -1959,11 +1555,7 @@ export const COUNTRIES: Country[] = [
       38.52,
       35.01
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Damas.",
-      "Il arbore fièrement le drapeau 🇸🇾 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "051",
@@ -1977,11 +1569,7 @@ export const COUNTRIES: Country[] = [
       45.01,
       40.21
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Erevan.",
-      "Il arbore fièrement le drapeau 🇦🇲 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "752",
@@ -1995,11 +1583,7 @@ export const COUNTRIES: Country[] = [
       16.11,
       62.42
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Stockholm.",
-      "Il arbore fièrement le drapeau 🇸🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "112",
@@ -2013,11 +1597,7 @@ export const COUNTRIES: Country[] = [
       27.96,
       53.5
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Minsk.",
-      "Il arbore fièrement le drapeau 🇧🇾 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "804",
@@ -2031,11 +1611,7 @@ export const COUNTRIES: Country[] = [
       31.29,
       49.19
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Kyiv.",
-      "Il arbore fièrement le drapeau 🇺🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "616",
@@ -2049,11 +1625,7 @@ export const COUNTRIES: Country[] = [
       19.34,
       52.13
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Varsovie.",
-      "Il arbore fièrement le drapeau 🇵🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "040",
@@ -2067,11 +1639,7 @@ export const COUNTRIES: Country[] = [
       14.06,
       47.62
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Vienne.",
-      "Il arbore fièrement le drapeau 🇦🇹 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "348",
@@ -2085,11 +1653,7 @@ export const COUNTRIES: Country[] = [
       19.34,
       47.2
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Budapest.",
-      "Il arbore fièrement le drapeau 🇭🇺 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "498",
@@ -2103,11 +1667,7 @@ export const COUNTRIES: Country[] = [
       28.42,
       47.2
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Chisinau.",
-      "Il arbore fièrement le drapeau 🇲🇩 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "642",
@@ -2121,11 +1681,7 @@ export const COUNTRIES: Country[] = [
       24.95,
       45.85
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Bucarest.",
-      "Il arbore fièrement le drapeau 🇷🇴 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "440",
@@ -2139,11 +1695,7 @@ export const COUNTRIES: Country[] = [
       23.89,
       55.28
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Vilnius.",
-      "Il arbore fièrement le drapeau 🇱🇹 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "428",
@@ -2157,11 +1709,7 @@ export const COUNTRIES: Country[] = [
       24.84,
       56.82
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Riga.",
-      "Il arbore fièrement le drapeau 🇱🇻 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "233",
@@ -2175,11 +1723,7 @@ export const COUNTRIES: Country[] = [
       25.83,
       58.64
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Tallinn.",
-      "Il arbore fièrement le drapeau 🇪🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "276",
@@ -2211,11 +1755,7 @@ export const COUNTRIES: Country[] = [
       25.19,
       42.76
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Sofia.",
-      "Il arbore fièrement le drapeau 🇧🇬 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "300",
@@ -2229,11 +1769,7 @@ export const COUNTRIES: Country[] = [
       22.72,
       39.04
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Athènes.",
-      "Il arbore fièrement le drapeau 🇬🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "792",
@@ -2247,11 +1783,7 @@ export const COUNTRIES: Country[] = [
       35.12,
       39.15
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Ankara.",
-      "Il arbore fièrement le drapeau 🇹🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "008",
@@ -2265,11 +1797,7 @@ export const COUNTRIES: Country[] = [
       20.03,
       41.13
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Tirana.",
-      "Il arbore fièrement le drapeau 🇦🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "191",
@@ -2283,11 +1811,7 @@ export const COUNTRIES: Country[] = [
       16.57,
       45.01
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Zagreb.",
-      "Il arbore fièrement le drapeau 🇭🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "756",
@@ -2301,11 +1825,7 @@ export const COUNTRIES: Country[] = [
       8.12,
       46.79
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Berne.",
-      "Il arbore fièrement le drapeau 🇨🇭 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "442",
@@ -2319,11 +1839,7 @@ export const COUNTRIES: Country[] = [
       5.97,
       49.76
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Luxembourg.",
-      "Il arbore fièrement le drapeau 🇱🇺 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "056",
@@ -2337,11 +1853,7 @@ export const COUNTRIES: Country[] = [
       4.59,
       50.65
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Bruxelles.",
-      "Il arbore fièrement le drapeau 🇧🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "528",
@@ -2355,11 +1867,7 @@ export const COUNTRIES: Country[] = [
       5.5,
       52.29
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Amsterdam.",
-      "Il arbore fièrement le drapeau 🇳🇱 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "620",
@@ -2373,11 +1881,7 @@ export const COUNTRIES: Country[] = [
       -8.06,
       39.61
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Lisbonne.",
-      "Il arbore fièrement le drapeau 🇵🇹 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "724",
@@ -2409,11 +1913,7 @@ export const COUNTRIES: Country[] = [
       -8.02,
       53.17
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Dublin.",
-      "Il arbore fièrement le drapeau 🇮🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "540",
@@ -2427,11 +1927,7 @@ export const COUNTRIES: Country[] = [
       165.53,
       -21.26
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Océanie a pour capitale Nouméa.",
-      "Il arbore fièrement le drapeau 🇳🇨 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "090",
@@ -2445,11 +1941,7 @@ export const COUNTRIES: Country[] = [
       159.96,
       -8.85
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Océanie a pour capitale Honiara.",
-      "Il arbore fièrement le drapeau 🇸🇧 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "554",
@@ -2463,11 +1955,7 @@ export const COUNTRIES: Country[] = [
       172.95,
       -41.55
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Océanie a pour capitale Wellington.",
-      "Il arbore fièrement le drapeau 🇳🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "036",
@@ -2499,11 +1987,7 @@ export const COUNTRIES: Country[] = [
       80.67,
       7.7
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Sri Jayawardenepura Kotte / Colombo.",
-      "Il arbore fièrement le drapeau 🇱🇰 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "156",
@@ -2517,11 +2001,7 @@ export const COUNTRIES: Country[] = [
       103.45,
       36.68
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Pékin.",
-      "Il arbore fièrement le drapeau 🇨🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "158",
@@ -2571,11 +2051,7 @@ export const COUNTRIES: Country[] = [
       9.89,
       56.06
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Copenhague.",
-      "Il arbore fièrement le drapeau 🇩🇰 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "826",
@@ -2607,11 +2083,7 @@ export const COUNTRIES: Country[] = [
       -18.77,
       65.08
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Reykjavik.",
-      "Il arbore fièrement le drapeau 🇮🇸 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "031",
@@ -2625,11 +2097,7 @@ export const COUNTRIES: Country[] = [
       47.56,
       40.22
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Bakou.",
-      "Il arbore fièrement le drapeau 🇦🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "268",
@@ -2643,11 +2111,7 @@ export const COUNTRIES: Country[] = [
       43.5,
       42.17
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Tbilissi.",
-      "Il arbore fièrement le drapeau 🇬🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "608",
@@ -2661,11 +2125,7 @@ export const COUNTRIES: Country[] = [
       122.94,
       11.72
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Manille.",
-      "Il arbore fièrement le drapeau 🇵🇭 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "458",
@@ -2679,11 +2139,7 @@ export const COUNTRIES: Country[] = [
       109.7,
       3.75
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Kuala Lumpur.",
-      "Il arbore fièrement le drapeau 🇲🇾 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "096",
@@ -2697,11 +2153,7 @@ export const COUNTRIES: Country[] = [
       114.92,
       4.69
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Bandar Seri Begawan.",
-      "Il arbore fièrement le drapeau 🇧🇳 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "705",
@@ -2715,11 +2167,7 @@ export const COUNTRIES: Country[] = [
       14.93,
       46.13
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Ljubljana.",
-      "Il arbore fièrement le drapeau 🇸🇮 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "246",
@@ -2733,11 +2181,7 @@ export const COUNTRIES: Country[] = [
       26.14,
       64.26
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Helsinki.",
-      "Il arbore fièrement le drapeau 🇫🇮 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "703",
@@ -2751,11 +2195,7 @@ export const COUNTRIES: Country[] = [
       19.5,
       48.73
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Bratislava.",
-      "Il arbore fièrement le drapeau 🇸🇰 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "203",
@@ -2769,11 +2209,7 @@ export const COUNTRIES: Country[] = [
       15.34,
       49.78
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Prague.",
-      "Il arbore fièrement le drapeau 🇨🇿 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "232",
@@ -2787,11 +2223,7 @@ export const COUNTRIES: Country[] = [
       38.69,
       15.43
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Asmara.",
-      "Il arbore fièrement le drapeau 🇪🇷 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "392",
@@ -2823,11 +2255,7 @@ export const COUNTRIES: Country[] = [
       -58.43,
       -23.23
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Sud a pour capitale Asunción.",
-      "Il arbore fièrement le drapeau 🇵🇾 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "887",
@@ -2841,11 +2269,7 @@ export const COUNTRIES: Country[] = [
       47.52,
       15.92
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Sanaa.",
-      "Il arbore fièrement le drapeau 🇾🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "682",
@@ -2859,29 +2283,21 @@ export const COUNTRIES: Country[] = [
       44.64,
       24.09
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Asie a pour capitale Riyad.",
-      "Il arbore fièrement le drapeau 🇸🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "010",
     "code": "AQ",
     "code3": "ATA",
     "name": "Antarctique",
-    "capital": "Capitale",
-    "continent": "Europe",
+    "capital": "—",
+    "continent": "Océanie",
     "flag": "🇦🇶",
     "coordinates": [
       82.51,
       -84.97
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Capitale.",
-      "Il arbore fièrement le drapeau 🇦🇶 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "196",
@@ -2895,11 +2311,7 @@ export const COUNTRIES: Country[] = [
       33.04,
       34.91
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Nicosie.",
-      "Il arbore fièrement le drapeau 🇨🇾 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "504",
@@ -2949,11 +2361,7 @@ export const COUNTRIES: Country[] = [
       18.03,
       26.99
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Tripoli.",
-      "Il arbore fièrement le drapeau 🇱🇾 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "231",
@@ -2967,11 +2375,7 @@ export const COUNTRIES: Country[] = [
       39.56,
       8.65
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Addis-Abeba.",
-      "Il arbore fièrement le drapeau 🇪🇹 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "262",
@@ -2985,11 +2389,7 @@ export const COUNTRIES: Country[] = [
       42.5,
       11.77
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Djibouti.",
-      "Il arbore fièrement le drapeau 🇩🇯 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "800",
@@ -3003,11 +2403,7 @@ export const COUNTRIES: Country[] = [
       32.36,
       1.3
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Kampala.",
-      "Il arbore fièrement le drapeau 🇺🇬 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "646",
@@ -3021,11 +2417,7 @@ export const COUNTRIES: Country[] = [
       29.92,
       -2.01
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Kigali.",
-      "Il arbore fièrement le drapeau 🇷🇼 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "070",
@@ -3039,11 +2431,7 @@ export const COUNTRIES: Country[] = [
       17.82,
       44.18
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Sarajevo.",
-      "Il arbore fièrement le drapeau 🇧🇦 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "807",
@@ -3057,11 +2445,7 @@ export const COUNTRIES: Country[] = [
       21.7,
       41.61
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Skopje.",
-      "Il arbore fièrement le drapeau 🇲🇰 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "688",
@@ -3075,11 +2459,7 @@ export const COUNTRIES: Country[] = [
       20.84,
       44.22
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Belgrade.",
-      "Il arbore fièrement le drapeau 🇷🇸 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "499",
@@ -3093,11 +2473,7 @@ export const COUNTRIES: Country[] = [
       19.29,
       42.79
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Europe a pour capitale Podgorica.",
-      "Il arbore fièrement le drapeau 🇲🇪 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "780",
@@ -3111,11 +2487,7 @@ export const COUNTRIES: Country[] = [
       -61.33,
       10.43
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Amérique du Nord a pour capitale Port-d'Espagne.",
-      "Il arbore fièrement le drapeau 🇹🇹 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   },
   {
     "id": "728",
@@ -3129,11 +2501,7 @@ export const COUNTRIES: Country[] = [
       30.2,
       7.29
     ],
-    "funFacts": [
-      "Ce pays magnifique situé en Afrique a pour capitale Djouba.",
-      "Il arbore fièrement le drapeau 🇸🇸 et possède une culture et un patrimoine géologique fascinants !",
-      "Sa localisation au cœur de la région en fait une étape géographique passionnante à découvrir !"
-    ]
+    "funFacts": []
   }
 ];
 

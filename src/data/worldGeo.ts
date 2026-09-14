@@ -1,6 +1,6 @@
 import * as topojson from 'topojson-client';
 import { geoNaturalEarth1, geoPath } from 'd3-geo';
-import worldData from 'world-atlas/countries-110m.json';
+import worldData from 'world-atlas/countries-50m.json';
 
 export interface CountryFeature {
   type: string;

@@ -65,19 +65,14 @@ export const DailyRewardModal: React.FC<DailyRewardModalProps> = ({
             <Gift className="w-6 h-6 text-amber-400" />
           </div>
           <div>
-            <div className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 uppercase tracking-wider">
-              <Sparkles className="w-3 h-3 text-amber-400" />
-              Bonus de Connexion Quotidien
-            </div>
             <h3 className="text-xl font-black text-white">
-              Série de Connexion
+              Bonus quotidien
             </h3>
+            <p className="text-slate-400 text-xs mt-0.5">
+              1 connexion par jour pour débloquer les bonus J1 → J7
+            </p>
           </div>
         </div>
-
-        <p className="text-slate-300 text-xs sm:text-sm mb-5 leading-relaxed">
-          Connecte-toi chaque jour pour accumuler des récompenses croissantes ! Si tu sautes un jour, la série repart à zéro.
-        </p>
 
         {/* 7-Day Track Grid */}
         <div className="grid grid-cols-4 gap-2 sm:gap-2.5 mb-5">
@@ -136,7 +131,7 @@ export const DailyRewardModal: React.FC<DailyRewardModalProps> = ({
             className="w-full py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 font-black text-sm transition-all active:scale-98 cursor-pointer shadow-lg shadow-amber-950/40 flex items-center justify-center gap-2"
           >
             <Sparkles className="w-4 h-4" />
-            <span>Réclamer mon bonus ({DAILY_REWARDS[currentDay - 1]?.label})</span>
+            <span>Réclamer ({DAILY_REWARDS[currentDay - 1]?.label})</span>
           </button>
         ) : (
           <button
@@ -146,7 +141,7 @@ export const DailyRewardModal: React.FC<DailyRewardModalProps> = ({
             }}
             className="w-full py-3 rounded-2xl bg-slate-800 hover:bg-slate-750 text-slate-200 font-bold text-sm transition-all active:scale-98 cursor-pointer border border-slate-700"
           >
-            Déjà réclamé aujourd'hui ✓
+            Validé ✓
           </button>
         )}
       </div>

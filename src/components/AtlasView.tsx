@@ -129,22 +129,24 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
               </div>
             </div>
 
-            {/* Fun Facts */}
-            <div className="mt-4 sm:mt-6 pt-3 sm:pt-5 border-t border-sky-900/50">
-              <div className="flex items-center gap-1.5 text-amber-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2">
-                <Sparkles className="w-3.5 h-3.5" /> Anecdotes & Fun Facts
+            {/* Fun Facts (if available) */}
+            {selectedCountry.funFacts && selectedCountry.funFacts.length > 0 && (
+              <div className="mt-4 sm:mt-6 pt-3 sm:pt-5 border-t border-sky-900/50">
+                <div className="flex items-center gap-1.5 text-amber-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2">
+                  <Sparkles className="w-3.5 h-3.5" /> Repères & Anecdotes
+                </div>
+                <div className="space-y-2 max-h-48 sm:max-h-56 overflow-y-auto pr-1">
+                  {selectedCountry.funFacts.map((fact, idx) => (
+                    <div
+                      key={idx}
+                      className="text-xs leading-relaxed text-slate-200 bg-slate-800/60 p-2.5 sm:p-3 rounded-xl border border-white/5"
+                    >
+                      "{fact}"
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="space-y-2 max-h-48 sm:max-h-56 overflow-y-auto pr-1">
-                {selectedCountry.funFacts.map((fact, idx) => (
-                  <div
-                    key={idx}
-                    className="text-xs leading-relaxed text-slate-200 bg-slate-800/60 p-2.5 sm:p-3 rounded-xl border border-white/5"
-                  >
-                    "{fact}"
-                  </div>
-                ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

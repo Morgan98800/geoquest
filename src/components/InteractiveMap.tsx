@@ -38,13 +38,13 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const [hoveredCountry, setHoveredCountry] = useState<Country | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Touch gesture state for mobile pinch & pan
   const touchState = useRef<{
     initialDist?: number;
     initialScale?: number;
     lastX?: number;
     lastY?: number;
   }>({});
+  const isTouchDevice = useRef<boolean>(false);
 
   const visitedSet = new Set(visitedCountryIds);
 
@@ -126,6 +126,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
   // Mobile Touch Gestures (Pan & Pinch-to-Zoom)
   const handleTouchStart = (e: React.TouchEvent) => {
+    isTouchDevice.current = true;
+    setHoveredCountry(null);
     if (e.touches.length === 1) {
       setIsDragging(true);
       touchState.current.lastX = e.touches[0].clientX - position.x;
@@ -140,6 +142,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    isTouchDevice.current = true;
+    setHoveredCountry(null);
     if (e.touches.length === 1 && isDragging) {
       const x = e.touches[0].clientX;
       const y = e.touches[0].clientY;
@@ -161,6 +165,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
   const handleTouchEnd = () => {
     setIsDragging(false);
+    setHoveredCountry(null);
     touchState.current.initialDist = undefined;
     touchState.current.initialScale = undefined;
   };
@@ -200,8 +205,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       onWheel={handleWheel}
       onDoubleClick={handleReset}
     >
-      {/* Floating Hover Tooltip (desktop/tablet) */}
-      {hoveredCountry && (
+      {/* Floating Hover Tooltip (desktop only, atlas mode only) */}
+      {hoveredCountry && mode === 'atlas' && !isTouchDevice.current && (
         <div
           className="pointer-events-none hidden sm:flex absolute z-30 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-semibold shadow-xl text-white transform -translate-x-1/2 -translate-y-full mb-2 whitespace-nowrap transition-transform duration-75 items-center gap-2"
           style={{
@@ -210,7 +215,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           }}
         >
           <span className="text-base leading-none">{hoveredCountry.flag}</span>
-          <span>{mode === 'quiz' ? 'Pays du Monde' : hoveredCountry.name}</span>
+          <span>{hoveredCountry.name}</span>
           {visitedSet.has(hoveredCountry.id) && (
             <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded-full border border-emerald-500/30">
               Découvert ⭐
@@ -249,33 +254,41 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             const isHighlighted = highlightedCountryId === id;
             const isHovered = hoveredCountry?.id === id;
 
-            // StudyGe flat tactical palette with 3-tier country mastery
-            const timesDiscovered = countryMastery[id] || (visitedSet.has(id) ? 1 : 0);
+            // Base style: uniform slate in quiz mode, or mastery coloring in atlas mode
             let fillColor = '#273749';
             let strokeColor = '#3d5269';
             let strokeWidth = 0.7 / Math.sqrt(scale);
 
-            if (timesDiscovered >= 5) {
-              // Mastered (⭐⭐⭐) - Vibrant emerald with gold border
-              fillColor = '#10b981';
-              strokeColor = '#fbbf24';
-              strokeWidth = 1.1 / Math.sqrt(scale);
-            } else if (timesDiscovered >= 3) {
-              // Advanced (⭐⭐) - Solid emerald
-              fillColor = '#059669';
-              strokeColor = '#34d399';
-              strokeWidth = 0.9 / Math.sqrt(scale);
-            } else if (timesDiscovered >= 1) {
-              // Discovered (⭐) - Lagoon teal
-              fillColor = '#0d9488';
-              strokeColor = '#5eead4';
-              strokeWidth = 0.8 / Math.sqrt(scale);
+            if (mode === 'atlas') {
+              const timesDiscovered = countryMastery[id] || (visitedSet.has(id) ? 1 : 0);
+              if (timesDiscovered >= 5) {
+                // Mastered (⭐⭐⭐) - Vibrant emerald with gold border
+                fillColor = '#10b981';
+                strokeColor = '#fbbf24';
+                strokeWidth = 1.1 / Math.sqrt(scale);
+              } else if (timesDiscovered >= 3) {
+                // Advanced (⭐⭐) - Solid emerald
+                fillColor = '#059669';
+                strokeColor = '#34d399';
+                strokeWidth = 0.9 / Math.sqrt(scale);
+              } else if (timesDiscovered >= 1) {
+                // Discovered (⭐) - Lagoon teal
+                fillColor = '#0d9488';
+                strokeColor = '#5eead4';
+                strokeWidth = 0.8 / Math.sqrt(scale);
+              }
             }
 
-            if (isHovered) {
-              fillColor = timesDiscovered > 0 ? '#047857' : '#0284c7';
-              strokeColor = '#ffffff';
-              strokeWidth = 1.3 / Math.sqrt(scale);
+            if (isHovered && !isTouchDevice.current) {
+              if (mode === 'atlas') {
+                fillColor = '#0284c7';
+                strokeColor = '#ffffff';
+                strokeWidth = 1.3 / Math.sqrt(scale);
+              } else {
+                // In quiz mode: subtle border highlight only, do not color country!
+                strokeColor = '#94a3b8';
+                strokeWidth = 1.2 / Math.sqrt(scale);
+              }
             }
 
             if (isHighlighted) {
@@ -304,7 +317,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 stroke={strokeColor}
                 strokeWidth={strokeWidth}
                 className="transition-colors duration-150 outline-none cursor-pointer"
-                onMouseEnter={() => country && setHoveredCountry(country)}
+                onMouseEnter={() => {
+                  if (!isTouchDevice.current && country) {
+                    setHoveredCountry(country);
+                  }
+                }}
                 onMouseLeave={() => setHoveredCountry(null)}
                 onClick={(e) => handleCountryClick(id, e)}
               />
@@ -332,7 +349,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
               '470', // Malta
               '702', // Singapore
               '096', // Brunei
-              '44',  // Bahamas
+              '044', // Bahamas
               '064', // Bhutan
               '417', // Kyrgyzstan
             ].includes(id);
@@ -375,14 +392,14 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             }
 
             // 2. Invisible touch hit targets for small countries on mobile:
-            // Allows effortless finger tapping without cluttering the screen or showing random spoiler pins!
+            // Allows effortless finger tapping without cluttering the screen or swallowing neighboring countries
             if (isSmallCountry) {
               return (
                 <circle
                   key={`touch-${id}`}
                   cx={ptX}
                   cy={ptY}
-                  r={Math.max(24 / Math.sqrt(scale), 14)}
+                  r={Math.max(12 / Math.sqrt(scale), 8)}
                   fill="transparent"
                   className="cursor-pointer"
                   onClick={(e) => handleCountryClick(id, e)}

@@ -98,12 +98,8 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
       {/* Top Header */}
       <div className="bg-[#16202c] border border-slate-750 rounded-2xl p-4 sm:p-5 shadow-md flex items-center justify-between">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-400 uppercase tracking-wider mb-1">
-            <TrendingUp className="w-3.5 h-3.5 text-sky-400" />
-            Tableau de Bord Personnel
-          </div>
           <h1 className="text-2xl sm:text-3xl font-black text-white">
-            Statistiques Détaillées
+            Statistiques
           </h1>
         </div>
         <div className="text-right">
@@ -179,7 +175,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
         <div className="bg-[#1c2938] border border-[#2e4056] rounded-2xl p-4 sm:p-5 shadow-md">
           <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider mb-3">
             <AlertTriangle className="w-4 h-4 text-rose-400" />
-            <span>Top 5 des Pays les Plus Ratés</span>
+            <span>Pays à réviser</span>
           </div>
 
           {failedList.length > 0 ? (
@@ -217,7 +213,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ stats, onPracticeCountry }
           ) : (
             <div className="text-center py-8 text-slate-400 text-xs">
               <Sparkles className="w-8 h-8 mx-auto mb-2 text-emerald-400 opacity-80" />
-              <span>Aucune erreur enregistrée pour l'instant ! Tout roule 🎯</span>
+              <span>Aucune erreur enregistrée</span>
             </div>
           )}
         </div>

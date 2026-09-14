@@ -42,42 +42,36 @@ export const Navbar: React.FC<NavbarProps> = ({
   const gameModes: {
     mode: GameMode;
     label: string;
-    description: string;
     icon: React.ReactNode;
     emoji: string;
   }[] = [
     {
       mode: 'map',
       label: 'Trouve sur la carte',
-      description: 'Localise le pays demandé sur la mappemonde',
       icon: <Compass className="w-4 h-4 text-sky-400" />,
       emoji: '🗺️',
     },
     {
       mode: 'flags',
       label: 'Drapeaux du Monde',
-      description: 'Devine le pays correspondant au drapeau',
       icon: <Flag className="w-4 h-4 text-emerald-400" />,
       emoji: '🏴',
     },
     {
       mode: 'capitals',
       label: 'Capitales',
-      description: 'Associe les villes et capitales aux nations',
       icon: <Landmark className="w-4 h-4 text-amber-400" />,
       emoji: '🏛️',
     },
     {
       mode: 'stats',
-      label: 'Statistiques & Progrès',
-      description: 'Précision, vitesse et historique XP',
+      label: 'Statistiques',
       icon: <BarChart3 className="w-4 h-4 text-rose-400" />,
       emoji: '📊',
     },
     {
       mode: 'atlas',
       label: 'Atlas du Monde',
-      description: 'Exploration libre et recherche de pays',
       icon: <Globe className="w-4 h-4 text-indigo-400" />,
       emoji: '📖',
     },
@@ -238,14 +232,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                       >
                         <div className="flex items-center gap-2.5">
                           <span className="text-xl shrink-0">{item.emoji}</span>
-                          <div>
-                            <div className="font-bold text-xs sm:text-sm text-white">
-                              {item.label}
-                            </div>
-                            <div className="text-[10px] text-slate-400 font-normal line-clamp-1">
-                              {item.description}
-                            </div>
-                          </div>
+                          <span className="font-bold text-xs sm:text-sm text-white">
+                            {item.label}
+                          </span>
                         </div>
 
                         {isSelected && (
