@@ -18,6 +18,7 @@ import { PassportView } from './components/PassportView';
 import { FunFactModal } from './components/FunFactModal';
 import { BackupModal } from './components/BackupModal';
 import { AccountModal } from './components/AccountModal';
+import { InstallModal } from './components/InstallModal';
 
 export const App: React.FC = () => {
   const [currentUsername, setCurrentUsername] = useState<string>(() => getActiveUsername());
@@ -25,6 +26,25 @@ export const App: React.FC = () => {
   const [mode, setMode] = useState<GameMode>('map');
   const [backupOpen, setBackupOpen] = useState<boolean>(false);
   const [accountOpen, setAccountOpen] = useState<boolean>(false);
+  const [installOpen, setInstallOpen] = useState<boolean>(false);
+
+  // Landscape orientation detection (StudyGe full horizontal layout)
+  const [isLandscape, setIsLandscape] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth > window.innerHeight && window.innerHeight < 650;
+  });
+
+  useEffect(() => {
+    const handleOrientation = () => {
+      setIsLandscape(window.innerWidth > window.innerHeight && window.innerHeight < 650);
+    };
+    window.addEventListener('resize', handleOrientation);
+    window.addEventListener('orientationchange', handleOrientation);
+    return () => {
+      window.removeEventListener('resize', handleOrientation);
+      window.removeEventListener('orientationchange', handleOrientation);
+    };
+  }, []);
 
   // Active quiz state
   const [targetCountry, setTargetCountry] = useState<Country>(() => {
@@ -49,7 +69,6 @@ export const App: React.FC = () => {
 
   // Generate question for flags and capitals
   const generateQuestion = useCallback((excludeCountryId?: string) => {
-    // Pick target: 60% chance to pick an unvisited country, or completely random
     const unvisited = COUNTRIES.filter((c) => !stats.stamps[c.id]);
     let target: Country;
     if (unvisited.length > 0 && Math.random() < 0.6) {
@@ -71,37 +90,42 @@ export const App: React.FC = () => {
     setOptions(allFour);
   }, [stats.stamps]);
 
-  // Generate question on mode change or first mount
+  // Initial question setup
   useEffect(() => {
     generateQuestion();
-  }, [mode, generateQuestion]);
+  }, [generateQuestion]);
 
-  // Handle correct response from any mode
+  // Handle correct answer
   const handleSuccess = (country: Country, bonusXp = 0) => {
-    const result = recordAnswer(stats, true, country.id, bonusXp);
-    setStats(result.newStats);
+    const isFirstTime = !stats.stamps[country.id];
+    const { newStats, leveledUp } = recordAnswer(stats, true, country.id, bonusXp);
+    setStats(newStats);
+    saveUserStats(newStats, currentUsername);
 
-    const levelInfo = getLevelInfo(result.newStats.xp);
+    const newLevelInfo = getLevelInfo(newStats.xp);
+
     setModalEarnedXp(15 + bonusXp);
-    setModalLeveledUp(result.leveledUp);
-    setModalNewLevelTitle(levelInfo.title);
-    setModalIsFirstDiscovery(result.newStamp);
+    setModalLeveledUp(leveledUp);
+    setModalNewLevelTitle(newLevelInfo.title);
+    setModalIsFirstDiscovery(isFirstTime);
     setModalOpen(true);
   };
 
-  // Multiple-choice answer handler
+  // Handle multiple choice answer
   const handleMultipleChoiceAnswer = (selected: Country) => {
     if (selected.id === targetCountry.id) {
-      handleSuccess(targetCountry);
+      handleSuccess(selected);
     } else {
-      const result = recordAnswer(stats, false, targetCountry.id);
-      setStats(result.newStats);
+      sound.playWrong();
+      const { newStats } = recordAnswer(stats, false, targetCountry.id, 0);
+      setStats(newStats);
+      saveUserStats(newStats, currentUsername);
     }
   };
 
   // Map click guess handler
   const handleMapGuessed = (guessedCountry: Country) => {
-    handleSuccess(guessedCountry, 10); // Bonus +10 XP for finding directly on map!
+    handleSuccess(guessedCountry, 10);
   };
 
   // Modal next action
@@ -123,8 +147,8 @@ export const App: React.FC = () => {
   const visitedCountryIds = Object.keys(stats.stamps);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Sticky Navigation with Account Switcher & Liquid Glass Dropdown */}
+    <div className="min-h-screen flex flex-col bg-[#0b1626] text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
+      {/* Sticky Navigation with Account Switcher & Mode Selector */}
       <Navbar
         currentMode={mode}
         onSelectMode={setMode}
@@ -133,15 +157,20 @@ export const App: React.FC = () => {
         onToggleSound={handleToggleSound}
         onOpenBackup={() => setBackupOpen(true)}
         onOpenAccount={() => setAccountOpen(true)}
+        onOpenInstall={() => setInstallOpen(true)}
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-6 py-3 sm:py-6 flex flex-col">
+      <main className={`flex-1 w-full max-w-6xl mx-auto flex flex-col ${
+        isLandscape && mode === 'map' ? 'px-2 py-1' : 'px-3 sm:px-6 py-2.5 sm:py-5'
+      }`}>
         {mode === 'map' && (
           <MapQuiz
             targetCountry={targetCountry}
             onCountryGuessed={handleMapGuessed}
             visitedCountryIds={visitedCountryIds}
+            isLandscape={isLandscape}
+            onOpenInstall={() => setInstallOpen(true)}
           />
         )}
 
@@ -210,6 +239,12 @@ export const App: React.FC = () => {
           setStats(newStats);
           saveUserStats(newStats, currentUsername);
         }}
+      />
+
+      {/* Install PWA Guide Modal */}
+      <InstallModal
+        isOpen={installOpen}
+        onClose={() => setInstallOpen(false)}
       />
     </div>
   );

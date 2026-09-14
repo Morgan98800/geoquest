@@ -184,7 +184,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full overflow-hidden select-none bg-gradient-to-b from-slate-900 via-sky-950 to-slate-900 rounded-3xl border border-sky-800/40 shadow-2xl touch-none ${className}`}
+      className={`relative w-full overflow-hidden select-none bg-[#091422] rounded-2xl sm:rounded-3xl border border-slate-800 shadow-xl touch-none ${className}`}
       style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -199,13 +199,13 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       onWheel={handleWheel}
     >
       {/* Map Floating Controls - thumb-friendly */}
-      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 flex flex-col gap-1 sm:gap-1.5 bg-slate-950/80 backdrop-blur-xl p-1 sm:p-1.5 rounded-2xl border border-white/15 shadow-xl">
+      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 flex flex-col gap-1 sm:gap-1.5 bg-slate-900/90 backdrop-blur-md p-1 sm:p-1.5 rounded-2xl border border-slate-750 shadow-lg">
         <button
           onClick={() => {
             sound.playClick();
             handleZoom(1.35);
           }}
-          className="p-2 rounded-xl hover:bg-white/10 active:bg-sky-500/25 text-sky-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
+          className="p-2 rounded-xl hover:bg-slate-800 active:bg-sky-600/30 text-slate-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
           title="Zoomer (+)"
           aria-label="Zoomer"
         >
@@ -216,7 +216,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             sound.playClick();
             handleZoom(0.75);
           }}
-          className="p-2 rounded-xl hover:bg-white/10 active:bg-sky-500/25 text-sky-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
+          className="p-2 rounded-xl hover:bg-slate-800 active:bg-sky-600/30 text-slate-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
           title="Dézoomer (-)"
           aria-label="Dézoomer"
         >
@@ -224,7 +224,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         </button>
         <button
           onClick={handleReset}
-          className="p-2 rounded-xl hover:bg-white/10 active:bg-sky-500/25 text-sky-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
+          className="p-2 rounded-xl hover:bg-slate-800 active:bg-sky-600/30 text-slate-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
           title="Réinitialiser la vue"
           aria-label="Réinitialiser la vue"
         >
@@ -233,7 +233,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         {targetCountry && (
           <button
             onClick={centerOnTarget}
-            className="p-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 active:bg-amber-500/40 text-amber-300 transition-all active:scale-90 border border-amber-500/40 shadow-md shadow-amber-500/20 touch-manipulation cursor-pointer"
+            className="p-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 active:bg-amber-500/40 text-amber-300 transition-all active:scale-90 border border-amber-500/40 shadow-sm touch-manipulation cursor-pointer"
             title="Indice : Cadrer sur le pays"
             aria-label="Cadrer sur le pays"
           >
@@ -245,7 +245,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       {/* Floating Hover Tooltip (desktop/tablet) */}
       {hoveredCountry && (
         <div
-          className="pointer-events-none hidden sm:flex absolute z-30 px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-sky-400/30 text-xs font-semibold shadow-xl text-white transform -translate-x-1/2 -translate-y-full mb-2 whitespace-nowrap transition-transform duration-75 items-center gap-2"
+          className="pointer-events-none hidden sm:flex absolute z-30 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-semibold shadow-xl text-white transform -translate-x-1/2 -translate-y-full mb-2 whitespace-nowrap transition-transform duration-75 items-center gap-2"
           style={{
             left: `${mousePos.x}px`,
             top: `${mousePos.y - 12}px`,
@@ -268,12 +268,12 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         preserveAspectRatio="xMidYMid meet"
       >
         <defs>
-          <radialGradient id="oceanGlow" cx="50%" cy="50%" r="65%">
-            <stop offset="0%" stopColor="#0c2340" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#071526" stopOpacity="0.95" />
+          <radialGradient id="oceanGlow" cx="50%" cy="50%" r="70%">
+            <stop offset="0%" stopColor="#10233b" />
+            <stop offset="100%" stopColor="#081422" />
           </radialGradient>
           <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(56, 189, 248, 0.05)" strokeWidth="1" />
+            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255, 255, 255, 0.03)" strokeWidth="1" />
           </pattern>
         </defs>
 
@@ -296,19 +296,19 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             const isVisited = visitedSet.has(id);
             const isHovered = hoveredCountry?.id === id;
 
-            // Rich contrast colors: slate-blue land on dark ocean
-            let fillColor = '#253c59';
-            let strokeColor = '#3d5a7d';
+            // StudyGe natural cartographic palette
+            let fillColor = '#1f344e';
+            let strokeColor = '#3a5476';
             let strokeWidth = 0.6 / Math.sqrt(scale);
 
             if (isVisited) {
-              fillColor = '#065f46';
-              strokeColor = '#10b981';
+              fillColor = '#0d8058';
+              strokeColor = '#34d399';
             }
 
             if (isHovered) {
-              fillColor = isVisited ? '#047857' : '#0284c7';
-              strokeColor = '#bae6fd';
+              fillColor = isVisited ? '#059669' : '#0284c7';
+              strokeColor = '#e0f2fe';
               strokeWidth = 1.3 / Math.sqrt(scale);
             }
 
