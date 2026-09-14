@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Country } from '../types';
 import { COUNTRIES_BY_ID } from '../data/countries';
 import { worldFeatures, countryPaths, projection, MAP_WIDTH, MAP_HEIGHT } from '../data/worldGeo';
@@ -15,6 +15,7 @@ interface InteractiveMapProps {
     countryId: string;
     isCorrect: boolean;
   } | null;
+  focusTrigger?: number;
   className?: string;
 }
 
@@ -25,6 +26,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   visitedCountryIds = [],
   mode = 'atlas',
   feedbackState,
+  focusTrigger = 0,
   className = '',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -72,12 +74,26 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setPosition({ x: newX, y: newY });
   }, []);
 
-  const centerOnTarget = () => {
+  const centerOnTarget = useCallback(() => {
     if (targetCountry) {
       sound.playSparkle();
       centerOnCoordinates(targetCountry.coordinates, 3.2);
     }
-  };
+  }, [targetCountry, centerOnCoordinates]);
+
+  // Center when external focus trigger changes
+  useEffect(() => {
+    if (focusTrigger > 0 && targetCountry) {
+      centerOnCoordinates(targetCountry.coordinates, 3.2);
+    }
+  }, [focusTrigger, targetCountry, centerOnCoordinates]);
+
+  // Auto-center on target in Atlas mode when user selects a country
+  useEffect(() => {
+    if (mode === 'atlas' && targetCountry) {
+      centerOnCoordinates(targetCountry.coordinates, 2.8);
+    }
+  }, [targetCountry?.id, mode, centerOnCoordinates]);
 
   // Mouse Dragging
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -183,45 +199,45 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       onWheel={handleWheel}
     >
       {/* Map Floating Controls - thumb-friendly */}
-      <div className="absolute top-3 right-3 z-20 flex flex-col gap-1.5 sm:gap-2 bg-slate-900/85 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 shadow-lg">
+      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 flex flex-col gap-1 sm:gap-1.5 bg-slate-950/80 backdrop-blur-xl p-1 sm:p-1.5 rounded-2xl border border-white/15 shadow-xl">
         <button
           onClick={() => {
             sound.playClick();
             handleZoom(1.35);
           }}
-          className="p-2 sm:p-2.5 rounded-xl hover:bg-white/10 active:bg-sky-500/20 text-sky-200 hover:text-white transition-all active:scale-90"
+          className="p-2 rounded-xl hover:bg-white/10 active:bg-sky-500/25 text-sky-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
           title="Zoomer (+)"
           aria-label="Zoomer"
         >
-          <ZoomIn className="w-5 h-5" />
+          <ZoomIn className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
         <button
           onClick={() => {
             sound.playClick();
             handleZoom(0.75);
           }}
-          className="p-2 sm:p-2.5 rounded-xl hover:bg-white/10 active:bg-sky-500/20 text-sky-200 hover:text-white transition-all active:scale-90"
+          className="p-2 rounded-xl hover:bg-white/10 active:bg-sky-500/25 text-sky-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
           title="Dézoomer (-)"
           aria-label="Dézoomer"
         >
-          <ZoomOut className="w-5 h-5" />
+          <ZoomOut className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
         <button
           onClick={handleReset}
-          className="p-2 sm:p-2.5 rounded-xl hover:bg-white/10 active:bg-sky-500/20 text-sky-200 hover:text-white transition-all active:scale-90"
+          className="p-2 rounded-xl hover:bg-white/10 active:bg-sky-500/25 text-sky-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
           title="Réinitialiser la vue"
           aria-label="Réinitialiser la vue"
         >
-          <RotateCcw className="w-5 h-5" />
+          <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
         {targetCountry && (
           <button
             onClick={centerOnTarget}
-            className="p-2 sm:p-2.5 rounded-xl bg-amber-500/25 hover:bg-amber-500/35 active:bg-amber-500/40 text-amber-300 transition-all active:scale-90 border border-amber-500/40 shadow-md shadow-amber-500/20"
-            title="Indice : Cadrer sur la région du pays"
-            aria-label="Cadrer sur la région"
+            className="p-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 active:bg-amber-500/40 text-amber-300 transition-all active:scale-90 border border-amber-500/40 shadow-md shadow-amber-500/20 touch-manipulation cursor-pointer"
+            title="Indice : Cadrer sur le pays"
+            aria-label="Cadrer sur le pays"
           >
-            <Compass className="w-5 h-5 animate-pulse" />
+            <Compass className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse text-amber-400" />
           </button>
         )}
       </div>
@@ -248,16 +264,16 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       {/* SVG Canvas */}
       <svg
         viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
-        className="w-full h-full block"
-        style={{ minHeight: '340px', maxHeight: '680px' }}
+        className="w-full h-full block select-none"
+        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
-          <radialGradient id="oceanGlow" cx="50%" cy="50%" r="60%">
-            <stop offset="0%" stopColor="#0369a1" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#082f49" stopOpacity="0.05" />
+          <radialGradient id="oceanGlow" cx="50%" cy="50%" r="65%">
+            <stop offset="0%" stopColor="#0c2340" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#071526" stopOpacity="0.95" />
           </radialGradient>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(56, 189, 248, 0.04)" strokeWidth="1" />
+          <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(56, 189, 248, 0.05)" strokeWidth="1" />
           </pattern>
         </defs>
 
@@ -265,10 +281,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#grid)" />
 
         <g
+          transform={`translate(${position.x}, ${position.y}) translate(${MAP_WIDTH / 2}, ${MAP_HEIGHT / 2}) scale(${scale}) translate(${-MAP_WIDTH / 2}, ${-MAP_HEIGHT / 2})`}
           style={{
-            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-            transformOrigin: 'center center',
-            transition: isDragging ? 'none' : 'transform 0.25s cubic-bezier(0.2, 0, 0, 1)',
+            transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.2, 0, 0, 1)',
           }}
         >
           {worldFeatures.map((feature) => {
@@ -281,9 +296,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             const isVisited = visitedSet.has(id);
             const isHovered = hoveredCountry?.id === id;
 
-            let fillColor = '#1e293b';
-            let strokeColor = '#334155';
-            let strokeWidth = 0.5 / Math.sqrt(scale);
+            // Rich contrast colors: slate-blue land on dark ocean
+            let fillColor = '#253c59';
+            let strokeColor = '#3d5a7d';
+            let strokeWidth = 0.6 / Math.sqrt(scale);
 
             if (isVisited) {
               fillColor = '#065f46';
@@ -291,26 +307,26 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             }
 
             if (isHovered) {
-              fillColor = isVisited ? '#047857' : '#38bdf8';
-              strokeColor = '#f8fafc';
-              strokeWidth = 1.2 / Math.sqrt(scale);
+              fillColor = isVisited ? '#047857' : '#0284c7';
+              strokeColor = '#bae6fd';
+              strokeWidth = 1.3 / Math.sqrt(scale);
             }
 
             if (isHighlighted) {
-              fillColor = '#f59e0b';
-              strokeColor = '#ffffff';
-              strokeWidth = 1.5 / Math.sqrt(scale);
+              fillColor = '#d97706';
+              strokeColor = '#fef08a';
+              strokeWidth = 1.8 / Math.sqrt(scale);
             }
 
             if (feedbackState && feedbackState.countryId === id) {
               if (feedbackState.isCorrect) {
-                fillColor = '#22c55e';
-                strokeColor = '#ffffff';
-                strokeWidth = 2 / Math.sqrt(scale);
+                fillColor = '#16a34a';
+                strokeColor = '#86efac';
+                strokeWidth = 2.2 / Math.sqrt(scale);
               } else {
-                fillColor = '#ef4444';
+                fillColor = '#dc2626';
                 strokeColor = '#fca5a5';
-                strokeWidth = 2 / Math.sqrt(scale);
+                strokeWidth = 2.2 / Math.sqrt(scale);
               }
             }
 
@@ -342,7 +358,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             const isHighlighted = highlightedCountryId === id;
             const isVisited = visitedSet.has(id);
 
-            const isSmallCountry = ['275', '158', '422', '196', '626', '242'].includes(id);
+            // Small countries / islands that need visual pins
+            const isSmallCountry = ['275', '158', '422', '196', '626', '242', '470', '702', '44'].includes(id);
 
             if (isTarget || isHighlighted || (scale > 2.0 && isSmallCountry)) {
               return (
@@ -352,27 +369,34 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                   onClick={(e) => handleCountryClick(id, e)}
                   className="cursor-pointer"
                 >
-                  {/* Invisible generous touch hit box for phone fingers */}
+                  {/* Generous touch hit box for phone fingers (56px effective touch diameter) */}
                   <circle
-                    r={22 / Math.sqrt(scale)}
+                    r={28 / Math.sqrt(scale)}
                     fill="transparent"
                   />
-                  {/* Visible pulsing indicator */}
+                  {/* Glowing pulsing beacon */}
                   <circle
-                    r={Math.max(6 / Math.sqrt(scale), 4)}
+                    r={12 / Math.sqrt(scale)}
+                    fill="none"
+                    stroke={isTarget ? '#fbbf24' : isVisited ? '#34d399' : '#38bdf8'}
+                    strokeWidth={1.5 / Math.sqrt(scale)}
+                    className="animate-ping"
+                    opacity={0.7}
+                  />
+                  <circle
+                    r={Math.max(5.5 / Math.sqrt(scale), 3.5)}
                     fill={isTarget ? '#f59e0b' : isVisited ? '#10b981' : '#38bdf8'}
                     stroke="#ffffff"
                     strokeWidth={1.5 / Math.sqrt(scale)}
-                    className="animate-pulse"
                   />
-                  {scale > 2.6 && (
+                  {scale > 2.5 && (
                     <text
                       y={-10 / Math.sqrt(scale)}
                       textAnchor="middle"
                       fill="#ffffff"
-                      fontSize={Math.max(8 / Math.sqrt(scale), 5)}
+                      fontSize={Math.max(8.5 / Math.sqrt(scale), 5.5)}
                       fontWeight="bold"
-                      className="drop-shadow-md pointer-events-none select-none"
+                      className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] pointer-events-none select-none"
                     >
                       {country.flag} {country.name}
                     </text>

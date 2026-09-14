@@ -97,7 +97,7 @@ export const AtlasView: React.FC<AtlasViewProps> = ({ visitedCountryIds }) => {
             highlightedCountryId={selectedCountry?.id}
             onCountryClick={handleSelect}
             visitedCountryIds={visitedCountryIds}
-            className="h-[360px] sm:h-[520px]"
+            className="w-full aspect-[16/10] sm:aspect-[16/9] min-h-[260px] max-h-[560px]"
           />
         </div>
 
