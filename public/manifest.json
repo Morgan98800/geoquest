@@ -1,12 +1,12 @@
 {
-  "short_name": "GeoQuest",
-  "name": "GeoQuest - Apprends la Géographie",
-  "description": "Apprends la géographie du monde en t'amusant : pays, drapeaux, capitales et anecdotes insolites !",
+  "short_name": "Geo-PD",
+  "name": "Geo-PD",
+  "description": "Jeu de géographie mondiale : pays, drapeaux, capitales et anecdotes !",
   "start_url": "/",
   "id": "/",
   "display": "standalone",
-  "background_color": "#0d1b2a",
-  "theme_color": "#0d1b2a",
+  "background_color": "#16202c",
+  "theme_color": "#16202c",
   "orientation": "any",
   "categories": ["education", "games"],
   "icons": [

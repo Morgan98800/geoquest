@@ -13,6 +13,7 @@ commandOrigin = "config"
 command = "npm run build"
 
 [build.environment]
+NETLIFY_HUD = "false"
 
 [build.processing]
 

@@ -18,7 +18,6 @@ import { PassportView } from './components/PassportView';
 import { FunFactModal } from './components/FunFactModal';
 import { BackupModal } from './components/BackupModal';
 import { AccountModal } from './components/AccountModal';
-import { InstallModal } from './components/InstallModal';
 
 export const App: React.FC = () => {
   const [currentUsername, setCurrentUsername] = useState<string>(() => getActiveUsername());
@@ -26,7 +25,6 @@ export const App: React.FC = () => {
   const [mode, setMode] = useState<GameMode>('map');
   const [backupOpen, setBackupOpen] = useState<boolean>(false);
   const [accountOpen, setAccountOpen] = useState<boolean>(false);
-  const [installOpen, setInstallOpen] = useState<boolean>(false);
 
   // Landscape orientation detection (StudyGe full horizontal layout)
   const [isLandscape, setIsLandscape] = useState<boolean>(() => {
@@ -48,7 +46,6 @@ export const App: React.FC = () => {
 
   // Active quiz state
   const [targetCountry, setTargetCountry] = useState<Country>(() => {
-    // Initial priority to Palestine or Taiwan so they appear early in the experience
     return COUNTRIES_BY_ID['275'] || COUNTRIES[0];
   });
   const [options, setOptions] = useState<Country[]>([]);
@@ -134,35 +131,23 @@ export const App: React.FC = () => {
     generateQuestion(targetCountry.id);
   };
 
-  // Sound toggle handler
-  const handleToggleSound = () => {
-    const newSound = !stats.soundEnabled;
-    const updated = { ...stats, soundEnabled: newSound };
-    sound.setEnabled(newSound);
-    if (newSound) sound.playClick();
-    setStats(updated);
-    saveUserStats(updated, currentUsername);
-  };
-
   const visitedCountryIds = Object.keys(stats.stamps);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0b1626] text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Sticky Navigation with Account Switcher & Mode Selector */}
+    <div className="min-h-screen flex flex-col bg-[#16202c] text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
+      {/* Navigation Bar - Hidden in landscape map mode so map is 100% full screen */}
       <Navbar
         currentMode={mode}
         onSelectMode={setMode}
         stats={stats}
         currentUsername={currentUsername}
-        onToggleSound={handleToggleSound}
-        onOpenBackup={() => setBackupOpen(true)}
         onOpenAccount={() => setAccountOpen(true)}
-        onOpenInstall={() => setInstallOpen(true)}
+        className={isLandscape && mode === 'map' ? 'hidden' : ''}
       />
 
       {/* Main Content Area */}
-      <main className={`flex-1 w-full max-w-6xl mx-auto flex flex-col ${
-        isLandscape && mode === 'map' ? 'px-2 py-1' : 'px-3 sm:px-6 py-2.5 sm:py-5'
+      <main className={`flex-1 w-full mx-auto flex flex-col ${
+        isLandscape && mode === 'map' ? 'p-0 max-w-none' : 'max-w-6xl px-3 sm:px-6 py-2.5 sm:py-5'
       }`}>
         {mode === 'map' && (
           <MapQuiz
@@ -170,7 +155,6 @@ export const App: React.FC = () => {
             onCountryGuessed={handleMapGuessed}
             visitedCountryIds={visitedCountryIds}
             isLandscape={isLandscape}
-            onOpenInstall={() => setInstallOpen(true)}
           />
         )}
 
@@ -239,12 +223,6 @@ export const App: React.FC = () => {
           setStats(newStats);
           saveUserStats(newStats, currentUsername);
         }}
-      />
-
-      {/* Install PWA Guide Modal */}
-      <InstallModal
-        isOpen={installOpen}
-        onClose={() => setInstallOpen(false)}
       />
     </div>
   );

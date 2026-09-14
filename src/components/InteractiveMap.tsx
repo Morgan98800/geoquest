@@ -2,7 +2,6 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Country } from '../types';
 import { COUNTRIES_BY_ID } from '../data/countries';
 import { worldFeatures, countryPaths, projection, MAP_WIDTH, MAP_HEIGHT } from '../data/worldGeo';
-import { ZoomIn, ZoomOut, RotateCcw, Compass } from 'lucide-react';
 import { sound } from '../utils/audio';
 
 interface InteractiveMapProps {
@@ -84,9 +83,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   // Center when external focus trigger changes
   useEffect(() => {
     if (focusTrigger > 0 && targetCountry) {
-      centerOnCoordinates(targetCountry.coordinates, 3.2);
+      centerOnTarget();
     }
-  }, [focusTrigger, targetCountry, centerOnCoordinates]);
+  }, [focusTrigger, targetCountry, centerOnTarget]);
 
   // Auto-center on target in Atlas mode when user selects a country
   useEffect(() => {
@@ -184,7 +183,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full overflow-hidden select-none bg-[#091422] rounded-2xl sm:rounded-3xl border border-slate-800 shadow-xl touch-none ${className}`}
+      className={`relative w-full overflow-hidden select-none bg-[#16202c] rounded-2xl sm:rounded-3xl border border-slate-800/80 shadow-md touch-none ${className}`}
       style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -197,51 +196,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onWheel={handleWheel}
+      onDoubleClick={handleReset}
     >
-      {/* Map Floating Controls - thumb-friendly */}
-      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 flex flex-col gap-1 sm:gap-1.5 bg-slate-900/90 backdrop-blur-md p-1 sm:p-1.5 rounded-2xl border border-slate-750 shadow-lg">
-        <button
-          onClick={() => {
-            sound.playClick();
-            handleZoom(1.35);
-          }}
-          className="p-2 rounded-xl hover:bg-slate-800 active:bg-sky-600/30 text-slate-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
-          title="Zoomer (+)"
-          aria-label="Zoomer"
-        >
-          <ZoomIn className="w-4 h-4 sm:w-5 sm:h-5" />
-        </button>
-        <button
-          onClick={() => {
-            sound.playClick();
-            handleZoom(0.75);
-          }}
-          className="p-2 rounded-xl hover:bg-slate-800 active:bg-sky-600/30 text-slate-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
-          title="Dézoomer (-)"
-          aria-label="Dézoomer"
-        >
-          <ZoomOut className="w-4 h-4 sm:w-5 sm:h-5" />
-        </button>
-        <button
-          onClick={handleReset}
-          className="p-2 rounded-xl hover:bg-slate-800 active:bg-sky-600/30 text-slate-200 hover:text-white transition-all active:scale-90 touch-manipulation cursor-pointer"
-          title="Réinitialiser la vue"
-          aria-label="Réinitialiser la vue"
-        >
-          <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
-        </button>
-        {targetCountry && (
-          <button
-            onClick={centerOnTarget}
-            className="p-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 active:bg-amber-500/40 text-amber-300 transition-all active:scale-90 border border-amber-500/40 shadow-sm touch-manipulation cursor-pointer"
-            title="Indice : Cadrer sur le pays"
-            aria-label="Cadrer sur le pays"
-          >
-            <Compass className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse text-amber-400" />
-          </button>
-        )}
-      </div>
-
       {/* Floating Hover Tooltip (desktop/tablet) */}
       {hoveredCountry && (
         <div
@@ -268,16 +224,12 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         preserveAspectRatio="xMidYMid meet"
       >
         <defs>
-          <radialGradient id="oceanGlow" cx="50%" cy="50%" r="70%">
-            <stop offset="0%" stopColor="#10233b" />
-            <stop offset="100%" stopColor="#081422" />
-          </radialGradient>
           <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255, 255, 255, 0.03)" strokeWidth="1" />
+            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255, 255, 255, 0.025)" strokeWidth="1" />
           </pattern>
         </defs>
 
-        <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#oceanGlow)" />
+        <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="#16202c" />
         <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#grid)" />
 
         <g
@@ -296,25 +248,25 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             const isVisited = visitedSet.has(id);
             const isHovered = hoveredCountry?.id === id;
 
-            // StudyGe natural cartographic palette
-            let fillColor = '#1f344e';
-            let strokeColor = '#3a5476';
-            let strokeWidth = 0.6 / Math.sqrt(scale);
+            // StudyGe flat tactical palette
+            let fillColor = '#273749';
+            let strokeColor = '#3d5269';
+            let strokeWidth = 0.7 / Math.sqrt(scale);
 
             if (isVisited) {
-              fillColor = '#0d8058';
+              fillColor = '#059669';
               strokeColor = '#34d399';
             }
 
             if (isHovered) {
-              fillColor = isVisited ? '#059669' : '#0284c7';
-              strokeColor = '#e0f2fe';
+              fillColor = isVisited ? '#047857' : '#0284c7';
+              strokeColor = '#ffffff';
               strokeWidth = 1.3 / Math.sqrt(scale);
             }
 
             if (isHighlighted) {
-              fillColor = '#d97706';
-              strokeColor = '#fef08a';
+              fillColor = '#eab308';
+              strokeColor = '#ffffff';
               strokeWidth = 1.8 / Math.sqrt(scale);
             }
 
