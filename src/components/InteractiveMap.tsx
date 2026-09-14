@@ -45,6 +45,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     lastY?: number;
   }>({});
   const isTouchDevice = useRef<boolean>(false);
+  const dragStartCoords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const hasDragged = useRef<boolean>(false);
 
   const visitedSet = new Set(visitedCountryIds);
 
@@ -101,10 +103,16 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     if (e.button !== 0) return;
     setIsDragging(true);
     setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    dragStartCoords.current = { x: e.clientX, y: e.clientY };
+    hasDragged.current = false;
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging) {
+      const dist = Math.hypot(e.clientX - dragStartCoords.current.x, e.clientY - dragStartCoords.current.y);
+      if (dist > 5) {
+        hasDragged.current = true;
+      }
       setPosition({
         x: e.clientX - dragStart.x,
         y: e.clientY - dragStart.y,
@@ -122,6 +130,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    setTimeout(() => {
+      hasDragged.current = false;
+    }, 120);
   };
 
   // Mobile Touch Gestures (Pan & Pinch-to-Zoom)
@@ -130,10 +141,13 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setHoveredCountry(null);
     if (e.touches.length === 1) {
       setIsDragging(true);
+      dragStartCoords.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      hasDragged.current = false;
       touchState.current.lastX = e.touches[0].clientX - position.x;
       touchState.current.lastY = e.touches[0].clientY - position.y;
     } else if (e.touches.length === 2) {
       setIsDragging(false);
+      hasDragged.current = true;
       const t1 = e.touches[0];
       const t2 = e.touches[1];
       touchState.current.initialDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
@@ -147,6 +161,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     if (e.touches.length === 1 && isDragging) {
       const x = e.touches[0].clientX;
       const y = e.touches[0].clientY;
+      const dist = Math.hypot(x - dragStartCoords.current.x, y - dragStartCoords.current.y);
+      if (dist > 6) {
+        hasDragged.current = true;
+      }
       if (touchState.current.lastX !== undefined && touchState.current.lastY !== undefined) {
         setPosition({
           x: x - touchState.current.lastX,
@@ -154,6 +172,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         });
       }
     } else if (e.touches.length === 2 && touchState.current.initialDist && touchState.current.initialScale) {
+      hasDragged.current = true;
       const t1 = e.touches[0];
       const t2 = e.touches[1];
       const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
@@ -168,6 +187,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setHoveredCountry(null);
     touchState.current.initialDist = undefined;
     touchState.current.initialScale = undefined;
+    setTimeout(() => {
+      hasDragged.current = false;
+    }, 120);
   };
 
   // Wheel zoom
@@ -180,6 +202,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   // Country click
   const handleCountryClick = (id: string, e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
+    if (hasDragged.current) {
+      return;
+    }
     const country = COUNTRIES_BY_ID[id];
     if (country && onCountryClick) {
       sound.playClick();

@@ -119,36 +119,7 @@ export const App: React.FC = () => {
     generateQuestion();
   }, [selectedDifficulty, selectedContinent]);
 
-  // Handle correct answer
-  const handleSuccess = (country: Country, bonusXp = 0) => {
-    const isFirstTime = !stats.stamps[country.id];
-    const elapsedMs = Date.now() - questionStartTime;
-    const { newStats, leveledUp } = recordAnswer(
-      stats,
-      true,
-      country.id,
-      bonusXp,
-      elapsedMs,
-      country.continent
-    );
-    setStats(newStats);
-    saveUserStats(newStats, currentUsername);
 
-    if (leveledUp) {
-      hapticLevelUp();
-    } else {
-      hapticSuccess();
-    }
-
-    const newLevelInfo = getLevelInfo(newStats.xp);
-
-    setModalCountry(country);
-    setModalEarnedXp(15 + bonusXp);
-    setModalLeveledUp(leveledUp);
-    setModalNewLevelTitle(newLevelInfo.title);
-    setModalIsFirstDiscovery(isFirstTime);
-    setModalOpen(true);
-  };
 
   // Handle multiple choice answer (StudyGe fast quiz flow without modal desynchronization)
   const handleMultipleChoiceAnswer = (selected: Country) => {
@@ -198,9 +169,35 @@ export const App: React.FC = () => {
     }
   };
 
-  // Map click guess handler
-  const handleMapGuessed = (guessedCountry: Country) => {
-    handleSuccess(guessedCountry, 10);
+  // Map click guess handler (StudyGe direct flow: advance smoothly without blocking modal)
+  const handleMapGuessed = (_guessedCountry: Country) => {
+    const currentTarget = targetCountry;
+    const elapsedMs = Date.now() - questionStartTime;
+    const isFirstTime = !stats.stamps[currentTarget.id];
+    const { newStats, leveledUp } = recordAnswer(
+      stats,
+      true,
+      currentTarget.id,
+      10,
+      elapsedMs,
+      currentTarget.continent
+    );
+    setStats(newStats);
+    saveUserStats(newStats, currentUsername);
+
+    if (leveledUp) {
+      hapticLevelUp();
+      const newLevelInfo = getLevelInfo(newStats.xp);
+      setModalCountry(currentTarget);
+      setModalEarnedXp(25);
+      setModalLeveledUp(true);
+      setModalNewLevelTitle(newLevelInfo.title);
+      setModalIsFirstDiscovery(isFirstTime);
+      setModalOpen(true);
+    } else {
+      hapticSuccess();
+      generateQuestion(currentTarget.id);
+    }
   };
 
   // Modal next action

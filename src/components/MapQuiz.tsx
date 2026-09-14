@@ -56,7 +56,7 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
       sound.playWrong();
       setTimeout(() => {
         setFeedback(null);
-      }, 2000);
+      }, 1200);
     }
   };
 
@@ -190,7 +190,7 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
       {feedback && !feedback.isCorrect && (
         <div className="animate-wiggle bg-rose-600/90 text-white px-3 py-1.5 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2 shadow-lg">
           <AlertCircle className="w-4 h-4 text-white shrink-0" />
-          <span>Tu as cliqué sur {feedback.clickedCountryName}. Réessaie !</span>
+          <span>C'est {feedback.clickedCountryName}. Réessaie !</span>
         </div>
       )}
 
