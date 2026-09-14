@@ -7,14 +7,14 @@ export const DIFFICULTY_LEVELS = [
     level: 1 as DifficultyLevel,
     title: 'Niveau 1',
     label: 'Débutant',
-    description: '45 grands pays incontournables',
+    description: '10 à 45 pays ancres et incontournables',
     badge: '🌱',
   },
   {
     level: 2 as DifficultyLevel,
     title: 'Niveau 2',
     label: 'Intermédiaire',
-    description: '110 pays majeurs et moyens',
+    description: 'Extension progressive (~30 à 110 pays)',
     badge: '🧭',
   },
   {

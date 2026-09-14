@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { GameMode, Country, UserStats, Continent } from './types';
-import { COUNTRIES, COUNTRIES_BY_ID, getRandomCountries } from './data/countries';
-import { DifficultyLevel, getFilteredCountries } from './data/difficulty';
+import { COUNTRIES, COUNTRIES_BY_ID } from './data/countries';
+import { DifficultyLevel } from './data/difficulty';
+import {
+  getProgressivePool,
+  pickWeightedCountry,
+  computeDynamicNoiseLevel,
+  generateSmartDistractors,
+  ANCHOR_COUNTRY_IDS,
+} from './data/progressivePool';
 import {
   loadUserStats,
   recordAnswer,
@@ -53,9 +60,11 @@ export const App: React.FC = () => {
 
   // Active quiz state
   const [targetCountry, setTargetCountry] = useState<Country>(() => {
-    return COUNTRIES_BY_ID['275'] || COUNTRIES[0];
+    return COUNTRIES_BY_ID[ANCHOR_COUNTRY_IDS[0]] || COUNTRIES[0];
   });
   const [options, setOptions] = useState<Country[]>([]);
+  const [consecutiveErrors, setConsecutiveErrors] = useState<number>(0);
+  const recentPicksRef = useRef<string[]>([]);
 
   // Modal celebration state
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -87,39 +96,37 @@ export const App: React.FC = () => {
     }
   };
 
-  // Generate question for flags and capitals respecting StudyGe levels & region
-  const generateQuestion = useCallback((excludeCountryId?: string) => {
-    const pool = getFilteredCountries(COUNTRIES, selectedDifficulty, selectedContinent);
-    const validPool = pool.length > 0 ? pool : COUNTRIES;
+  // Generate question using Progressive Pool (P0) & Smart Distractors (P1) with DDA
+  const generateQuestion = useCallback(
+    (excludeCountryId?: string) => {
+      // 1. Get progressive pool (10 ancres -> 30 consolidés -> 174 mondiaux pondérés)
+      const { pool } = getProgressivePool(stats, COUNTRIES, selectedDifficulty, selectedContinent);
+      const validPool = pool.length > 0 ? pool : COUNTRIES;
 
-    const unvisited = validPool.filter((c) => !stats.stamps[c.id]);
-    let target: Country;
-    if (unvisited.length > 0 && Math.random() < 0.65) {
-      target = unvisited[Math.floor(Math.random() * unvisited.length)];
-    } else {
-      target = validPool[Math.floor(Math.random() * validPool.length)];
-    }
+      // 2. Pick target country using weighted roulette wheel with freshness boost
+      const target = pickWeightedCountry(validPool, stats, excludeCountryId, recentPicksRef.current);
 
-    if (excludeCountryId && target.id === excludeCountryId && validPool.length > 1) {
-      const remaining = validPool.filter((c) => c.id !== excludeCountryId);
-      target = remaining[Math.floor(Math.random() * remaining.length)];
-    }
+      // 3. Track recent picks to avoid immediate repeats
+      recentPicksRef.current = [...recentPicksRef.current.slice(-5), target.id];
 
-    // Pick 3 decoys
-    const decoys = getRandomCountries(3, target.id);
-    const allFour = [target, ...decoys].sort(() => 0.5 - Math.random());
+      // 4. Compute dynamic noise level (DDA based on XP + streak & errors)
+      const noiseLevel = computeDynamicNoiseLevel(stats.xp, stats.currentStreak, consecutiveErrors);
 
-    setTargetCountry(target);
-    setOptions(allFour);
-    setQuestionStartTime(Date.now());
-  }, [stats.stamps, selectedDifficulty, selectedContinent]);
+      // 5. Generate 3 smart distractors according to noise level
+      const distractors = generateSmartDistractors(target, COUNTRIES, noiseLevel);
+      const allFour = [target, ...distractors].sort(() => 0.5 - Math.random());
+
+      setTargetCountry(target);
+      setOptions(allFour);
+      setQuestionStartTime(Date.now());
+    },
+    [stats, selectedDifficulty, selectedContinent, consecutiveErrors]
+  );
 
   // Initial and level/region change question setup
   useEffect(() => {
     generateQuestion();
   }, [selectedDifficulty, selectedContinent]);
-
-
 
   // Handle multiple choice answer (StudyGe fast quiz flow without modal desynchronization)
   const handleMultipleChoiceAnswer = (selected: Country) => {
@@ -128,6 +135,7 @@ export const App: React.FC = () => {
     const isCorrect = selected.id === currentTarget.id;
 
     if (isCorrect) {
+      setConsecutiveErrors(0);
       const isFirstTime = !stats.stamps[currentTarget.id];
       const { newStats, leveledUp } = recordAnswer(
         stats,
@@ -154,6 +162,7 @@ export const App: React.FC = () => {
         generateQuestion(currentTarget.id);
       }
     } else {
+      setConsecutiveErrors((prev) => prev + 1);
       hapticError();
       const { newStats } = recordAnswer(
         stats,
@@ -169,8 +178,9 @@ export const App: React.FC = () => {
     }
   };
 
-  // Map click guess handler (StudyGe direct flow: advance smoothly without blocking modal)
+  // Map click guess handler (correct answer)
   const handleMapGuessed = (_guessedCountry: Country) => {
+    setConsecutiveErrors(0);
     const currentTarget = targetCountry;
     const elapsedMs = Date.now() - questionStartTime;
     const isFirstTime = !stats.stamps[currentTarget.id];
@@ -198,6 +208,23 @@ export const App: React.FC = () => {
       hapticSuccess();
       generateQuestion(currentTarget.id);
     }
+  };
+
+  // Map click wrong handler (DDA error recording)
+  const handleMapWrong = (_clickedCountry: Country) => {
+    setConsecutiveErrors((prev) => prev + 1);
+    hapticError();
+    const elapsedMs = Date.now() - questionStartTime;
+    const { newStats } = recordAnswer(
+      stats,
+      false,
+      targetCountry.id,
+      0,
+      elapsedMs,
+      targetCountry.continent
+    );
+    setStats(newStats);
+    saveUserStats(newStats, currentUsername);
   };
 
   // Modal next action
@@ -236,6 +263,7 @@ export const App: React.FC = () => {
           <MapQuiz
             targetCountry={targetCountry}
             onCountryGuessed={handleMapGuessed}
+            onCountryWrong={handleMapWrong}
             visitedCountryIds={visitedCountryIds}
             countryMastery={countryMastery}
             selectedDifficulty={selectedDifficulty}

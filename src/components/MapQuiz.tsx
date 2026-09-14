@@ -9,6 +9,7 @@ import { sound } from '../utils/audio';
 interface MapQuizProps {
   targetCountry: Country;
   onCountryGuessed: (guessedCountry: Country) => void;
+  onCountryWrong?: (clickedCountry: Country) => void;
   visitedCountryIds: string[];
   countryMastery?: Record<string, number>;
   selectedDifficulty: DifficultyLevel;
@@ -21,6 +22,7 @@ interface MapQuizProps {
 export const MapQuiz: React.FC<MapQuizProps> = ({
   targetCountry,
   onCountryGuessed,
+  onCountryWrong,
   visitedCountryIds,
   countryMastery = {},
   selectedDifficulty,
@@ -62,6 +64,9 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
       }, 1100);
     } else {
       sound.playWrong();
+      if (onCountryWrong) {
+        onCountryWrong(clickedCountry);
+      }
       setTimeout(() => {
         setFeedback(null);
       }, 2200);
