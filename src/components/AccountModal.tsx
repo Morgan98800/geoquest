@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { UserStats } from '../types';
-import { loadUserStats, setActiveUsername, getLevelInfo } from '../utils/storage';
+import { loadUserStats, setActiveUsername, getLevelInfo, resetUserStats } from '../utils/storage';
 import { sound } from '../utils/audio';
-import { User, Sparkles, Check, ArrowRight, X } from 'lucide-react';
+import { User, Sparkles, Check, ArrowRight, X, RotateCcw } from 'lucide-react';
 
 interface AccountModalProps {
   isOpen: boolean;
@@ -18,6 +18,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
   onSwitchUser,
 }) => {
   const [inputName, setInputName] = useState<string>('');
+  const [, setRefreshTick] = useState<number>(0);
 
   if (!isOpen) return null;
 
@@ -30,6 +31,18 @@ export const AccountModal: React.FC<AccountModalProps> = ({
     const loaded = loadUserStats(clean);
     onSwitchUser(clean, loaded);
     onClose();
+  };
+
+  const handleResetUser = (e: React.MouseEvent, name: string) => {
+    e.stopPropagation();
+    if (window.confirm(`Réinitialiser toute l'XP et la progression de ${name} à 0 ?`)) {
+      sound.playClick();
+      const fresh = resetUserStats(name);
+      if (currentUsername.toLowerCase() === name.toLowerCase()) {
+        onSwitchUser(name, fresh);
+      }
+      setRefreshTick((t) => t + 1);
+    }
   };
 
   const handleCustomSubmit = (e: React.FormEvent) => {
@@ -84,10 +97,10 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                 : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-slate-200'
             }`}
           >
-            <div className="flex items-center gap-3">
-              <div className="text-3xl select-none">👑</div>
-              <div>
-                <div className="font-extrabold text-sm text-white flex items-center gap-1.5">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="text-3xl select-none shrink-0">👑</div>
+              <div className="min-w-0">
+                <div className="font-extrabold text-sm text-white flex items-center gap-1.5 truncate">
                   <span>MathildeLPB</span>
                   {currentUsername.toLowerCase() === 'mathildelpb' && (
                     <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black">
@@ -95,19 +108,30 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                     </span>
                   )}
                 </div>
-                <div className="text-xs text-slate-300 mt-0.5">
-                  Niv. {mathildeLevel.level} • {mathildeStats.xp} XP • {Object.keys(mathildeStats.stamps).length} pays découverts
+                <div className="text-xs text-slate-300 mt-0.5 truncate">
+                  Niv. {mathildeLevel.level} • {mathildeStats.xp} XP • {Object.keys(mathildeStats.stamps).length} pays
                 </div>
               </div>
             </div>
 
-            {currentUsername.toLowerCase() === 'mathildelpb' ? (
-              <div className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center shrink-0">
-                <Check className="w-4 h-4 stroke-[3]" />
-              </div>
-            ) : (
-              <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white" />
-            )}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={(e) => handleResetUser(e, 'MathildeLPB')}
+                className="p-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition-all cursor-pointer active:scale-90"
+                title="Réinitialiser l'XP et la progression de MathildeLPB à 0"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+
+              {currentUsername.toLowerCase() === 'mathildelpb' ? (
+                <div className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center shrink-0">
+                  <Check className="w-4 h-4 stroke-[3]" />
+                </div>
+              ) : (
+                <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white" />
+              )}
+            </div>
           </div>
 
           {/* Morgan Card */}
@@ -119,10 +143,10 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                 : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-slate-200'
             }`}
           >
-            <div className="flex items-center gap-3">
-              <div className="text-3xl select-none">🧭</div>
-              <div>
-                <div className="font-extrabold text-sm text-white flex items-center gap-1.5">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="text-3xl select-none shrink-0">🧭</div>
+              <div className="min-w-0">
+                <div className="font-extrabold text-sm text-white flex items-center gap-1.5 truncate">
                   <span>Morgan</span>
                   {currentUsername.toLowerCase() === 'morgan' && (
                     <span className="text-[10px] px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 font-black">
@@ -130,19 +154,30 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                     </span>
                   )}
                 </div>
-                <div className="text-xs text-slate-300 mt-0.5">
-                  Niv. {morganLevel.level} • {morganStats.xp} XP • {Object.keys(morganStats.stamps).length} pays découverts
+                <div className="text-xs text-slate-300 mt-0.5 truncate">
+                  Niv. {morganLevel.level} • {morganStats.xp} XP • {Object.keys(morganStats.stamps).length} pays
                 </div>
               </div>
             </div>
 
-            {currentUsername.toLowerCase() === 'morgan' ? (
-              <div className="w-6 h-6 rounded-full bg-sky-500 text-slate-950 flex items-center justify-center shrink-0">
-                <Check className="w-4 h-4 stroke-[3]" />
-              </div>
-            ) : (
-              <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white" />
-            )}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={(e) => handleResetUser(e, 'Morgan')}
+                className="p-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition-all cursor-pointer active:scale-90"
+                title="Réinitialiser l'XP et la progression de Morgan à 0"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+
+              {currentUsername.toLowerCase() === 'morgan' ? (
+                <div className="w-6 h-6 rounded-full bg-sky-500 text-slate-950 flex items-center justify-center shrink-0">
+                  <Check className="w-4 h-4 stroke-[3]" />
+                </div>
+              ) : (
+                <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white" />
+              )}
+            </div>
           </div>
         </div>
 

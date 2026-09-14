@@ -1,8 +1,18 @@
 import { UserStats, DailyRewardDay, Continent } from '../types';
 import { sound } from './audio';
 
-const ACTIVE_USER_STORAGE_KEY = 'geoquest_active_username_v1';
-const LEGACY_STORAGE_KEY = 'geoquest_user_stats_v1';
+const ACTIVE_USER_STORAGE_KEY = 'geoquest_active_username_v2';
+const LEGACY_STORAGE_KEY = 'geoquest_user_stats_v2';
+
+// Explicit cleanup of legacy stats to reset Morgan & Mathilde to 0 XP
+if (typeof window !== 'undefined') {
+  try {
+    localStorage.removeItem('geoquest_account_mathildelpb_v1');
+    localStorage.removeItem('geoquest_account_morgan_v1');
+    localStorage.removeItem('geoquest_user_stats_v1');
+    localStorage.removeItem('geoquest_active_username_v1');
+  } catch {}
+}
 
 export const DEFAULT_ACCOUNTS = ['MathildeLPB', 'Morgan'];
 
@@ -45,6 +55,13 @@ export const createDefaultStats = (username: string = 'MathildeLPB'): UserStats 
 
 export const DEFAULT_STATS = createDefaultStats('MathildeLPB');
 
+export function resetUserStats(username: string): UserStats {
+  const clean = username.trim() || 'MathildeLPB';
+  const fresh = createDefaultStats(clean);
+  saveUserStats(fresh, clean);
+  return fresh;
+}
+
 export function getActiveUsername(): string {
   try {
     const saved = localStorage.getItem(ACTIVE_USER_STORAGE_KEY);
@@ -64,7 +81,7 @@ export function setActiveUsername(username: string): void {
 
 function getUserStorageKey(username: string): string {
   const normalized = username.trim().toLowerCase() || 'mathildelpb';
-  return `geoquest_account_${normalized}_v1`;
+  return `geoquest_account_${normalized}_v2`;
 }
 
 export function getTodayDateString(): string {
