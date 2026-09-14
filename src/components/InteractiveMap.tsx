@@ -20,13 +20,14 @@ interface InteractiveMapProps {
   className?: string;
 }
 
-// Clamping boundary to stop infinite void panning
+// Clamping boundary to stop infinite void panning while allowing generous freedom to wander
 const clampPosition = (x: number, y: number, currentScale: number) => {
-  if (currentScale <= 1.01) {
-    return { x: 0, y: 0 };
-  }
-  const maxOffsetX = ((currentScale - 1) * MAP_WIDTH) / 2;
-  const maxOffsetY = ((currentScale - 1) * MAP_HEIGHT) / 2;
+  const effectiveScale = Math.max(currentScale, 1);
+  // Base margin allows wandering freely across the world map even at zoom 1
+  const baseMarginX = 450;
+  const baseMarginY = 280;
+  const maxOffsetX = baseMarginX + ((effectiveScale - 1) * MAP_WIDTH) / 1.6;
+  const maxOffsetY = baseMarginY + ((effectiveScale - 1) * MAP_HEIGHT) / 1.6;
   return {
     x: Math.max(-maxOffsetX, Math.min(maxOffsetX, x)),
     y: Math.max(-maxOffsetY, Math.min(maxOffsetY, y)),
@@ -48,43 +49,70 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const [scale, setScale] = useState<number>(1);
   const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [hoveredCountry, setHoveredCountry] = useState<Country | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  const touchState = useRef<{
-    initialDist?: number;
-    initialScale?: number;
-    lastX?: number;
-    lastY?: number;
-  }>({});
+  // Sync refs to avoid stale closures in high-frequency gesture loops
+  const scaleRef = useRef<number>(1);
+  const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  useEffect(() => {
+    scaleRef.current = scale;
+  }, [scale]);
+  useEffect(() => {
+    positionRef.current = position;
+  }, [position]);
+
   const isTouchDevice = useRef<boolean>(false);
   const dragStartCoords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const touchStartTime = useRef<number>(0);
+  const lastTouchCoords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const touchStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const lastPinchDist = useRef<number>(0);
+  const lastMidpoint = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const isPanning = useRef<boolean>(false);
+  const hasMovedSignificant = useRef<boolean>(false);
   const lastClickTime = useRef<number>(0);
   const lastClickId = useRef<string>('');
 
   const visitedSet = new Set(visitedCountryIds);
 
+  // Convert screen coordinates & deltas to SVG coordinate space
+  const getScreenToSvg = useCallback(() => {
+    if (!containerRef.current) return { ratio: 1, offsetX: 0, offsetY: 0 };
+    const rect = containerRef.current.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) {
+      return { ratio: 1, offsetX: 0, offsetY: 0 };
+    }
+    // SVG viewBox is MAP_WIDTH x MAP_HEIGHT with preserveAspectRatio="xMidYMid meet"
+    const scaleX = rect.width / MAP_WIDTH;
+    const scaleY = rect.height / MAP_HEIGHT;
+    const meetScale = Math.min(scaleX, scaleY);
+    const svgRenderWidth = MAP_WIDTH * meetScale;
+    const svgRenderHeight = MAP_HEIGHT * meetScale;
+    const offsetX = rect.left + (rect.width - svgRenderWidth) / 2;
+    const offsetY = rect.top + (rect.height - svgRenderHeight) / 2;
+    const ratio = meetScale > 0 ? 1 / meetScale : 1;
+    return { ratio, offsetX, offsetY };
+  }, []);
+
   // Zoom handlers with bounded scale & repositioning
   const handleZoom = (factor: number) => {
     setScale((prevScale) => {
       const nextScale = Math.min(Math.max(prevScale * factor, 1), 8);
-      if (nextScale <= 1.01) {
-        setPosition({ x: 0, y: 0 });
-      } else {
-        setPosition((prevPos) => {
-          const ratio = nextScale / prevScale;
-          return clampPosition(prevPos.x * ratio, prevPos.y * ratio, nextScale);
-        });
-      }
+      scaleRef.current = nextScale;
+      setPosition((prevPos) => {
+        const ratio = nextScale / prevScale;
+        const clamped = clampPosition(prevPos.x * ratio, prevPos.y * ratio, nextScale);
+        positionRef.current = clamped;
+        return clamped;
+      });
       return nextScale;
     });
   };
 
   const handleReset = () => {
     sound.playClick();
+    scaleRef.current = 1;
+    positionRef.current = { x: 0, y: 0 };
     setScale(1);
     setPosition({ x: 0, y: 0 });
   };
@@ -100,6 +128,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     const rawY = (MAP_HEIGHT / 2 - targetY) * zoom;
     const clamped = clampPosition(rawX, rawY, zoom);
 
+    scaleRef.current = zoom;
+    positionRef.current = clamped;
     setScale(zoom);
     setPosition(clamped);
   }, []);
@@ -124,6 +154,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     if (mode === 'quiz') {
       setScale(1);
       setPosition({ x: 0, y: 0 });
+      scaleRef.current = 1;
+      positionRef.current = { x: 0, y: 0 };
     }
   }, [targetCountry?.id, mode]);
 
@@ -134,24 +166,33 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     }
   }, [targetCountry?.id, mode, centerOnCoordinates]);
 
-  // Mouse Dragging bounded by map limits
+  // Mouse Dragging bounded by map limits with 1:1 screen-to-SVG movement
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return;
     setIsDragging(true);
-    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
     dragStartCoords.current = { x: e.clientX, y: e.clientY };
+    lastTouchCoords.current = { x: e.clientX, y: e.clientY };
+    hasMovedSignificant.current = false;
     isPanning.current = false;
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging) {
       const dist = Math.hypot(e.clientX - dragStartCoords.current.x, e.clientY - dragStartCoords.current.y);
-      if (dist > 8) {
+      if (dist > 6 || hasMovedSignificant.current) {
+        hasMovedSignificant.current = true;
         isPanning.current = true;
-        const newX = e.clientX - dragStart.x;
-        const newY = e.clientY - dragStart.y;
-        setPosition(clampPosition(newX, newY, scale));
+        const { ratio } = getScreenToSvg();
+        const deltaX = (e.clientX - lastTouchCoords.current.x) * ratio;
+        const deltaY = (e.clientY - lastTouchCoords.current.y) * ratio;
+
+        setPosition((prev) => {
+          const clamped = clampPosition(prev.x + deltaX, prev.y + deltaY, scaleRef.current);
+          positionRef.current = clamped;
+          return clamped;
+        });
       }
+      lastTouchCoords.current = { x: e.clientX, y: e.clientY };
     }
 
     if (containerRef.current) {
@@ -168,68 +209,134 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     if (isPanning.current) {
       setTimeout(() => {
         isPanning.current = false;
-      }, 120);
+        hasMovedSignificant.current = false;
+      }, 150);
     }
   };
 
-  // Mobile Touch Gestures (Pan & Pinch-to-Zoom)
+  // Mobile Touch Gestures (Continuous Pinch-to-Zoom with Midpoint Anchor & 1:1 Pan)
   const handleTouchStart = (e: React.TouchEvent) => {
     isTouchDevice.current = true;
     setHoveredCountry(null);
+    setIsDragging(true);
+
     if (e.touches.length === 1) {
-      setIsDragging(true);
-      dragStartCoords.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      touchStartTime.current = Date.now();
+      const t = e.touches[0];
+      lastTouchCoords.current = { x: t.clientX, y: t.clientY };
+      touchStartPos.current = { x: t.clientX, y: t.clientY };
+      hasMovedSignificant.current = false;
       isPanning.current = false;
-      touchState.current.lastX = e.touches[0].clientX - position.x;
-      touchState.current.lastY = e.touches[0].clientY - position.y;
-    } else if (e.touches.length === 2) {
-      setIsDragging(false);
-      isPanning.current = true;
+      lastPinchDist.current = 0;
+    } else if (e.touches.length >= 2) {
       const t1 = e.touches[0];
       const t2 = e.touches[1];
-      touchState.current.initialDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-      touchState.current.initialScale = scale;
+      lastPinchDist.current = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      lastMidpoint.current = {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2,
+      };
+      hasMovedSignificant.current = true;
+      isPanning.current = true;
     }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     isTouchDevice.current = true;
     setHoveredCountry(null);
-    if (e.touches.length === 1 && isDragging) {
-      const x = e.touches[0].clientX;
-      const y = e.touches[0].clientY;
-      const dist = Math.hypot(x - dragStartCoords.current.x, y - dragStartCoords.current.y);
-      // Natural finger jitter threshold (16px) before initiating map pan
-      if (dist > 16) {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+
+    const { ratio, offsetX, offsetY } = getScreenToSvg();
+
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      const moveDist = Math.hypot(t.clientX - touchStartPos.current.x, t.clientY - touchStartPos.current.y);
+
+      // Distinguish taps from intentional panning
+      if (moveDist > 8 || hasMovedSignificant.current) {
+        hasMovedSignificant.current = true;
         isPanning.current = true;
-        if (touchState.current.lastX !== undefined && touchState.current.lastY !== undefined) {
-          const rawX = x - touchState.current.lastX;
-          const rawY = y - touchState.current.lastY;
-          setPosition(clampPosition(rawX, rawY, scale));
-        }
+
+        const deltaX = (t.clientX - lastTouchCoords.current.x) * ratio;
+        const deltaY = (t.clientY - lastTouchCoords.current.y) * ratio;
+
+        setPosition((prev) => {
+          const clamped = clampPosition(prev.x + deltaX, prev.y + deltaY, scaleRef.current);
+          positionRef.current = clamped;
+          return clamped;
+        });
       }
-    } else if (e.touches.length === 2 && touchState.current.initialDist && touchState.current.initialScale) {
+      lastTouchCoords.current = { x: t.clientX, y: t.clientY };
+    } else if (e.touches.length >= 2) {
+      hasMovedSignificant.current = true;
       isPanning.current = true;
+
       const t1 = e.touches[0];
       const t2 = e.touches[1];
-      const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-      const factor = dist / touchState.current.initialDist;
-      const newScale = Math.min(Math.max(touchState.current.initialScale * factor, 1), 8);
-      setScale(newScale);
-      setPosition((prev) => clampPosition(prev.x, prev.y, newScale));
+      const currentDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      const currentMid = {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2,
+      };
+
+      if (lastPinchDist.current > 10) {
+        const pinchFactor = currentDist / lastPinchDist.current;
+        const curScale = scaleRef.current;
+        const nextScale = Math.min(Math.max(curScale * pinchFactor, 1), 8);
+
+        // Convert midpoint to SVG coordinates
+        const svgMidX = (currentMid.x - offsetX) * ratio;
+        const svgMidY = (currentMid.y - offsetY) * ratio;
+
+        // Current position
+        const curPos = positionRef.current;
+
+        // Point under pinch in unscaled SVG coordinates:
+        const ptX = (svgMidX - curPos.x - MAP_WIDTH / 2) / curScale + MAP_WIDTH / 2;
+        const ptY = (svgMidY - curPos.y - MAP_HEIGHT / 2) / curScale + MAP_HEIGHT / 2;
+
+        // Midpoint delta movement (panning while pinching):
+        const midDeltaSvgX = (currentMid.x - lastMidpoint.current.x) * ratio;
+        const midDeltaSvgY = (currentMid.y - lastMidpoint.current.y) * ratio;
+
+        // Keep point under pinch stable while applying scale and midpoint shift
+        const rawNewX = svgMidX - MAP_WIDTH / 2 - (ptX - MAP_WIDTH / 2) * nextScale + midDeltaSvgX;
+        const rawNewY = svgMidY - MAP_HEIGHT / 2 - (ptY - MAP_HEIGHT / 2) * nextScale + midDeltaSvgY;
+
+        const clamped = clampPosition(rawNewX, rawNewY, nextScale);
+
+        scaleRef.current = nextScale;
+        positionRef.current = clamped;
+        setScale(nextScale);
+        setPosition(clamped);
+      }
+
+      lastPinchDist.current = currentDist;
+      lastMidpoint.current = currentMid;
     }
   };
 
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    setHoveredCountry(null);
-    touchState.current.initialDist = undefined;
-    touchState.current.initialScale = undefined;
-    if (isPanning.current) {
-      setTimeout(() => {
-        isPanning.current = false;
-      }, 120);
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    // Seamless handover: if 1 finger remains after pinch, smoothly continue 1-finger pan without jump
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      lastTouchCoords.current = { x: t.clientX, y: t.clientY };
+      touchStartPos.current = { x: t.clientX, y: t.clientY };
+      lastPinchDist.current = 0;
+      setIsDragging(true);
+      return;
+    }
+
+    if (e.touches.length === 0) {
+      setIsDragging(false);
+      lastPinchDist.current = 0;
+      if (isPanning.current) {
+        setTimeout(() => {
+          isPanning.current = false;
+          hasMovedSignificant.current = false;
+        }, 150);
+      }
     }
   };
 
@@ -243,7 +350,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   // Country click (0ms response on mobile touch & protected against drags)
   const handleCountryClick = (id: string, e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
-    if (isPanning.current) {
+    if (isPanning.current || hasMovedSignificant.current) {
       return;
     }
     const now = Date.now();
