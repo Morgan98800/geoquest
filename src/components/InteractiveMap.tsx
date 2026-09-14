@@ -104,21 +104,30 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setPosition(clamped);
   }, []);
 
-  const centerOnTarget = useCallback(() => {
-    if (targetCountry) {
-      sound.playSparkle();
-      centerOnCoordinates(targetCountry.coordinates, 3.2);
-    }
-  }, [targetCountry, centerOnCoordinates]);
+  const lastFocusTrigger = useRef<number>(focusTrigger);
 
-  // Center when external focus trigger changes
+  // Center ONLY when focusTrigger is explicitly incremented by user (e.g. Hint button)
   useEffect(() => {
-    if (focusTrigger > 0 && targetCountry) {
-      centerOnTarget();
+    if (focusTrigger > 0 && focusTrigger !== lastFocusTrigger.current) {
+      lastFocusTrigger.current = focusTrigger;
+      if (targetCountry) {
+        sound.playSparkle();
+        centerOnCoordinates(targetCountry.coordinates, 3.2);
+      }
+    } else if (focusTrigger === 0) {
+      lastFocusTrigger.current = 0;
     }
-  }, [focusTrigger, targetCountry, centerOnTarget]);
+  }, [focusTrigger, targetCountry, centerOnCoordinates]);
 
-  // Auto-center on target in Atlas mode when user selects a country
+  // In Quiz mode, reset map to full view on each new question (NEVER auto-zoom on answer!)
+  useEffect(() => {
+    if (mode === 'quiz') {
+      setScale(1);
+      setPosition({ x: 0, y: 0 });
+    }
+  }, [targetCountry?.id, mode]);
+
+  // Auto-center on target in Atlas mode ONLY when user selects a country to inspect
   useEffect(() => {
     if (mode === 'atlas' && targetCountry) {
       centerOnCoordinates(targetCountry.coordinates, 2.8);

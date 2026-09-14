@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Country, Continent } from '../types';
 import { DifficultyLevel } from '../data/difficulty';
 import { InteractiveMap } from './InteractiveMap';
@@ -37,6 +37,13 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
     clickedCountryName?: string;
   } | null>(null);
 
+  // Cleanly reset hint level, focus trigger and feedback when a new question arrives
+  useEffect(() => {
+    setHintLevel(0);
+    setFocusTrigger(0);
+    setFeedback(null);
+  }, [targetCountry.id]);
+
   const handleCountryClick = (clickedCountry: Country) => {
     const isCorrect = clickedCountry.id === targetCountry.id;
     setFeedback({
@@ -51,6 +58,7 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
         onCountryGuessed(clickedCountry);
         setFeedback(null);
         setHintLevel(0);
+        setFocusTrigger(0);
       }, 1100);
     } else {
       sound.playWrong();
