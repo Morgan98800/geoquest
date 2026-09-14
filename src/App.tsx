@@ -8,13 +8,18 @@ import {
   getLevelInfo,
   getActiveUsername,
   setActiveUsername,
+  checkDailyStatus,
 } from './utils/storage';
 import { sound } from './utils/audio';
+import { hapticSuccess, hapticError, hapticLevelUp } from './utils/haptics';
 import { Navbar } from './components/Navbar';
 import { MapQuiz } from './components/MapQuiz';
 import { QuizCard } from './components/QuizCard';
 import { AtlasView } from './components/AtlasView';
 import { PassportView } from './components/PassportView';
+import { StatsView } from './components/StatsView';
+import { SrsReviewView } from './components/SrsReviewView';
+import { DailyRewardModal } from './components/DailyRewardModal';
 import { FunFactModal } from './components/FunFactModal';
 import { BackupModal } from './components/BackupModal';
 import { AccountModal } from './components/AccountModal';
@@ -25,6 +30,8 @@ export const App: React.FC = () => {
   const [mode, setMode] = useState<GameMode>('map');
   const [backupOpen, setBackupOpen] = useState<boolean>(false);
   const [accountOpen, setAccountOpen] = useState<boolean>(false);
+  const [dailyRewardOpen, setDailyRewardOpen] = useState<boolean>(false);
+  const [questionStartTime, setQuestionStartTime] = useState<number>(() => Date.now());
 
   // Landscape orientation detection (StudyGe full horizontal layout)
   const [isLandscape, setIsLandscape] = useState<boolean>(() => {
@@ -57,11 +64,26 @@ export const App: React.FC = () => {
   const [modalNewLevelTitle, setModalNewLevelTitle] = useState<string>('');
   const [modalIsFirstDiscovery, setModalIsFirstDiscovery] = useState<boolean>(false);
 
+  // Auto open daily reward if available on mount
+  useEffect(() => {
+    const status = checkDailyStatus(stats);
+    if (status.canClaim) {
+      const t = setTimeout(() => {
+        setDailyRewardOpen(true);
+      }, 600);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
   // Switch profile handler
   const handleSwitchUser = (newUsername: string, newStats: UserStats) => {
     setCurrentUsername(newUsername);
     setActiveUsername(newUsername);
     setStats(newStats);
+    const status = checkDailyStatus(newStats);
+    if (status.canClaim) {
+      setDailyRewardOpen(true);
+    }
   };
 
   // Generate question for flags and capitals
@@ -85,6 +107,7 @@ export const App: React.FC = () => {
 
     setTargetCountry(target);
     setOptions(allFour);
+    setQuestionStartTime(Date.now());
   }, [stats.stamps]);
 
   // Initial question setup
@@ -95,9 +118,23 @@ export const App: React.FC = () => {
   // Handle correct answer
   const handleSuccess = (country: Country, bonusXp = 0) => {
     const isFirstTime = !stats.stamps[country.id];
-    const { newStats, leveledUp } = recordAnswer(stats, true, country.id, bonusXp);
+    const elapsedMs = Date.now() - questionStartTime;
+    const { newStats, leveledUp } = recordAnswer(
+      stats,
+      true,
+      country.id,
+      bonusXp,
+      elapsedMs,
+      country.continent
+    );
     setStats(newStats);
     saveUserStats(newStats, currentUsername);
+
+    if (leveledUp) {
+      hapticLevelUp();
+    } else {
+      hapticSuccess();
+    }
 
     const newLevelInfo = getLevelInfo(newStats.xp);
 
@@ -114,7 +151,16 @@ export const App: React.FC = () => {
       handleSuccess(selected);
     } else {
       sound.playWrong();
-      const { newStats } = recordAnswer(stats, false, targetCountry.id, 0);
+      hapticError();
+      const elapsedMs = Date.now() - questionStartTime;
+      const { newStats } = recordAnswer(
+        stats,
+        false,
+        targetCountry.id,
+        0,
+        elapsedMs,
+        targetCountry.continent
+      );
       setStats(newStats);
       saveUserStats(newStats, currentUsername);
     }
@@ -125,6 +171,25 @@ export const App: React.FC = () => {
     handleSuccess(guessedCountry, 10);
   };
 
+  // SRS answer handler
+  const handleSrsAnswer = (
+    country: Country,
+    isCorrect: boolean,
+    responseTimeMs: number
+  ) => {
+    const { newStats, leveledUp } = recordAnswer(
+      stats,
+      isCorrect,
+      country.id,
+      0,
+      responseTimeMs,
+      country.continent
+    );
+    setStats(newStats);
+    saveUserStats(newStats, currentUsername);
+    return { leveledUp };
+  };
+
   // Modal next action
   const handleModalNext = () => {
     setModalOpen(false);
@@ -132,6 +197,7 @@ export const App: React.FC = () => {
   };
 
   const visitedCountryIds = Object.keys(stats.stamps);
+  const dailyStatus = checkDailyStatus(stats);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#16202c] text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
@@ -142,6 +208,8 @@ export const App: React.FC = () => {
         stats={stats}
         currentUsername={currentUsername}
         onOpenAccount={() => setAccountOpen(true)}
+        onOpenDailyReward={() => setDailyRewardOpen(true)}
+        hasDailyReward={dailyStatus.canClaim}
         className={isLandscape && mode === 'map' ? 'hidden' : ''}
       />
 
@@ -178,6 +246,24 @@ export const App: React.FC = () => {
           />
         )}
 
+        {mode === 'srs' && (
+          <SrsReviewView
+            stats={stats}
+            onRecordAnswer={handleSrsAnswer}
+            onSwitchToMap={() => setMode('map')}
+          />
+        )}
+
+        {mode === 'stats' && (
+          <StatsView
+            stats={stats}
+            onPracticeCountry={(c) => {
+              setTargetCountry(c);
+              setMode('map');
+            }}
+          />
+        )}
+
         {mode === 'atlas' && (
           <AtlasView visitedCountryIds={visitedCountryIds} />
         )}
@@ -204,6 +290,17 @@ export const App: React.FC = () => {
         leveledUp={modalLeveledUp}
         newLevelTitle={modalNewLevelTitle}
         isFirstDiscovery={modalIsFirstDiscovery}
+      />
+
+      {/* Daily Login Retention Reward Modal (J1 -> J7) */}
+      <DailyRewardModal
+        isOpen={dailyRewardOpen}
+        onClose={() => setDailyRewardOpen(false)}
+        stats={stats}
+        onStatsUpdated={(newStats) => {
+          setStats(newStats);
+          saveUserStats(newStats, currentUsername);
+        }}
       />
 
       {/* Account Login / Switcher Modal */}

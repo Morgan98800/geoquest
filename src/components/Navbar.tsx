@@ -11,6 +11,9 @@ import {
   BookOpen,
   ChevronDown,
   Check,
+  GraduationCap,
+  BarChart3,
+  Gift,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -19,6 +22,8 @@ interface NavbarProps {
   stats: UserStats;
   currentUsername: string;
   onOpenAccount: () => void;
+  onOpenDailyReward?: () => void;
+  hasDailyReward?: boolean;
   className?: string;
 }
 
@@ -28,6 +33,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   stats,
   currentUsername,
   onOpenAccount,
+  onOpenDailyReward,
+  hasDailyReward = false,
   className = '',
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -61,6 +68,20 @@ export const Navbar: React.FC<NavbarProps> = ({
       description: 'Associe les villes et capitales aux nations',
       icon: <Landmark className="w-4 h-4 text-amber-400" />,
       emoji: '🏛️',
+    },
+    {
+      mode: 'srs',
+      label: 'Révision Intelligente',
+      description: 'Répétition espacée des pays fragiles',
+      icon: <GraduationCap className="w-4 h-4 text-purple-400" />,
+      emoji: '🎓',
+    },
+    {
+      mode: 'stats',
+      label: 'Statistiques & Progrès',
+      description: 'Précision, vitesse et historique XP',
+      icon: <BarChart3 className="w-4 h-4 text-rose-400" />,
+      emoji: '📊',
     },
     {
       mode: 'atlas',
@@ -149,6 +170,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {currentUsername}
               </span>
             </button>
+
+            {/* Daily Retention Calendar Button */}
+            {onOpenDailyReward && (
+              <button
+                onClick={() => {
+                  sound.playClick();
+                  onOpenDailyReward();
+                }}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-extrabold cursor-pointer transition-all active:scale-95 ${
+                  hasDailyReward
+                    ? 'bg-amber-500/20 border-amber-500 text-amber-300 ring-2 ring-amber-500/30'
+                    : 'bg-[#243547] hover:bg-[#2c4056] border-[#354c66] text-slate-300'
+                }`}
+                title="Calendrier des récompenses quotidiennes"
+              >
+                <Gift className="w-3.5 h-3.5 text-amber-400" />
+                <span>J{stats.dailyStreak || 1}</span>
+                {hasDailyReward && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping ml-0.5" />
+                )}
+              </button>
+            )}
 
             {/* Streak Flame */}
             <div
