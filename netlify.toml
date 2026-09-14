@@ -6,12 +6,6 @@
   NETLIFY_HUD = "false"
 
 [[redirects]]
-  from = "/.netlify/scripts/*"
-  to = "/204"
-  status = 204
-  force = true
-
-[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
