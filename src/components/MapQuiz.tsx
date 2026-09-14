@@ -112,10 +112,6 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
         feedbackState={feedback}
         className="h-[380px] sm:h-[540px]"
       />
-
-      <div className="text-center text-[11px] sm:text-xs text-slate-400 font-medium pb-2">
-        💡 Fais glisser avec ton doigt pour déplacer la carte, écarte 2 doigts pour zoomer !
-      </div>
     </div>
   );
 };

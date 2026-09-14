@@ -10,7 +10,6 @@ import { AtlasView } from './components/AtlasView';
 import { PassportView } from './components/PassportView';
 import { FunFactModal } from './components/FunFactModal';
 import { BackupModal } from './components/BackupModal';
-import { Heart } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [stats, setStats] = useState<UserStats>(loadUserStats);
@@ -108,7 +107,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Sticky Navigation (Desktop Top Bar + Mobile Top Header & Mobile Bottom Bar) */}
+      {/* Sticky Navigation with Liquid Glass Game Mode Dropdown */}
       <Navbar
         currentMode={mode}
         onSelectMode={setMode}
@@ -117,8 +116,8 @@ export const App: React.FC = () => {
         onOpenBackup={() => setBackupOpen(true)}
       />
 
-      {/* Main Content Area - padded for mobile bottom nav */}
-      <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-6 pt-3 sm:pt-6 pb-24 md:pb-8 flex flex-col">
+      {/* Main Content Area */}
+      <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-6 flex flex-col">
         {mode === 'map' && (
           <MapQuiz
             targetCountry={targetCountry}
@@ -185,18 +184,6 @@ export const App: React.FC = () => {
           saveUserStats(newStats);
         }}
       />
-
-      {/* Footer (hidden on mobile or spaced above bottom bar) */}
-      <footer className="w-full border-t border-slate-900 py-6 px-4 text-center text-xs text-slate-500 mb-16 md:mb-0">
-        <div className="flex items-center justify-center gap-1 mb-1">
-          <span>Créé avec</span>
-          <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
-          <span>pour explorer les merveilles de notre Terre</span>
-        </div>
-        <p>
-          Reconnaît pleinement la Palestine 🇵🇸 et Taïwan 🇹🇼 comme des nations souveraines et indépendantes.
-        </p>
-      </footer>
     </div>
   );
 };
