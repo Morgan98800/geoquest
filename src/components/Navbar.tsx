@@ -12,6 +12,8 @@ import {
   Check,
   BarChart3,
   Gift,
+  Home,
+  LogOut,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -21,6 +23,7 @@ interface NavbarProps {
   currentUsername: string;
   onOpenAccount: () => void;
   onOpenDailyReward?: () => void;
+  onExit?: () => void;
   hasDailyReward?: boolean;
   className?: string;
 }
@@ -32,6 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentUsername,
   onOpenAccount,
   onOpenDailyReward,
+  onExit,
   hasDailyReward = false,
   className = '',
 }) => {
@@ -45,6 +49,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     icon: React.ReactNode;
     emoji: string;
   }[] = [
+    {
+      mode: 'home',
+      label: 'Accueil / Menu',
+      icon: <Home className="w-4 h-4 text-sky-400" />,
+      emoji: '🏠',
+    },
     {
       mode: 'map',
       label: 'Trouve sur la carte',
@@ -120,7 +130,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={() => {
               sound.playClick();
-              onSelectMode('map');
+              onSelectMode('home');
             }}
             className="flex items-center gap-2 text-left group cursor-pointer shrink-0"
           >
@@ -249,6 +259,22 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             )}
           </div>
+
+          {/* Quick Exit Game Button (when in active game) */}
+          {onExit && (currentMode === 'map' || currentMode === 'flags' || currentMode === 'capitals') && (
+            <button
+              onClick={() => {
+                sound.playClick();
+                onExit();
+              }}
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#162236] hover:bg-rose-950/40 border border-[#26374f] hover:border-rose-500/40 text-slate-300 hover:text-rose-300 font-bold text-xs transition-all active:scale-95 cursor-pointer shadow-sm shrink-0"
+              title="Quitter la partie en cours"
+            >
+              <LogOut className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+              <span className="hidden xs:inline">Quitter la partie</span>
+              <span className="xs:hidden">Quitter</span>
+            </button>
+          )}
 
           {/* Level Progress */}
           <div className="flex items-center gap-2 bg-[#121927] px-2.5 py-1.5 rounded-xl border border-[#1f2c42] shrink-0 shadow-sm">

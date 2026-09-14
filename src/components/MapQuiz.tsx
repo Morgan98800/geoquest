@@ -3,13 +3,14 @@ import { Country, Continent } from '../types';
 import { DifficultyLevel } from '../data/difficulty';
 import { InteractiveMap } from './InteractiveMap';
 import { LevelSelector } from './LevelSelector';
-import { MapPin, Sparkles, AlertCircle } from 'lucide-react';
+import { MapPin, Sparkles, AlertCircle, LogOut } from 'lucide-react';
 import { sound } from '../utils/audio';
 
 interface MapQuizProps {
   targetCountry: Country;
   onCountryGuessed: (guessedCountry: Country) => void;
   onCountryWrong?: (clickedCountry: Country) => void;
+  onExit?: () => void;
   visitedCountryIds: string[];
   countryMastery?: Record<string, number>;
   selectedDifficulty: DifficultyLevel;
@@ -23,6 +24,7 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
   targetCountry,
   onCountryGuessed,
   onCountryWrong,
+  onExit,
   visitedCountryIds,
   countryMastery = {},
   selectedDifficulty,
@@ -86,6 +88,21 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
   if (isLandscape) {
     return (
       <div className="fixed inset-0 z-30 w-screen h-screen overflow-hidden bg-[#080d16]">
+        {/* Landscape Top-Left Exit Button */}
+        {onExit && (
+          <button
+            onClick={() => {
+              sound.playClick();
+              onExit();
+            }}
+            className="absolute top-2.5 left-3 z-50 px-3 py-1.5 rounded-full bg-[#121927]/95 hover:bg-[#1a2436] border border-[#1f2c42] hover:border-rose-500/40 text-slate-300 hover:text-rose-300 shadow-2xl backdrop-blur-md text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+            title="Quitter la partie"
+          >
+            <LogOut className="w-3.5 h-3.5 text-rose-400" />
+            <span>Quitter</span>
+          </button>
+        )}
+
         {/* Sleek Floating Question Pill - Minimal & Centered */}
         <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-40 pointer-events-auto flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#121927]/95 border border-[#1f2c42] shadow-2xl text-white backdrop-blur-md">
           <span className="text-xl select-none">{targetCountry.flag}</span>
@@ -178,16 +195,33 @@ export const MapQuiz: React.FC<MapQuizProps> = ({
           </div>
         </div>
 
-        {/* Hint button */}
-        {hintLevel < 2 && (
-          <button
-            onClick={handleUseHint}
-            className="px-3 py-1.5 rounded-xl bg-[#1a2436] hover:bg-[#23324a] border border-[#2c3f58] text-amber-300 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm shrink-0 touch-manipulation"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>{hintLevel === 0 ? "Indice" : "Cadrer"}</span>
-          </button>
-        )}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Hint button */}
+          {hintLevel < 2 && (
+            <button
+              onClick={handleUseHint}
+              className="px-3 py-1.5 rounded-xl bg-[#1a2436] hover:bg-[#23324a] border border-[#2c3f58] text-amber-300 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm touch-manipulation"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>{hintLevel === 0 ? "Indice" : "Cadrer"}</span>
+            </button>
+          )}
+
+          {/* Exit button */}
+          {onExit && (
+            <button
+              onClick={() => {
+                sound.playClick();
+                onExit();
+              }}
+              className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-[#162236] hover:bg-rose-950/40 border border-[#26374f] hover:border-rose-500/40 text-slate-300 hover:text-rose-300 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm touch-manipulation"
+              title="Quitter la partie"
+            >
+              <LogOut className="w-3.5 h-3.5 text-rose-400" />
+              <span className="hidden sm:inline">Quitter</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* StudyGe Level & Continent Selector */}

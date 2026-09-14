@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Country } from '../types';
 import { sound } from '../utils/audio';
-import { CheckCircle2, XCircle, Flame } from 'lucide-react';
+import { CheckCircle2, XCircle, Flame, LogOut } from 'lucide-react';
 
 interface QuizCardProps {
   type: 'flags' | 'capitals';
   targetCountry: Country;
   options: Country[];
   onAnswer: (selected: Country) => void;
+  onExit?: () => void;
   streak: number;
 }
 
@@ -16,6 +17,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   targetCountry,
   options,
   onAnswer,
+  onExit,
   streak,
 }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -45,9 +47,24 @@ export const QuizCard: React.FC<QuizCardProps> = ({
       {/* Header Question */}
       <div className="text-center mb-5 sm:mb-8">
         <div className="flex items-center justify-between mb-2.5 sm:mb-3">
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-            {type === 'flags' ? '🏴 Devine le Drapeau' : '🏛️ Devine la Capitale'}
-          </span>
+          <div className="flex items-center gap-2">
+            {onExit && (
+              <button
+                onClick={() => {
+                  sound.playClick();
+                  onExit();
+                }}
+                className="px-2.5 py-1 rounded-xl bg-[#162236] hover:bg-rose-950/40 border border-[#26374f] hover:border-rose-500/40 text-slate-300 hover:text-rose-300 text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm touch-manipulation"
+                title="Quitter la partie"
+              >
+                <LogOut className="w-3.5 h-3.5 text-rose-400" />
+                <span className="text-[11px]">Quitter</span>
+              </button>
+            )}
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+              {type === 'flags' ? '🏴 Devine le Drapeau' : '🏛️ Devine la Capitale'}
+            </span>
+          </div>
           <div className="flex items-center gap-1 text-amber-400 font-bold text-xs">
             <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400" />
             <span>Série : {streak}</span>

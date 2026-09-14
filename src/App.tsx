@@ -19,7 +19,10 @@ import {
   checkDailyStatus,
 } from './utils/storage';
 import { hapticSuccess, hapticError, hapticLevelUp } from './utils/haptics';
+import { sound } from './utils/audio';
+import { LogOut } from 'lucide-react';
 import { Navbar } from './components/Navbar';
+import { HomeView } from './components/HomeView';
 import { MapQuiz } from './components/MapQuiz';
 import { QuizCard } from './components/QuizCard';
 import { AtlasView } from './components/AtlasView';
@@ -32,12 +35,13 @@ import { AccountModal } from './components/AccountModal';
 export const App: React.FC = () => {
   const [currentUsername, setCurrentUsername] = useState<string>(() => getActiveUsername());
   const [stats, setStats] = useState<UserStats>(() => loadUserStats());
-  const [mode, setMode] = useState<GameMode>('map');
+  const [mode, setMode] = useState<GameMode>('home');
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>(1);
   const [selectedContinent, setSelectedContinent] = useState<Continent | 'all'>('all');
   const [backupOpen, setBackupOpen] = useState<boolean>(false);
   const [accountOpen, setAccountOpen] = useState<boolean>(false);
   const [dailyRewardOpen, setDailyRewardOpen] = useState<boolean>(false);
+  const [exitModalOpen, setExitModalOpen] = useState<boolean>(false);
   const [questionStartTime, setQuestionStartTime] = useState<number>(() => Date.now());
 
   // Landscape orientation detection (StudyGe full horizontal layout)
@@ -227,6 +231,23 @@ export const App: React.FC = () => {
     saveUserStats(newStats, currentUsername);
   };
 
+  // Handle game exit request
+  const handleRequestExit = () => {
+    sound.playClick();
+    setExitModalOpen(true);
+  };
+
+  const handleConfirmExit = () => {
+    sound.playClick();
+    setExitModalOpen(false);
+    setMode('home');
+  };
+
+  const handleCancelExit = () => {
+    sound.playClick();
+    setExitModalOpen(false);
+  };
+
   // Modal next action
   const handleModalNext = () => {
     setModalOpen(false);
@@ -251,6 +272,7 @@ export const App: React.FC = () => {
         currentUsername={currentUsername}
         onOpenAccount={() => setAccountOpen(true)}
         onOpenDailyReward={() => setDailyRewardOpen(true)}
+        onExit={handleRequestExit}
         hasDailyReward={dailyStatus.canClaim}
         className={isLandscape && mode === 'map' ? 'hidden' : ''}
       />
@@ -259,11 +281,22 @@ export const App: React.FC = () => {
       <main className={`flex-1 w-full mx-auto flex flex-col ${
         isLandscape && mode === 'map' ? 'p-0 max-w-none' : 'max-w-6xl px-3 sm:px-6 py-2.5 sm:py-5'
       }`}>
+        {mode === 'home' && (
+          <HomeView
+            stats={stats}
+            currentUsername={currentUsername}
+            onSelectMode={setMode}
+            onOpenDailyReward={() => setDailyRewardOpen(true)}
+            hasDailyReward={dailyStatus.canClaim}
+          />
+        )}
+
         {mode === 'map' && (
           <MapQuiz
             targetCountry={targetCountry}
             onCountryGuessed={handleMapGuessed}
             onCountryWrong={handleMapWrong}
+            onExit={handleRequestExit}
             visitedCountryIds={visitedCountryIds}
             countryMastery={countryMastery}
             selectedDifficulty={selectedDifficulty}
@@ -280,6 +313,7 @@ export const App: React.FC = () => {
             targetCountry={targetCountry}
             options={options}
             onAnswer={handleMultipleChoiceAnswer}
+            onExit={handleRequestExit}
             streak={stats.currentStreak}
           />
         )}
@@ -290,6 +324,7 @@ export const App: React.FC = () => {
             targetCountry={targetCountry}
             options={options}
             onAnswer={handleMultipleChoiceAnswer}
+            onExit={handleRequestExit}
             streak={stats.currentStreak}
           />
         )}
@@ -350,6 +385,40 @@ export const App: React.FC = () => {
           saveUserStats(newStats, currentUsername);
         }}
       />
+
+      {/* Exit Game Confirmation Modal */}
+      {exitModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in select-none">
+          <div className="w-full max-w-sm bg-[#121927] border border-[#1f2c42] rounded-3xl p-6 shadow-2xl text-center flex flex-col items-center gap-4 animate-pop">
+            <div className="w-14 h-14 rounded-2xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400 shadow-inner">
+              <LogOut className="w-7 h-7" />
+            </div>
+
+            <div className="space-y-1.5">
+              <h3 className="text-xl font-black text-white">Quitter la partie ?</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Ta série de <span className="text-amber-400 font-extrabold">{stats.currentStreak} 🔥</span> et toute ton XP acquise sont bien sauvegardées.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-2.5 w-full mt-2">
+              <button
+                onClick={handleCancelExit}
+                className="flex-1 py-3 px-4 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-sm transition-all active:scale-95 cursor-pointer shadow-lg shadow-sky-500/25"
+              >
+                Continuer
+              </button>
+
+              <button
+                onClick={handleConfirmExit}
+                className="flex-1 py-3 px-4 rounded-xl bg-[#1a2436] hover:bg-rose-950/50 hover:text-rose-200 border border-[#2c3f58] hover:border-rose-500/40 text-slate-300 font-bold text-sm transition-all active:scale-95 cursor-pointer"
+              >
+                Quitter au menu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
